@@ -39,7 +39,6 @@ async function getTypeUrls(category) {
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
-  await page.setDefaultNavigationTimeout(0);
   await page.goto(url);
   const html = await page.content();
   const $ = cheerio.load(html);
@@ -75,7 +74,6 @@ async function getProductUrls(typeUrl) {
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
-  await page.setDefaultNavigationTimeout(0);
   await page.goto(typeUrl);
   const html = await page.content();
   const $ = cheerio.load(html);
@@ -108,7 +106,6 @@ async function getProductDetails(productUrl, product_category, product_type) {
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
-  await page.setDefaultNavigationTimeout(0);
   await page.goto(productUrl);
   const html = await page.content();
   const $ = cheerio.load(html, { decodeEntities: false });
