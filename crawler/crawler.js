@@ -1,6 +1,11 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
+const awsPlugin = require('puppeteer-extra-plugin-aws');
 const cheerio = require('cheerio');
 const mysql = require('../util/mysql_con');
+
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
+puppeteer.use(awsPlugin());
 
 // Create Today Date(ex: 20200701)
 function getTodayDate() {
