@@ -23,10 +23,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "mysql": "^2.18.1",
-    "puppeteer": "^4.0.1",
-    "puppeteer-extra": "^3.1.9",
-    "puppeteer-extra-plugin-adblocker": "^2.11.3",
-    "puppeteer-extra-plugin-aws": "^1.0.2"
+    "puppeteer": "^4.0.1"
   },
   "devDependencies": {
     "eslint": "^7.3.1",

@@ -1,11 +1,6 @@
-const puppeteer = require('puppeteer-extra');
-const awsPlugin = require('puppeteer-extra-plugin-aws');
+const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const mysql = require('../util/mysql_con');
-
-const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
-puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
-puppeteer.use(awsPlugin());
 
 // Create Today Date(ex: 20200701)
 function getTodayDate() {
@@ -37,6 +32,10 @@ async function getTypeUrls(category) {
   const browser = await puppeteer.launch({
     headless: true,
     ignoreDefaultArgs: ['--enable-automation'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+   ]
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299')
@@ -68,6 +67,10 @@ async function getProductUrls(typeUrl) {
   const browser = await puppeteer.launch({
     headless: true,
     ignoreDefaultArgs: ['--enable-automation'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+   ]
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
@@ -96,6 +99,10 @@ async function getProductDetails(productUrl, product_category, product_type) {
   const browser = await puppeteer.launch({
     headless: true,
     ignoreDefaultArgs: ['--enable-automation'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+   ]
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
