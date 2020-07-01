@@ -35,10 +35,10 @@ async function getTypeUrls(category) {
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-   ]
+    ],
   });
   const page = await browser.newPage();
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299')
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
   await page.setDefaultNavigationTimeout(0);
   await page.goto(url);
   const html = await page.content();
@@ -71,7 +71,7 @@ async function getProductUrls(typeUrl) {
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-   ]
+    ],
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
@@ -104,7 +104,7 @@ async function getProductDetails(productUrl, product_category, product_type) {
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-   ]
+    ],
   });
   const page = await browser.newPage();
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
@@ -186,8 +186,12 @@ async function main(category) {
     const productUrls_result = await getProductUrls(typeUrls[i]);
     const productUrls = productUrls_result.result.flatMap((url) => Object.values(url));
     for (let j = 0; j < productUrls.length; j += 1) {
-      const productDetails = await getProductDetails(productUrls[j], productUrls_result.product_category, productUrls_result.product_type);
-      await createProduct(productDetails);
+      try {
+        const productDetails = await getProductDetails(productUrls[j], productUrls_result.product_category, productUrls_result.product_type);
+        await createProduct(productDetails);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   console.log(`Finished ${category} data at ${new Date()}`);
