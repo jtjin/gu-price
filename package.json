@@ -23,7 +23,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "mysql": "^2.18.1",
-    "puppeteer": "^4.0.1"
+    "puppeteer": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^7.3.1",
