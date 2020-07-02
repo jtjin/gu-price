@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-const mysql = require('../util/mysql_con');
+const mysql = require('../util/mysqlcon');
 
 // Create Today Date(ex: 20200701)
 function getTodayDate() {
@@ -198,7 +198,7 @@ async function start() {
   await main('women');
   await main('kids');
   console.log('Everything has done!');
-  mysql.pool.end();
+  mysql.end();
 }
 
 start();
