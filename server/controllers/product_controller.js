@@ -71,11 +71,11 @@ const getProductsWithDetail = async (products) => {
       const productPrices = pricesMap[p.id]
       if (!productPrices) { return p }
 
-      p.price = productPrices.map(p => ({
-         data: p.date,
-         price: p.price
-      }))
-
+      p.date = productPrices.flatMap(p => [p.date])
+      p.price = productPrices.flatMap(p => [p.price])
+      p.highest_price = Math.max(...p.price)
+      p.lowest_price = Math.min(...p.price)
+      p.current_price = p.price[p.price.length - 1]
       p.images = JSON.parse(p.images)
 
       return p
