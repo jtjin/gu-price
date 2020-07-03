@@ -1,0 +1,87 @@
+* {
+   box-sizing: border-box;
+   font-family: 'Microsoft JhengHei';
+}
+body {
+   margin: 0;
+}
+/* ---- Navigation ---- */
+.main_header {
+   background-color: white;
+   position: fixed;
+   border-bottom: 1px solid #e9e9e9;
+   box-shadow: 0px 1px 2px 0 #f1f0f0;
+   margin: 0;
+   width: 100%;
+   height: 60px;
+   z-index: 1;
+}
+.main_header > .container {
+   display: flex;
+   height: 100%;
+   max-width: 1000px;
+   margin: 0 auto;
+}
+.main_header > .container > .box {
+   margin: auto 10px;
+   display: flex;
+}
+.main_header > .container > .box > .title {
+   font-size: 1rem;
+   display: flex;
+   color:#404040;
+   text-decoration: none;
+}
+.main_header > .container > .box > .title > .logo {
+   height: 30px;
+   width: 30px;
+   margin: auto 10px;  
+}
+.main_header > .container > .box > .search {
+   border: 1px solid #e9e9e9;
+   border-radius: 0.3rem 0 0 0.3rem;
+   width: 180px;
+   height: 35px;
+}
+.main_header > .container > .box > .search_btn {
+   background: transparent;
+   border: 1px solid #e9e9e9;
+   border-radius: 0 0.3rem 0.3rem 0;
+   width: 35px;
+   cursor: pointer;
+}
+.main_header > .container > .nav_bar {
+   flex:auto
+}
+.main_header > .container > .nav_bar > ul {
+   list-style: none;
+   margin: 0 10px 0 auto; 
+   height: 60px;
+   padding-left: 20px;
+   display: none;
+}
+.main_header > .container > .nav_bar > ul > li {
+   display: inline-block;
+   line-height: 60px;
+   padding: 0 5px;
+   font-size: 1rem;
+}
+.main_header > .container > .nav_bar > ul > li > a {
+   color: black;
+   text-decoration: none;
+}
+
+.main_header > .container > .nav_bar > .menu {
+   max-height: 30px;
+   max-width: 30px;
+   margin: 10px 10px 10px auto;
+}
+
+@media (min-width: 750px) {
+   .main_header > .container > .nav_bar > .menu {
+       display: none;
+   }
+   .main_header > .container > .nav_bar > ul {
+       display: block;
+   }
+}

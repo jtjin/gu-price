@@ -8,7 +8,7 @@ function getTodayDate() {
   const yyyy = fullDate.getFullYear();
   const MM = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : (`0${fullDate.getMonth() + 1}`);
   const dd = fullDate.getDate() < 10 ? (`0${fullDate.getDate()}`) : fullDate.getDate();
-  const today = yyyy + '-' + MM + '-' + dd;
+  const today = `${yyyy}-${MM}-${dd}`;
   return today;
 }
 

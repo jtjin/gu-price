@@ -1,0 +1,32 @@
+extends layout
+
+block title
+   title=title
+
+block append css
+   link(rel='stylesheet' href='/static/css/product.css')
+
+block append js
+   script(src='https://cdn.plot.ly/plotly-latest.min.js')
+   script(src='/static/js/product.js')
+
+block content
+   main
+      .container_1
+         .main_image_box
+            img#main_image.main_image
+         .about_box
+            .name_box
+               h1#name.name
+               #number.number
+            .discount_box
+            .high_low_price_box
+               #highest_price.highest_price
+               #lowest_price.lowest_price
+            #current_price.current_price_box
+            #date_price.price_curve_box
+            a#website.website_box 前往 GU 官網
+      .container_2_background
+         .container_2
+            h2 商品實照
+            #images_box.images_box

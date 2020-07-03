@@ -1,0 +1,31 @@
+doctype html
+html
+    head
+        block title
+        meta(name='viewport' content='width=device-width, , initial-scale=1.0')
+        block css
+        link(rel='stylesheet' href='/static/css/common.css')
+        block js
+        script(src='/static/js/common.js')
+body
+    header.main_header
+        .container
+            .box
+                a.title(href='#')
+                    img.logo(src='/static/imgs/logo.png')
+                    p GU 搜尋
+            .box
+                input.search(type='text' placeholder=' 輸入關鍵字或商品編號 ...')
+                button.search_btn &rarr;
+            .box.nav_bar
+                img.menu(src='/static/imgs/menu.png')
+                ul
+                    li
+                        a(href='#') 首頁
+                    li
+                        a(href='#') 男裝
+                    li
+                        a(href='#') 女裝
+                    li
+                        a(href='#') 童裝
+    block content
