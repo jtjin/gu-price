@@ -9,7 +9,7 @@
 }
 .container_1 > .main_image_box {
    padding: 20px 10px 0 10px;
-   flex: 1 55%;
+   flex: 1 340px;
    height: 100%;
    width: 100%;
 }
@@ -19,7 +19,7 @@
 }
 .container_1 > .about_box {
    padding: 20px 20px 0 20px;
-   flex: 1 40%;
+   flex: 1 340px;
    height: 100%;
    display: flex;
    flex-wrap: wrap;
