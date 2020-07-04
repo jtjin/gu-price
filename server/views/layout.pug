@@ -11,17 +11,17 @@ body
     header.main_header
         .container
             .box
-                a.title(href='#')
+                a.title(href='/')
                     img.logo(src='/static/imgs/logo.png')
                     p GU 搜尋
             .box
-                input.search(type='text' placeholder=' 輸入關鍵字或商品編號 ...')
-                button.search_btn &rarr;
+                input#search_header.search(type='text' placeholder=' 輸入關鍵字或商品編號 ...')
+                button.search_btn(onclick="headerSearch()") →
             .box.nav_bar
                 img.menu(src='/static/imgs/menu.png')
                 ul
                     li
-                        a(href='#') 首頁
+                        a(href='/') 首頁
                     li
                         a(href='#') 男裝
                     li

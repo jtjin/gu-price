@@ -2,7 +2,12 @@
 async function getProductNumber() {
   const number = window.location.pathname.substr(10);
   const result = await fetch(`/api/1.0/products/details?number=${number}`).then((res) => res.json());
-  await showProduct(result);
+  if (result.data) {
+    await showProduct(result);
+  } else {
+    alert('很抱歉，找不到符合的商品耶');
+    window.location.href = '/';
+  }
 }
 
 // Render page

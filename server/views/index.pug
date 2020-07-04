@@ -1,0 +1,22 @@
+extends layout
+
+block title
+  title 首頁 | GU 搜尋 | GU 比價
+
+block append css
+   link(rel='stylesheet' href='/static/css/index.css')
+
+block append js
+   script(src='/static/js/index.js')
+
+block content
+  main
+    .ctn
+      h1
+        img(src='/static/imgs/logo.png')
+        |GU 搜尋
+      input#search_main(type='text' placeholder=' 輸入 GU 商品關鍵字或編號比價...')
+      button(onclick='mainSearch()')
+        |查看商品
+
+      

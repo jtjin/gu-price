@@ -16,5 +16,15 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    camelcase: 'warn',
+    eqeqeq: 'warn',
+    'no-console': 'warn',
+    'no-alert': 'warn',
+    'no-use-before-define': 'warn',
+    'no-unused-vars': 'warn',
+    'no-return-await': 'warn',
+    'no-param-reassign': 'warn',
+    'no-shadow': 'warn',
+    'no-undef': 'warn'
   },
 };

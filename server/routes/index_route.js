@@ -5,10 +5,10 @@ const path = require('path');
 //    res.sendFile(path.join(__dirname, '../../public/product.html'));
 // })
 
-// /* GET home page. */
-// router.get('/', function(req, res, next) {
-//    res.render('index', { recipes: '123' , title: 'abc'});
-//  });
+/* GET home page. */
+router.get('/', (req, res, next) => {
+  res.render('index');
+});
 
 /* GET product page. */
 router.get('/products/:number', (req, res, next) => {
