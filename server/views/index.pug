@@ -8,15 +8,18 @@ block append css
 
 block append js
    script(src='/static/js/index.js')
-
+   
 block content
   main
     .ctn
       h1
         img(src='/static/imgs/logo.png')
         |GU 搜尋
-      input#search_main(type='text' placeholder=' 輸入 GU 商品關鍵字或編號比價...')
-      button(onclick='mainSearch()')
+      .search_main
+        select#select_main.search_select_main
+          option 關鍵字
+          option 商品編號
+        input#search_main.search_input_main(type='text' placeholder=' 輸入商品關鍵字或編號...')
+      button(onclick='mainSearchBtn()')
         |查看商品
 
-      

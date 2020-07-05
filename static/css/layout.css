@@ -3,6 +3,7 @@
    font-family: 'Microsoft JhengHei';
 }
 body {
+   height: 100%;
    margin: 0;
 }
 /* ---- Header ---- */
@@ -40,7 +41,7 @@ body {
 .main_header > .container > .box > .search {
    border: 1px solid #e9e9e9;
    border-radius: 0.3rem 0 0 0.3rem;
-   width: 180px;
+   width: 100px;
    height: 35px;
    padding: 0.5em;
 }
@@ -52,29 +53,43 @@ body {
    cursor: pointer;
 }
 .main_header > .container > .nav_bar {
-   flex:auto
+   flex:auto;
+   display:flex;
+   justify-content: end;
 }
 .main_header > .container > .nav_bar > ul {
+   width: 170px;
+   padding: 0;
    list-style: none;
    margin: 0 10px 0 auto; 
    height: 60px;
-   padding-left: 20px;
-   display: none;
 }
 .main_header > .container > .nav_bar > ul > li {
    display: inline-block;
    line-height: 60px;
    padding: 0 5px;
-   font-size: 1rem;
 }
 .main_header > .container > .nav_bar > ul > li > a {
    color: black;
    text-decoration: none;
 }
+.main_header > .container > .nav_bar > ul > li > a:hover {
+   color: #919191;
+}
 .main_header > .container > .nav_bar > .menu {
    max-height: 30px;
    max-width: 30px;
    margin: 10px 10px 10px auto;
+   cursor: pointer;
+}
+.main_header > .container > .member_box {
+   margin-left: 0;
+}
+.main_header > .container > .member_box > .member_btn {
+   padding: 0;
+   background-color: white;
+   border: none;
+   cursor: pointer;
 }
 
 /* ---- Footer ---- */
@@ -115,18 +130,42 @@ body {
    margin: 0 20px;
    line-height: 2rem;
 }
-
-@media (min-width: 750px) {
-   .main_header > .container > .nav_bar > .menu {
-       display: none;
+@media (max-width: 749px) {
+   .main_header > .container > .nav_bar > .menu,
+   .main_header > .container > .nav_bar > .show {
+      display: block;
    }
    .main_header > .container > .nav_bar > ul {
-       display: block;
+      position: fixed;
+      width: 100px;
+      height: 160px;
+      background-color: white;
+      border-left: solid #919191 .5px;
+      border-right: solid  #919191 .5px;
+      border-bottom: solid  #919191 .5px;
+      top: 55px;
+      right: 55px;
+      padding: 0;
+      margin: 0;
+      display: none;
+   }
+   .main_header > .container > .nav_bar > ul > li {
+      line-height: 40px;
+      font-size: 1rem;
+      display: block;
+      text-align: center;
+   }
+}
+@media (min-width: 750px) {
+   .main_header > .container > .nav_bar > .menu {
+      display: none;
+   }
+   .main_header > .container > .box > .search {
+      width: 150px;
    }
    .main_footer > .container_footer {
       justify-content: flex-end;
    }
-
    .main_footer > .container_footer > .box_footer{
       flex: auto;
    }

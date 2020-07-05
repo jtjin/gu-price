@@ -25,6 +25,6 @@ module.exports = {
     'no-return-await': 'warn',
     'no-param-reassign': 'warn',
     'no-shadow': 'warn',
-    'no-undef': 'warn'
+    'no-undef': 'warn',
   },
 };

@@ -2,11 +2,10 @@ doctype html
 html
     head
         block title
+        title  | GU 搜尋 | GU 比價
         meta(name='viewport' content='width=device-width, , initial-scale=1.0')
         block css
-        link(rel='stylesheet' href='/static/css/common.css')
-        block js
-        script(src='/static/js/common.js')
+        link(rel='stylesheet' href='/static/css/layout.css')
 body
     header.main_header
         .container
@@ -15,11 +14,11 @@ body
                     img.logo(src='/static/imgs/logo.png')
                     p GU 搜尋
             .box
-                input#search_header.search(type='text' placeholder=' 輸入關鍵字或商品編號 ...')
-                button.search_btn(onclick="headerSearch()") →
+                input#search_header.search(type='text' placeholder=' 輸入商品關鍵字 ...')
+                button.search_btn(onclick="headerSearchBtn()") →
             .box.nav_bar
-                img.menu(src='/static/imgs/menu.png')
-                ul
+                img#menu_img.menu(src='/static/imgs/menu.png')
+                ul#menu_list
                     li
                         a(href='/') 首頁
                     li
@@ -28,6 +27,10 @@ body
                         a(href='#') 女裝
                     li
                         a(href='#') 童裝
+            .box.member_box
+                button#member_btn.member_btn
+                    img.member_logo(src='/static/imgs/member.png')
+
     block content
 
     footer.main_footer
@@ -43,3 +46,5 @@ body
                     br
                     |本網站所有提及之商標與名稱皆屬該公司所有。
 
+block js
+script(src='/static/js/layout.js')

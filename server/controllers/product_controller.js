@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Product = require('../models/product_model');
 
-const pageSize = 6;
+const pageSize = 8;
 
 const getProducts = async (req, res) => {
   const { category } = req.params;
@@ -9,19 +9,15 @@ const getProducts = async (req, res) => {
 
   async function findProduct(category) {
     switch (category) {
-      case 'all':
-        return await Product.getProducts(pageSize, paging);
-      case 'men': case 'women': case 'accessories':
-        return await Product.getProducts(pageSize, paging, { category });
+      case 'men': case 'women': case 'kids':
+        const { type } = req.query;
+        return await Product.getProducts(pageSize, paging, { category, type });
       case 'search': {
         const { keyword } = req.query;
         if (keyword) {
           return await Product.getProducts(pageSize, paging, { keyword });
         }
         break;
-      }
-      case 'hot': {
-        return await Product.getProducts(null, null, { category });
       }
       case 'details': {
         const number = parseInt(req.query.number);

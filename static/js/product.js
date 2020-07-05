@@ -2,16 +2,11 @@
 async function getProductNumber() {
   const number = window.location.pathname.substr(10);
   const result = await fetch(`/api/1.0/products/details?number=${number}`).then((res) => res.json());
-  if (result.data) {
-    await showProduct(result);
-  } else {
-    alert('很抱歉，找不到符合的商品耶');
-    window.location.href = '/';
-  }
+  document.title = `${result.data.name} | GU 比價 | GU 搜尋`;
+  showProduct(result);
 }
-
 // Render page
-async function showProduct(result) {
+function showProduct(result) {
   // main_image
   const main_image = document.getElementById('main_image');
   main_image.setAttribute('src', result.data.main_image);
@@ -43,7 +38,6 @@ async function showProduct(result) {
     document.getElementById('images_box').appendChild(img);
   }
 }
-
 function drawDatePrice(data) {
   const date_price = {
     x: data.date,

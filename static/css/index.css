@@ -1,12 +1,16 @@
 /* ---- Main ---- */
 
 main {
+   min-height: calc(100vh - 100px);
    width: 100%;
    height: 100%;
    padding-top: 80px;
    padding-bottom: 20px;
+   display: flex;
+   align-items: center;
 }
 main > .ctn {
+   flex: auto;
    max-width: 700px;
    margin: 0 auto;
    display: flex;
@@ -16,26 +20,44 @@ main > .ctn > h1 {
    text-align: center;
    font-size: 2.5rem;
    line-height: 1.25em;
-    color: #404040;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+   color: #404040;
+   font-weight: 500;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 main > .ctn > h1 > img {
    margin: 0 10px;
    height: 55px;
    width: 55px;
 }
-main > .ctn > input {
+main > .ctn > .search_main {
    width: 100%;
+   height: 45px;
+   margin: 5px 0;
+   display: flex;
+}
+main > .ctn > .search_main > .search_select_main {
+   width: 100px;
    line-height: 1.25em;
    border: 1px solid #e9e9e9;
-   padding: 1em;
-   border-radius: 0.3rem;
+   padding: 1em 0.5em;
+   border-radius: 0.3rem 0 0 0.3rem;
    color: #646464;
    background: #fff;
    border-color: #e9e9e9;
+   margin: 0 0 0 10px;
+}
+main > .ctn > .search_main > .search_input_main {
+   width: calc(100% - 100px);
+   line-height: 1.25em;
+   border: 1px solid #e9e9e9;
+   padding: 1em;
+   border-radius: 0 0.3rem 0.3rem 0;
+   color: #646464;
+   background: #fff;
+   border-color: #e9e9e9;
+   margin: 0 10px 0 0;
 }
 main > .ctn > button {
    width: 150px;

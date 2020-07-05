@@ -1,0 +1,19 @@
+extends layout
+
+block title
+  title 搜尋結果 | GU 搜尋 | GU 比價
+
+block append css
+   link(rel='stylesheet' href='/static/css/search.css')
+
+block append js
+   script(src='/static/js/search.js')
+
+block content
+  main
+   .view
+      h2 搜尋結果
+      #products.products
+
+
+      
