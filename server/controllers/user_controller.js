@@ -23,6 +23,25 @@ const facebookSignIn = async (accessToken) => {
   }
 };
 
+const googleSignIn = async (accessToken) => {
+  if (!accessToken) {
+    return { error: 'Request Error: access token is required.', status: 400 };
+  }
+
+  try {
+    const profile = await User.getGoogleProfile(accessToken);
+    const { name, email, picture } = profile;
+
+    if (!name || !email) {
+      return { error: 'Permissions Error: facebook access token can not get user name or email' };
+    }
+
+    return await User.googleSignIn(name, email, picture,accessToken, expire);
+  } catch (error) {
+    return { error };
+  }
+};
+
 const signIn = async (req, res) => {
   const data = req.body;
 
@@ -30,6 +49,9 @@ const signIn = async (req, res) => {
   switch (data.provider) {
     case 'facebook':
       result = await facebookSignIn(data.access_token);
+      break;
+    case 'google':
+      result = await googleSignIn(data.access_token);
       break;
     default:
       result = { error: 'Wrong Request' };

@@ -21,7 +21,6 @@ function headerSearch() {
 }
 window.onload = headerSearch();
 
-/* Integrate Facebook Login */
 function postData(url, data, cb) {
   return fetch(url, {
     body: JSON.stringify(data),
@@ -39,12 +38,14 @@ function loginRender(obj) {
     alert(obj.error);
   } else if (obj.data.access_token) {
     localStorage.setItem('token', obj.data.access_token);
-    window.location.href = '/';
+    alert('登入成功!');
+    location.reload();
     // window.location.href = './profile.html';
   } else {
     alert('Oops, something went wrong!');
   }
 }
+/* Integrate Facebook Login */
 // Initialization
 window.fbAsyncInit = function () {
   FB.init({
@@ -97,3 +98,36 @@ window.onclick = function (event) {
     member_modal.style.display = 'none';
   }
 };
+
+/* Integrate Google Login */
+// Initialization
+function GoogleSigninInit() {
+  gapi.load('auth2', function () {
+      gapi.auth2.init({
+          client_id: "943449462904-krjfkfl3789uvu46ukguh2cgsmddkpkt.apps.googleusercontent.com"
+      });
+  });
+}
+function Google_login() {
+  let auth2 = gapi.auth2.getAuthInstance();
+  auth2.signIn()
+    .then((GoogleUser) => {
+        const profile = GoogleUser.getBasicProfile();
+        const result = {
+          id: profile.getId(),
+          provider: GoogleUser.getAuthResponse().idpId,
+          access_token: GoogleUser.getAuthResponse().id_token,
+        };
+        postData('/api/1.0/user/signin', result, loginRender);
+    })
+    .catch( (error) => {
+      alert('Please try again');
+      console.log(error);
+    })
+}//end function GoogleLogin
+
+
+/* Integrate GitHub Login */
+function GitHub_login() {
+  console.log('github login')
+}

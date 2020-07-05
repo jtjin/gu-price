@@ -4,8 +4,13 @@ html
         block title
             title  | GU 搜尋 | GU 比價
         meta(name='viewport' content='width=device-width, , initial-scale=1.0')
+        //- script(src="https://apis.google.com/js/api:client.js")
+        meta(name="google-signin-scope" content="profile email")
+        meta(name="google-signin-client_id" content="943449462904-krjfkfl3789uvu46ukguh2cgsmddkpkt.apps.googleusercontent.com")
         block css
             link(rel='stylesheet' href='/static/css/layout.css')
+        script(async='' defer='' crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=606485106744129&autoLogAppEvents=1')
+        script(async='' defer='' src="https://apis.google.com/js/platform.js?onload=GoogleSigninInit")
 body
     header.main_header
         .container
@@ -34,6 +39,12 @@ body
     #member_modal.member_modal
         .modal_content
             .modal_container
+                button.google_btn(onclick="Google_login()")
+                    img.google_icon(src="/static/imgs/google.png")
+                    p Log in with Google
+                button.github_btn(onclick="GitHub_login()")
+                    img.github_icon(src="/static/imgs/github.png")
+                    p Log in with GitHub
                 button.fb_btn(onclick="FB_login()")
                     img.fb_icon(src="/static/imgs/fb.png")
                     p Log in with Facebook
@@ -54,5 +65,4 @@ body
                     |本網站所有提及之商標與名稱皆屬該公司所有。
 
 block js
-    script(crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=606485106744129&autoLogAppEvents=1')
     script(src='/static/js/layout.js')

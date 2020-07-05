@@ -43,6 +43,43 @@ const facebookSignIn = async (id, name, email, accessToken, expire) => {
   }
 };
 
+const googleSignIn = async (name, email, picture, accessToken, expire) => {
+  try {
+    await query('START TRANSACTION');
+
+    const loginAt = new Date();
+    const user = {
+      provider: 'google',
+      email,
+      name,
+      picture,
+      access_token: accessToken,
+      access_expired: expire,
+      login_at: loginAt,
+    };
+
+    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'google\' FOR UPDATE', [email]);
+    let userId;
+    if (users.length === 0) { // Insert new user
+      const queryStr = 'INSERT INTO user SET ?';
+      const result = await query(queryStr, user);
+      userId = result.insertId;
+    } else { // Update existed user
+      userId = users[0].id;
+      const queryStr = 'UPDATE user SET access_token = ?, access_expired = ?, login_at = ?  WHERE id = ?';
+      await query(queryStr, [accessToken, expire, loginAt, userId]);
+    }
+    user.id = userId;
+
+    await query('COMMIT');
+
+    return { accessToken, loginAt, user };
+  } catch (error) {
+    await query('ROLLBACK');
+    return { error };
+  }
+};
+
 const getUserProfile = async (accessToken) => {
   const results = await query('SELECT * FROM user WHERE access_token = ?', [accessToken]);
   if (results.length === 0) {
@@ -71,8 +108,22 @@ const getFacebookProfile = async function (accessToken) {
   }
 };
 
+const getGoogleProfile = async function (accessToken) {
+  try {
+    const res = await got(`https://oauth2.googleapis.com/tokeninfo?id_token=${accessToken}`, {
+      responseType: 'json',
+    });
+    return res.body;
+  } catch (e) {
+    console.log(e);
+    throw ('Permissions Error: facebook access token is wrong');
+  }
+};
+
 module.exports = {
   facebookSignIn,
+  googleSignIn,
   getUserProfile,
   getFacebookProfile,
+  getGoogleProfile,
 };
