@@ -20,3 +20,80 @@ function headerSearch() {
   });
 }
 window.onload = headerSearch();
+
+/* Integrate Facebook Login */
+function postData(url, data, cb) {
+  return fetch(url, {
+    body: JSON.stringify(data),
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST',
+  })
+    .then((res) => res.json())
+    .then((result) => cb(result))
+    .catch((err) => console.log(err));
+}
+function loginRender(obj) {
+  if (obj.error) {
+    alert(obj.error);
+  } else if (obj.data.access_token) {
+    localStorage.setItem('token', obj.data.access_token);
+    window.location.href = '/';
+    // window.location.href = './profile.html';
+  } else {
+    alert('Oops, something went wrong!');
+  }
+}
+// Initialization
+window.fbAsyncInit = function () {
+  FB.init({
+    appId: '606485106744129',
+    cookie: true,
+    xfbml: true,
+    version: 'v7.0',
+  });
+  // Record data
+  FB.AppEvents.logPageView();
+};
+// Load the Facebook Javascript SDK asynchronously
+(function (d, s, id) {
+  let js; const fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function FB_login() {
+  FB.login((response) => {
+    if (response.status === 'connected') {
+      const result = {
+        id: response.authResponse.userID,
+        provider: response.authResponse.graphDomain,
+        access_token: response.authResponse.accessToken,
+      };
+      postData('/api/1.0/user/signin', result, loginRender);
+    } else {
+      alert('Please try again');
+    }
+  }, { scope: 'public_profile, email' });
+}
+
+// Member Modal
+const member_modal = document.getElementById('member_modal');
+const member_btn = document.getElementById('member_btn');
+
+// When the user clicks the button, open the modal
+member_btn.onclick = function () {
+  member_modal.style.display = 'block';
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == member_modal) {
+    member_modal.style.display = 'none';
+  }
+};

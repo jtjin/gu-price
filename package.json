@@ -18,14 +18,18 @@
   },
   "homepage": "https://github.com/jtjin/GUprice#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cheerio": "^1.0.0-rc.3",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "got": "^11.4.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "pug": "^3.0.0",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "eslint": "^7.3.1",

@@ -92,6 +92,59 @@ body {
    cursor: pointer;
 }
 
+/* ---- Member Modal ---- */
+.member_modal {
+   display: none; /* Hidden by default */
+   position: fixed; /* Stay in place */
+   z-index: 1; /* Sit on top */
+   left: 0;
+   top: 0;
+   width: 100%; /* Full width */
+   height: 100%; /* Full height */
+   overflow: auto; /* Enable scroll if needed */
+   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ }
+ .member_modal > .modal_content {
+   position: fixed;
+   background-color: lightgray;
+   top: 25%;
+   left: 35%;
+   right: 35%;
+   max-height: 60%;
+   overflow: auto;
+   width: 30%;
+ }
+ .member_modal > .modal_content > .modal_container {
+   width: 300px;
+   margin: 30px auto;
+ }
+ .member_modal > .modal_content > .modal_container > .fb_btn {
+   height: 40px;
+   width: 250px;
+   background-color: #4267B2;
+   border: 0px;
+   border-radius: 5px;
+   margin: 0 auto;
+   display: block;
+   cursor: pointer;
+ }
+ .member_modal > .modal_content > .modal_container > .fb_btn > .fb_icon {
+   position: relative;
+   top: 3.5px;
+   height: 20px;
+   width: 20px;
+ }
+
+ .member_modal > .modal_content > .modal_container > .fb_btn > p {
+   display: inline-block;
+   color: white;
+   font-size: 1rem;
+   line-height: 40px;
+   margin: 0 0 0 10px;
+ }
+ 
+
+
 /* ---- Footer ---- */
 .main_footer {
    color: #EFEFEF;
