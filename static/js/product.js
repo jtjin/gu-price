@@ -98,7 +98,7 @@ track_btn.addEventListener('click', () => {
   const number = document.getElementById('track_number').value;
   const price = document.getElementById('track_price').value;
   if (!price) {
-    alert('請輸入預期價格');
+    alert('請輸入期望價格');
     return;
   }
   if (price < 0 || price > 100000) {

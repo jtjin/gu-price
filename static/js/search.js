@@ -4,7 +4,6 @@ async function getAllProducts() {
   const name = window.location.pathname.substr(8);
   const result = await fetch(`/api/1.0/products/search?keyword=${name}&paging=0`).then((res) => res.json());
   createProducts(result);
-  console.log(result);
 }
 function createProducts(result) {
   const products = document.getElementById('products');
