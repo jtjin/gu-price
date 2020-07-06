@@ -6,9 +6,8 @@ html
         meta(name='viewport' content='width=device-width, , initial-scale=1.0')
         block css
             link(rel='stylesheet' href='/static/css/layout.css')
-        script(async defer crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=606485106744129&autoLogAppEvents=1')
         script(async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};GoogleSigninInit()" onreadystatechange="if (this.readyState === 'complete') this.onload()")
-        //- script(async defer src="https://apis.google.com/js/api:client.js?onload=GoogleSigninInit")
+        script(async defer crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=606485106744129&autoLogAppEvents=1')
 body
     header.main_header
         .container
