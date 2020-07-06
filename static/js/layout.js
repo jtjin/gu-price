@@ -100,15 +100,6 @@ window.onclick = function (event) {
 };
 
 /* Integrate Google Login */
-// Initialization
-function GoogleSigninInit() {
-  gapi.load('client', () => {
-    gapi.client.init({
-      client_id: '943449462904-krjfkfl3789uvu46ukguh2cgsmddkpkt.apps.googleusercontent.com',
-      scope: 'profile'
-    });
-  });
-}
 function Google_login() {
   const auth2 = gapi.auth2.getAuthInstance();
   auth2.signIn()
