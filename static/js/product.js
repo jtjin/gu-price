@@ -95,11 +95,27 @@ function postData(url, data, cb) {
 const track_btn = document.getElementById('track_btn');
 track_btn.addEventListener('click', () => {
   event.preventDefault();
-  const data = {
-    number: document.getElementById('track_number').value,
-    price: document.getElementById('track_price').value,
-    email: document.getElementById('track_email').value,
-  };
+  const number = document.getElementById('track_number').value;
+  const price = document.getElementById('track_price').value;
+  if (!price) {
+    alert('請輸入預期價格');
+    return;
+  }
+  if (price < 0 || price > 100000) {
+    alert('價格必須介於 0 至 100,000');
+    return;
+  }
+  const email = document.getElementById('track_email').value;
+  const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  if (!email) {
+    alert('請輸入通知信箱');
+    return;
+  }
+  if (email.search(emailRule) == -1) {
+    alert('請輸入正確信箱格式');
+    return;
+  }
+  const data = { number, price, email };
   fetch('/api/1.0/user/track', {
     body: JSON.stringify(data),
     headers: {
