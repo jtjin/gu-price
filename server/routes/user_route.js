@@ -4,6 +4,7 @@ const { wrapAsync } = require('../../util/util');
 const {
   signIn,
   getUserProfile,
+  createTrack,
 } = require('../controllers/user_controller');
 
 router.route('/user/signin')
@@ -11,5 +12,8 @@ router.route('/user/signin')
 
 router.route('/user/profile')
   .get(wrapAsync(getUserProfile));
+
+router.route('/user/track')
+  .post(wrapAsync(createTrack));
 
 module.exports = router;

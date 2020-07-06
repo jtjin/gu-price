@@ -102,32 +102,31 @@ window.onclick = function (event) {
 /* Integrate Google Login */
 // Initialization
 function GoogleSigninInit() {
-  gapi.load('auth2', function () {
-      gapi.auth2.init({
-          client_id: "943449462904-krjfkfl3789uvu46ukguh2cgsmddkpkt.apps.googleusercontent.com"
-      });
+  gapi.load('auth2', () => {
+    gapi.auth2.init({
+      client_id: '943449462904-krjfkfl3789uvu46ukguh2cgsmddkpkt.apps.googleusercontent.com',
+    });
   });
 }
 function Google_login() {
-  let auth2 = gapi.auth2.getAuthInstance();
+  const auth2 = gapi.auth2.getAuthInstance();
   auth2.signIn()
     .then((GoogleUser) => {
-        const profile = GoogleUser.getBasicProfile();
-        const result = {
-          id: profile.getId(),
-          provider: GoogleUser.getAuthResponse().idpId,
-          access_token: GoogleUser.getAuthResponse().id_token,
-        };
-        postData('/api/1.0/user/signin', result, loginRender);
+      const profile = GoogleUser.getBasicProfile();
+      const result = {
+        id: profile.getId(),
+        provider: GoogleUser.getAuthResponse().idpId,
+        access_token: GoogleUser.getAuthResponse().id_token,
+      };
+      postData('/api/1.0/user/signin', result, loginRender);
     })
-    .catch( (error) => {
+    .catch((error) => {
       alert('Please try again');
       console.log(error);
-    })
-}//end function GoogleLogin
-
+    });
+}// end function GoogleLogin
 
 /* Integrate GitHub Login */
 function GitHub_login() {
-  console.log('github login')
+  console.log('github login');
 }

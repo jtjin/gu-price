@@ -120,10 +120,23 @@ const getGoogleProfile = async function (accessToken) {
   }
 };
 
+const createTrack = async (track) => {
+  try {
+    await query('START TRANSACTION');
+    const result = await query('INSERT INTO track SET ?', track);
+    await query('COMMIT');
+    return result.insertId;
+  } catch (error) {
+    await query('ROLLBACK');
+    return { error };
+  }
+};
+
 module.exports = {
   facebookSignIn,
   googleSignIn,
   getUserProfile,
   getFacebookProfile,
   getGoogleProfile,
+  createTrack,
 };

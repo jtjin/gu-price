@@ -36,7 +36,7 @@ const googleSignIn = async (accessToken) => {
       return { error: 'Permissions Error: facebook access token can not get user name or email' };
     }
 
-    return await User.googleSignIn(name, email, picture,accessToken, expire);
+    return await User.googleSignIn(name, email, picture, accessToken, expire);
   } catch (error) {
     return { error };
   }
@@ -101,7 +101,19 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const createTrack = async (req, res) => {
+  const { body } = req;
+  const track = {
+    number: body.number,
+    price: body.price,
+    email: body.email,
+  };
+  const trackId = await User.createTrack(track);
+  res.status(200).send({ trackId });
+};
+
 module.exports = {
   signIn,
   getUserProfile,
+  createTrack,
 };

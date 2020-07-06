@@ -16,6 +16,9 @@ function showProduct(result) {
   // number
   const number = document.getElementById('number');
   number.innerHTML = `商品編號 ${result.data.number}`;
+  // track number
+  const track_number = document.getElementById('track_number');
+  track_number.value = result.data.number;
   // highest_price
   const highest_price = document.getElementById('highest_price');
   highest_price.innerHTML = `${result.data.highest_price} 歷史高價`;
@@ -27,6 +30,12 @@ function showProduct(result) {
   current_price.innerHTML = `${result.data.current_price} </br> 現在售價`;
   // price_curve
   drawDatePrice(result.data);
+  // about
+  const about = document.getElementById('about');
+  about.innerHTML = result.data.about;
+  // texture
+  const texture = document.getElementById('texture');
+  texture.innerHTML = result.data.texture;
   // website
   const website = document.getElementById('website');
   website.setAttribute('href', `https://www.gu-global.com/tw/store/goods/${result.data.number}`);
@@ -50,8 +59,14 @@ function drawDatePrice(data) {
     xaxis: {
       type: 'date',
     },
-    height: 250,
-    title: '歷史價格折線圖',
+    height: 200,
+    title: {
+      text: '歷史價格折線圖',
+      font: {
+        family: 'Microsoft JhengHei',
+        size: 16,
+      },
+    },
     margin: {
       l: 30,
       r: 20,
@@ -62,3 +77,41 @@ function drawDatePrice(data) {
   Plotly.newPlot('date_price', [date_price], layout);
 }
 window.onload = getProductNumber();
+
+function postData(url, data, cb) {
+  return fetch(url, {
+    body: JSON.stringify(data),
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST',
+  })
+    .then((res) => res.json())
+    .then((result) => cb(result))
+    .catch((err) => console.log(err));
+}
+
+// Track
+const track_btn = document.getElementById('track_btn');
+track_btn.addEventListener('click', () => {
+  event.preventDefault();
+  const data = {
+    number: document.getElementById('track_number').value,
+    price: document.getElementById('track_price').value,
+    email: document.getElementById('track_email').value,
+  };
+  fetch('/api/1.0/user/track', {
+    body: JSON.stringify(data),
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST',
+  })
+    .then((res) => res.json())
+    .then(() => {
+      alert('追蹤商品成功!');
+      document.getElementById('track_price').value = '';
+      document.getElementById('track_email').value = '';
+    })
+    .catch((err) => console.log(err));
+});
