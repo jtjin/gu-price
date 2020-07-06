@@ -102,9 +102,10 @@ window.onclick = function (event) {
 /* Integrate Google Login */
 // Initialization
 function GoogleSigninInit() {
-  gapi.load('auth2', () => {
-    gapi.auth2.init({
+  gapi.load('client', () => {
+    gapi.client.init({
       client_id: '943449462904-krjfkfl3789uvu46ukguh2cgsmddkpkt.apps.googleusercontent.com',
+      scope: 'profile'
     });
   });
 }
