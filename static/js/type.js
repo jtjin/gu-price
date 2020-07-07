@@ -3,7 +3,7 @@ const product = {};
 async function getAllProducts() {
   const name = window.location.pathname.split('/');
   const result = await fetch(`/api/1.0/products/${name[1]}?type=${name[2]}&paging=0`).then((res) => res.json());
-  document.title = `${result.data.type} | GU 比價 | GU 搜尋`;
+  document.title = `${result.data[0].type} | GU 比價 | GU 搜尋`;
   createProducts(result);
 }
 function createProducts(result) {
