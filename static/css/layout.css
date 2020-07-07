@@ -156,30 +156,6 @@ summary:hover {
    font-size: 1rem;
    line-height: 40px;
    margin: 0 0 0 10px;
- }.member_modal > .modal_content > .modal_container > .github_btn {
-   padding: 0;
-   height: 40px;
-   width: 250px;
-   background-color: black;
-   border: 0px;
-   border-radius: 5px;
-   margin: 20px auto;
-   display: block;
-   cursor: pointer;
- }
- .member_modal > .modal_content > .modal_container > .github_btn > .github_icon {
-   position: relative;
-   top: 3.5px;
-   height: 20px;
-   width: 20px;
- }
-
- .member_modal > .modal_content > .modal_container > .github_btn > p {
-   display: inline-block;
-   color: white;
-   font-size: 1rem;
-   line-height: 40px;
-   margin: 0 0 0 10px;
  }
  .member_modal > .modal_content > .modal_container > .fb_btn {
    padding: 0;

@@ -116,9 +116,4 @@ function Google_login() {
       alert('Please try again');
       console.log(error);
     });
-}// end function GoogleLogin
-
-/* Integrate GitHub Login */
-function GitHub_login() {
-  console.log('github login');
 }

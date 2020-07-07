@@ -1,5 +1,6 @@
 /* ---- Main ---- */
 main {
+   width: 100%;
    min-height: calc(100vh - 100px);
 }
 .container_1 {
@@ -247,18 +248,18 @@ main {
    display: flex;
    flex-wrap: wrap;
    margin: 0 15px 10px;
-   width: 100%;
+   flex: 1 100%;
 }
 
 .container_2 > .images_box > .images {
-   width: calc(50% - (5px * 2));
+   width: calc(50% - 10px);
    margin: 5px;
    border-radius: 0.3rem;
 } 
 
 @media (min-width: 750px) {
    .container_2 > .images_box > .images {
-      width: calc(33% - 16px);
+      width: calc(33.3% - 10px);
    }
    .track_ctn > form {
       flex-direction: row;
