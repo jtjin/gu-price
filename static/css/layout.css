@@ -36,20 +36,20 @@ summary:hover {
    display: flex;
 }
 .main_header > .container > .box > .title {
-   font-size: 1rem;
+   font-size: 0.75rem;
    display: flex;
    color:#404040;
    text-decoration: none;
 }
 .main_header > .container > .box > .title > .logo {
-   height: 30px;
-   width: 30px;
+   height: 20px;
+   width: 20px;
    margin: auto 10px;  
 }
 .main_header > .container > .box > .search {
    border: 1px solid #e9e9e9;
    border-radius: 0.3rem 0 0 0.3rem;
-   width: 100px;
+   width: 90px;
    height: 35px;
    padding: 0.5em;
    font-size: 0.6rem;
@@ -74,25 +74,27 @@ summary:hover {
    width: 170px;
    padding: 0;
    list-style: none;
-   margin: 0 10px 0 auto; 
+   margin: 0 0 0 auto; 
    height: 60px;
 }
-.main_header > .container > .nav_bar > ul > li {
+.main_header > .container > .nav_bar > ul > a {
    display: inline-block;
    line-height: 60px;
    padding: 0 5px;
 }
-.main_header > .container > .nav_bar > ul > li > a {
+.main_header > .container > .nav_bar > ul > a {
    color: black;
    text-decoration: none;
+   cursor: pointer;
 }
-.main_header > .container > .nav_bar > ul > li > a:hover {
+.main_header > .container > .nav_bar > ul > a:hover {
+   background-color: transparent;
    color: #919191;
 }
 .main_header > .container > .nav_bar > .menu {
-   max-height: 30px;
-   max-width: 30px;
-   margin: 10px 10px 10px auto;
+   max-height: 25px;
+   max-width: 25px;
+   margin: 10px 0 10px auto;
    cursor: pointer;
 }
 .main_header > .container > .member_box {
@@ -104,28 +106,31 @@ summary:hover {
    border: none;
    cursor: pointer;
 }
+.main_header > .container > .member_box > .member_btn > .member_logo {
+   max-width: 30px;
+   max-height: 30px;
+}
 
 /* ---- Member Modal ---- */
 .member_modal {
-   display: none; /* Hidden by default */
-   position: fixed; /* Stay in place */
-   z-index: 1; /* Sit on top */
+   display: none; 
+   position: fixed;
+   z-index: 1; 
    left: 0;
    top: 0;
-   width: 100%; /* Full width */
-   height: 100%; /* Full height */
-   overflow: auto; /* Enable scroll if needed */
-   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+   width: 100%; 
+   height: 100%; 
+   overflow: auto; 
+   background-color: rgba(0,0,0,0.4);
+   justify-content: center;
+   align-items: center;
  }
  .member_modal > .modal_content {
    position: fixed;
    background-color: lightgray;
-   top: 25%;
-   left: 35%;
-   right: 35%;
    max-height: 100%;
    overflow: auto;
-   width: 30%;
+   max-width: 300px;
  }
  .member_modal > .modal_content > .modal_container {
    height: 100%;
@@ -242,20 +247,44 @@ summary:hover {
       margin: 0;
       display: none;
    }
-   .main_header > .container > .nav_bar > ul > li {
+   .main_header > .container > .nav_bar > ul > a {
       line-height: 40px;
       font-size: 1rem;
       display: block;
       text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: black;
+   }
+   .main_header > .container > .nav_bar > ul > a:hover {
+      background-color: lightblue;
+      color: black;
+   }
+}
+@media (min-width: 450px) {
+   .main_header > .container > .box > .title {
+      font-size: 1rem;
+   }
+   .main_header > .container > .box > .title > .logo {
+      height: 30px;
+      width: 30px;
+   }
+   .main_header > .container > .box > .search {
+      width: 150px;
+      font-size: 0.8rem;
+   }
+   .main_header > .container > .nav_bar > .menu {
+      max-height: 30px;
+      max-width: 30px;
+   }
+   .main_header > .container > .member_box > .member_btn > .member_logo {
+      max-width: 40px;
+      max-height: 40px;
    }
 }
 @media (min-width: 750px) {
    .main_header > .container > .nav_bar > .menu {
       display: none;
-   }
-   .main_header > .container > .box > .search {
-      width: 150px;
-      font-size: 0.8rem;
    }
    .main_footer > .container_footer {
       justify-content: flex-end;

@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Product = require('../models/product_model');
+const data = require('../data/data.json');
 
 const pageSize = 8;
 
@@ -11,7 +12,7 @@ const getProducts = async (req, res) => {
     switch (category) {
       case 'men': case 'women': case 'kids':
         const { type } = req.query;
-        return await Product.getProducts(pageSize, paging, { category, type });
+        return await Product.getProducts(4, paging, { category, type });
       case 'search': {
         const { keyword } = req.query;
         if (keyword) {
@@ -65,7 +66,9 @@ const getProductsWithDetail = async (products) => {
   const pricesMap = _.groupBy(prices, (p) => p.product_id);
 
   return products.map((p) => {
+    p.type = data[p.category][0][p.type];
     const productPrices = pricesMap[p.id];
+
     if (!productPrices) { return p; }
 
     p.date = productPrices.flatMap((p) => [p.date]);

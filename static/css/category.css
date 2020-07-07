@@ -9,6 +9,9 @@ main {
    display: flex;
    align-items: center;
 }
+main > p {
+   display: none;
+}
 main > .view {
    flex: auto;
    max-width: 1000px;
@@ -16,14 +19,32 @@ main > .view {
    display: flex;
    flex-direction: column;
 }
-main > .view > h2{
-   margin: 0 20px 10px;
+main > .view > .view_box {
+   display: flex;
+   margin: 20px;
    flex: 1 100%;
+   padding-bottom: 6px;
+   border-bottom: 1px solid #e6e6e6;
+   justify-content: space-between;
+   align-items: flex-end;
+}
+main > .view > .view_box > h2{
+   margin: 0 ;
    font-size: 1.25rem;
    color: #404040;
    font-weight: 700;
-   padding-bottom: 6px;
-   border-bottom: 1px solid #e6e6e6;
+   margin-left: 10px;
+}
+main > .view > .view_box > a{
+   font-size: 0.8rem;
+   color: #404040;
+   text-decoration: none;
+   cursor: pointer;
+   display: block;
+   margin-right: 10px;
+}
+main > .view > .view_box > a:hover{
+   color: #919191;
 }
 main > .view > .products {
    display: flex;

@@ -1,12 +1,18 @@
 const search_header = document.getElementById('search_header');
 const menu_img = document.getElementById('menu_img');
 const menu_list = document.getElementById('menu_list');
+const main = document.getElementsByTagName('main');
 
 menu_img.addEventListener('click', () => {
   if (menu_list.className == 'show') {
     menu_list.classList.remove('show');
   } else {
     menu_list.classList.add('show');
+  }
+});
+main[0].addEventListener('click', () => {
+  if (menu_list.className == 'show') {
+    menu_list.classList.remove('show');
   }
 });
 function headerSearchBtn() {
@@ -89,7 +95,7 @@ const member_btn = document.getElementById('member_btn');
 
 // When the user clicks the button, open the modal
 member_btn.onclick = function () {
-  member_modal.style.display = 'block';
+  member_modal.style.display = 'flex';
 };
 
 // When the user clicks anywhere outside of the modal, close it

@@ -1,0 +1,87 @@
+{
+   "men": [
+      {
+         "parka": "連帽外套",
+         "jacket": "夾克・外套・背心",
+         "cardigan": "開襟外套",
+         "suits": "男士正裝系列",
+         "designtops": "短袖T恤・設計上衣",
+         "shirts": "襯衫・法藍絨襯衫",
+         "poloshirt": "POLO衫",
+         "printT": "印花T恤",
+         "sweat": "休閒上衣・連帽上衣",
+         "longsleevetshirts": "長袖T恤・設計上衣",
+         "knit": "針織衫・毛衣",
+         "chefpants": "主廚褲・廚師褲",
+         "shortpants": "短褲",
+         "croppedpants": "七分褲・九分褲",
+         "relaxedpants": "束口褲・休閒褲",
+         "jeans": "牛仔褲",
+         "pants": "長褲",
+         "innerT": "內衣・內搭褲",
+         "gudry": "GU DRY・吸汗快乾",
+         "guwarm": "GU WARM・保暖發熱",
+         "boxers": "內褲",
+         "roomwear": "家居系列(家居服・家居鞋)",
+         "socks": "襪子",
+         "shoes": "鞋子",
+         "belt": "皮帶・腰帶",
+         "bag": "包包・後背包",
+         "hat": "帽子/其他配飾",
+         "sports": "GU SPORTS運動系列"
+      }
+   ],
+   "women": [
+      {
+         "uvcut": "防曬抗UV外套",
+         "parka": "連帽外套",
+         "cardigan": "開襟外套",
+         "jacket": "夾克・外套・背心",
+         "coat": "大衣・風衣",
+         "designtops": "設計上衣",
+         "shirts": "襯衫・輕柔襯衫",
+         "printT": "素面T恤・印花T恤",
+         "onepiece": "連身裙・連身褲",
+         "tunic": "長版上衣",
+         "sweat": "休閒上衣・連帽上衣",
+         "knit": "抗UV針織・針織系列",
+         "shortpants": "短褲",
+         "skirt": "裙子",
+         "jeans": "牛仔褲・牛仔裙",
+         "croppedpants": "七分褲・九分褲",
+         "pants": "長褲",
+         "leggingspants": "內搭緊身褲・內搭褲",
+         "widepants": "寬褲",
+         "relaxedpants": "休閒褲",
+         "brafeel": "BRA-FEEL 附罩杯上衣",
+         "underwear": "內衣(內衣・內褲)",
+         "undershirts": "內搭背心・內搭T恤",
+         "gudry": "GU DRY・吸汗快乾",
+         "guwarm": "GU WARM・保暖發熱",
+         "roomwear": "家居全系列(家居服・鞋・小物)",
+         "socks": "襪子・褲襪",
+         "shoes": "鞋子",
+         "bag": "包包",
+         "pierce": "耳環(針式・夾式)",
+         "accessory": "項鍊・手飾・配飾",
+         "hat": "帽子",
+         "belt": "皮帶・腰帶・腰封",
+         "glasses": "眼鏡・太陽眼鏡",
+         "sports": "GU SPORTS運動系列"
+      }
+   ],
+   "kids": [
+      {
+         "girlsouter": "女童外套・大衣",
+         "boysouter": "男童外套・大衣",
+         "girlstops": "女童上衣",
+         "boystops": "男童上衣",
+         "girlsbottoms": "女童下身",
+         "boysbottoms": "男童下身",
+         "roomwear": "家居&内衣",
+         "goods": "配件/童鞋/襪子",
+         "guwarm": "GU WARM・保暖發熱"
+      }
+   ]
+}
+ 

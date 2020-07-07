@@ -10,8 +10,8 @@ const getProducts = async (req, res) => {
     }
     return Promise.resolve({});
   }
-  const { productCount } = await findProduct(category, type);
-  if (!productCount || productCount <= 0) {
+  const { product } = await findProduct(category, type);
+  if (!product || product == 0) {
     res.status(404).render('error');
   } else {
     switch (category) {
@@ -26,7 +26,7 @@ const getProducts = async (req, res) => {
           res.status(200).render('type');
           return;
         }
-        res.status(200).render('category');
+        res.status(200).render('category', { product });
     }
   }
 };

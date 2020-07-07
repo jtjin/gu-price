@@ -1,0 +1,16 @@
+extends layout
+
+block append css
+   link(rel='stylesheet' href='/static/css/type.css')
+
+block append js
+   script(src='/static/js/type.js')
+
+block content
+  main
+   .view
+      h2#view_title
+      #products.products
+
+
+      
