@@ -9,7 +9,7 @@ const {
 } = require('../controllers/user_controller');
 
 router.route('/user/signup')
-    .post(wrapAsync(signUp));
+  .post(wrapAsync(signUp));
 
 router.route('/user/signin')
   .post(wrapAsync(signIn));
