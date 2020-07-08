@@ -2,6 +2,26 @@ const search_header = document.getElementById('search_header');
 const menu_img = document.getElementById('menu_img');
 const menu_list = document.getElementById('menu_list');
 const main = document.getElementsByTagName('main');
+const nav_login = document.getElementById('nav_login');
+const nav_signup = document.getElementById('nav_signup');
+const login_form = document.getElementById('login_form');
+const signup_form = document.getElementById('signup_form');
+const signupBtn = document.getElementById('signupBtn');
+const loginBtn = document.getElementById('loginBtn');
+
+nav_login.addEventListener('click', () => {
+  signup_form.style.display = 'none';
+  login_form.style.display = 'block';
+  nav_signup.style.background = 'none';
+  nav_login.style.background = 'white';
+});
+
+nav_signup.addEventListener('click', () => {
+  signup_form.style.display = 'block';
+  login_form.style.display = 'none';
+  nav_signup.style.background = 'white';
+  nav_login.style.background = 'none';
+});
 
 menu_img.addEventListener('click', () => {
   if (menu_list.className == 'show') {
@@ -39,18 +59,83 @@ function postData(url, data, cb) {
     .then((result) => cb(result))
     .catch((err) => console.log(err));
 }
+function signupRender(obj) {
+  document.getElementById('signup_name').value = '';
+  document.getElementById('signup_email').value = '';
+  document.getElementById('signup_password').value = '';
+  if (obj.error) {
+    alert(obj.error);
+  } else if (obj.data.access_token) {
+    alert('Sign Up Complete! Please Log In!');
+  } else {
+    alert('Oops, something went wrong!');
+  }
+}
 function loginRender(obj) {
+  document.getElementById('login_email').value = '';
+  document.getElementById('login_password').value = '';
   if (obj.error) {
     alert(obj.error);
   } else if (obj.data.access_token) {
     localStorage.setItem('token', obj.data.access_token);
     alert('登入成功!');
-    location.reload();
+    // location.reload();
     // window.location.href = './profile.html';
   } else {
     alert('Oops, something went wrong!');
   }
 }
+// Native Signup Function
+signupBtn.addEventListener('click', () => {
+  event.preventDefault();
+  const name = document.getElementById('signup_name').value;
+  if (!name) {
+    alert('Please enter your name');
+    return;
+  }
+  const email = document.getElementById('signup_email').value;
+  const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  if (!email) {
+    alert('Please enter your email');
+    return;
+  }
+  if (email.search(emailRule) == -1) {
+    alert('Invalid email address');
+    return;
+  }
+  const password = document.getElementById('signup_password').value;
+  if (!password) {
+    alert('Please enter your password');
+    return;
+  }
+  const provider = 'native';
+  const result = {
+    name, email, password, provider,
+  };
+  postData('/api/1.0/user/signup', result, signupRender);
+});
+// Login function
+loginBtn.addEventListener('click', () => {
+  event.preventDefault();
+  const email = document.getElementById('login_email').value;
+  const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  if (!email) {
+    alert('Please enter your email');
+    return;
+  }
+  if (email.search(emailRule) == -1) {
+    alert('Invalid email address');
+    return;
+  }
+  const password = document.getElementById('login_password').value;
+  if (!password) {
+    alert('Please enter your password');
+    return;
+  }
+  const provider = 'native';
+  const result = { email, password, provider };
+  postData('/api/1.0/user/signin', result, loginRender);
+});
 /* Integrate Facebook Login */
 // Initialization
 window.fbAsyncInit = function () {

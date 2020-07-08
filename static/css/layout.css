@@ -131,12 +131,69 @@ summary:hover {
    max-height: 100%;
    overflow: auto;
    max-width: 300px;
+   display: flex;
  }
  .member_modal > .modal_content > .modal_container {
    height: 100%;
-   width: 300px;
-   margin: 0 auto;
+   flex: auto;
+   margin: 20px 20px 0 20px;
  }
+ .member_modal > .modal_content > .modal_container > .nav {
+   width: 50%;
+   background: white;
+   float: left;
+   height: 35px;
+   line-height: 35px;
+   font-size: 1rem;
+   text-align: center;
+   cursor: pointer;
+   text-transform: uppercase;
+ }
+ .member_modal > .modal_content > .modal_container > .login {
+   background: none;
+}
+ .member_modal > .modal_content > .modal_container > .form {
+   background: white;
+   padding: 20px 20px 0 ;
+   clear: both;
+   width: 100%;
+   box-sizing: border-box;
+   max-height: 450px;
+ }
+ .member_modal > .modal_content > .modal_container > .form > .input {
+   width: 100%;
+   padding: 10px;
+   box-sizing: border-box;
+   margin-bottom: 15px;
+   border: 2px solid #e9eaea;
+   color: #3e3e40;
+   font-size: 0.75rem;
+   outline: none;
+ }
+ .member_modal > .modal_content > .modal_container > .form > .input:focus {
+   border: 2px solid #919191;
+ }
+ .member_modal > .modal_content > .modal_container > .form > .btn {
+   border: none;
+   width: 100%;
+   background: #333;
+   height: 35px;
+   text-align: center;
+   line-height: 35px;
+   text-transform: uppercase;
+   color: #fff;
+   font-weight: bold;
+   letter-spacing: 1px;
+   cursor: pointer;
+   margin-bottom: 20px;
+ }
+ .member_modal > .modal_content > .modal_container > .form > .btn:hover {
+   background-color: #5a5a5a;
+   color: #f0f0f0;
+ }
+ .member_modal > .modal_content > .modal_container > .login-form {
+   display: none;
+}
  .member_modal > .modal_content > .modal_container > .google_btn {
    padding: 0;
    height: 40px;
@@ -144,9 +201,13 @@ summary:hover {
    background-color: white;
    border: 0px;
    border-radius: 5px;
-   margin: 20px auto;
+   margin: 20px 0;
    display: block;
    cursor: pointer;
+ }
+ .member_modal > .modal_content > .modal_container > .google_btn:hover,
+ .member_modal > .modal_content > .modal_container > .fb_btn:hover {
+   opacity: 0.7;
  }
  .member_modal > .modal_content > .modal_container > .google_btn > .google_icon {
    position: relative;
@@ -169,7 +230,7 @@ summary:hover {
    background-color: #4267B2;
    border: 0px;
    border-radius: 5px;
-   margin: 20px auto;
+   margin: 20px 0;
    display: block;
    cursor: pointer;
  }
@@ -198,7 +259,6 @@ summary:hover {
    width: 100%;
    height: auto;
    padding: auto;
-   padding-top: 10px;
 }
 .main_footer > .container_footer {
    height: 100%;
@@ -211,22 +271,28 @@ summary:hover {
 .main_footer > .container_footer > .box_footer {
    display: flex;
    flex: 1 100%;
-   margin: 5px auto 15px;
+   margin: 5px auto;
 }
 .main_footer > .container_footer > .box_footer > .logo_footer {
-   margin: 10px 20px;
-   height: 40px;
-   width: 40px;
+   margin: 10px 10px 10px 20px;
+   height: 30px;
+   width: 30px;
 }
-.main_footer > .container_footer > .box_footer > .title_footer > h3,
+.main_footer > .container_footer > .box_footer > .title_footer > h3 {
+   font-weight: 500;
+   margin: 5px 0;
+   font-size: 1rem;
+}
 .main_footer > .container_footer > .box_footer > .title_footer > h4 {
    font-weight: 500;
    margin: 5px 0;
+   font-size: 0.75rem;
 }
 .main_footer > .container_footer > .copyright > h4 {
+   font-size: 0.75rem;
    font-weight: 500;
    margin: 0 20px;
-   line-height: 2rem;
+   line-height: 1.5rem;
 }
 @media (max-width: 749px) {
    .main_header > .container > .nav_bar > .menu,
@@ -280,6 +346,19 @@ summary:hover {
    .main_header > .container > .member_box > .member_btn > .member_logo {
       max-width: 40px;
       max-height: 40px;
+   }
+   .main_footer > .container_footer > .copyright > h4 {
+      font-size: 1em;
+      line-height: 2rem;
+   }
+   .main_footer > .container_footer > .box_footer > .title_footer > h3,
+   .main_footer > .container_footer > .box_footer > .title_footer > h4 {
+      font-size: 1em;
+   }
+   .main_footer > .container_footer > .box_footer > .logo_footer {
+      margin-right: 20px;
+      height: 40px;
+      width: 40px;
    }
 }
 @media (min-width: 750px) {

@@ -4,6 +4,62 @@ const User = require('../models/user_model');
 
 const expire = process.env.TOKEN_EXPIRE;
 
+const signUp = async (req, res) => {
+  let {name} = req.body;
+  const {email, password, provider} = req.body;
+
+  if(!name || !email || !password) {
+      res.status(400).send({error:'Request Error: name, email and password are required.'});
+      return;
+  }
+
+  if (!validator.isEmail(email)) {
+      res.status(400).send({error:'Request Error: Invalid email format'});
+      return;
+  }
+
+  name = validator.escape(name); //replace <, >, &, ', " and / with HTML entities.
+
+  const result = await User.signUp(name, email, password, provider, expire);
+  if (result.error) {
+      res.status(403).send({error: result.error});
+      return;
+  }
+
+  const {accessToken, loginAt, user} = result;
+  if (!user) {
+      res.status(500).send({error: 'Database Query Error'});
+      return;
+  }
+
+  res.status(200).send({
+      data: {
+          access_token: accessToken,
+          access_expired: expire,
+          login_at: loginAt,
+          user: {
+              id: user.id,
+              provider: user.provider,
+              name: user.name,
+              email: user.email,
+              picture: user.picture
+          }
+      }
+  });
+};
+
+const nativeSignIn = async (email, password, provider) => {
+  if(!email || !password){
+      return {error: 'Request Error: email and password are required.', status: 400};
+  }
+
+  try {
+      return await User.nativeSignIn(email, password, provider, expire);
+  } catch (error) {
+      return {error};
+  }
+};
+
 const facebookSignIn = async (accessToken) => {
   if (!accessToken) {
     return { error: 'Request Error: access token is required.', status: 400 };
@@ -47,6 +103,9 @@ const signIn = async (req, res) => {
 
   let result;
   switch (data.provider) {
+    case 'native':
+      result = await nativeSignIn(data.email, data.password, data.provider);
+      break;
     case 'facebook':
       result = await facebookSignIn(data.access_token);
       break;
@@ -113,6 +172,7 @@ const createTrack = async (req, res) => {
 };
 
 module.exports = {
+  signUp,
   signIn,
   getUserProfile,
   createTrack,

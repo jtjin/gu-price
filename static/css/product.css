@@ -9,10 +9,10 @@ main {
    max-width: 1000px;
    margin: 0 auto 20px;
    padding-top: 80px;
+   flex-direction: column;
 }
 .container_1 > .main_image_box {
-   padding: 20px 10px 0 10px;
-   flex: 2 340px;
+   padding: 20px 20px 0;
    height: 100%;
    width: 100%;
 }
@@ -21,11 +21,11 @@ main {
    width: 100%;
 }
 .container_1 > .about_box {
-   padding: 20px 20px 0 20px;
-   flex: 1 340px;
+   padding: 20px 20px 0;
    height: 100%;
    display: flex;
    flex-wrap: wrap;
+   width: 100%;
 }
 .container_1 > .about_box > .name_box {
    flex: 1 100%;
@@ -90,17 +90,19 @@ main {
    display: flex;
 }
 .container_1 > .about_box > .price_curve_box > .plot-container {
-   flex: auto;
+   width: 100%;
    margin: 0 auto;
    display: flex;
    justify-content: center;
 }
-.container_1 > .about_box > .price_curve_box > .plot-container > .svg-container {
-   margin: 0 auto;
+.container_1 > .about_box > .price_curve_box > .plot-container > .svg-container,
+.container_1 > .about_box > .price_curve_box > .plot-container > .svg-container > .main-svg {
+   width: 100%;
 }
+
 .container_1 > .about_box > details {
    width: 100%;
-   margin: 0 0 10px 0;
+   margin: 0 auto 10px;
    flex: 1 100%;
    border: 1px solid #e9e9e9;
    border-radius: .28571rem;
@@ -139,6 +141,7 @@ main {
 }
 
 .track_ctn_background {
+   flex: 1 100%;
    margin: 0;
    padding: 20px 0;
 }
@@ -258,6 +261,15 @@ main {
 } 
 
 @media (min-width: 750px) {
+   .container_1 {
+      flex-direction: row;
+   }   
+   .container_1 > .main_image_box {
+      flex: 1 40%;
+   }
+   .container_1 > .about_box {
+      width: 400px;
+   }
    .container_2 > .images_box > .images {
       width: calc(33.3% - 10px);
    }

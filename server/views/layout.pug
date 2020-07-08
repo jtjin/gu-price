@@ -44,6 +44,24 @@ body
     #member_modal.member_modal
         .modal_content
             .modal_container
+                #nav_signup.nav.signup Sign Up
+                #nav_login.nav.login Log In
+                //- Signup Form
+                form#signup_form.form.signup-form
+                    input#signup_name.input(type='text' name='name' placeholder='Your Name')
+                    br
+                    input#signup_email.input(type='email' name='email' placeholder='Your Email Address')
+                    br
+                    input#signup_password.input(type='password' name='password' placeholder='Choose a Password')
+                    br
+                    button#signupBtn.btn Create account
+                //- Login Form
+                form#login_form.form.login-form
+                    input#login_email.input(type='email' name='email' placeholder='Email')
+                    br
+                    input#login_password.input(type='password' name='password' placeholder='Password')
+                    br
+                    button#loginBtn.btn log in
                 button.google_btn(onclick="Google_login()")
                     img.google_icon(src="/static/imgs/google.png")
                     p Log in with Google

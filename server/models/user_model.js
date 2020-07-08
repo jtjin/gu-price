@@ -3,8 +3,78 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const got = require('got');
 const { query } = require('../../util/mysqlcon.js');
-
 const salt = parseInt(process.env.BCRYPT_SALT);
+
+const signUp = async (name, email, password, provider, expire) => {
+  try {
+    await query('START TRANSACTION');
+
+      const emails = await query('SELECT email FROM user WHERE email = ? AND provider = ? FOR UPDATE', [email, provider]);
+      if (emails.length > 0){
+          await query('COMMIT');
+          return {error: 'Email Already Exists'};
+      }
+
+      const loginAt = new Date();
+      const sha = crypto.createHash('sha256');
+      sha.update(email + password + loginAt);
+      const accessToken = sha.digest('hex');
+      const user = {
+          provider: 'native',
+          email: email,
+          password: bcrypt.hashSync(password, salt),
+          name: name,
+          picture: null,
+          access_token: accessToken,
+          access_expired: expire,
+          login_at: loginAt
+      };
+      const queryStr = 'INSERT INTO user SET ?';
+
+      const result = await query(queryStr, user);
+      user.id = result.insertId;
+
+      await query('COMMIT');
+      return {accessToken, loginAt, user};
+  } catch (error) {
+      await query('ROLLBACK');
+      return {error};
+  }
+};
+
+const nativeSignIn = async (email, password, provider, expire) => {
+  try {
+    await query('START TRANSACTION');
+
+      const users = await query('SELECT * FROM user WHERE email = ? AND provider = ?', [email, provider]);
+      const user = users[0];
+
+      if (!user) {
+        await query('COMMIT');
+        return {error: 'Sorry, this email didn\'t exist, please sign up'};
+      }
+
+      if (!bcrypt.compareSync(password, user.password)){
+          await query('COMMIT');
+          return {error: 'Password is wrong'};
+      }
+
+      const loginAt = new Date();
+      const sha = crypto.createHash('sha256');
+      sha.update(email + password + loginAt);
+      const accessToken = sha.digest('hex');
+
+      const queryStr = 'UPDATE user SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?';
+      await query(queryStr, [accessToken, expire, loginAt, user.id]);
+
+      await query('COMMIT');
+
+      return {accessToken, loginAt, user};
+  } catch (error) {
+      await query('ROLLBACK');
+      return {error};
+  }
+};
 
 const facebookSignIn = async (id, name, email, accessToken, expire) => {
   try {
@@ -133,6 +203,8 @@ const createTrack = async (track) => {
 };
 
 module.exports = {
+  signUp,
+  nativeSignIn,
   facebookSignIn,
   googleSignIn,
   getUserProfile,

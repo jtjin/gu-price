@@ -60,6 +60,7 @@ function drawDatePrice(data) {
       type: 'date',
     },
     height: 200,
+    width: 350,
     title: {
       text: '歷史價格折線圖',
       font: {
@@ -69,12 +70,12 @@ function drawDatePrice(data) {
     },
     margin: {
       l: 30,
-      r: 20,
+      r: 30,
       b: 30,
       t: 30,
     },
   };
-  Plotly.newPlot('date_price', [date_price], layout);
+  Plotly.newPlot('date_price', [date_price], layout, { scrollZoom: true, displayModeBar: false });
 }
 window.onload = getProductNumber();
 
