@@ -1,15 +1,17 @@
+let product = {};
 // Get Product Number from url
 async function getProductNumber() {
   const number = window.location.pathname.substr(10);
   const result = await fetch(`/api/1.0/products/details?number=${number}`).then((res) => res.json());
   document.title = `${result.data.name} | GU 比價 | GU 搜尋`;
   showProduct(result);
+  product = result;
 }
 // Render page
 function showProduct(result) {
   // main_image
-  const main_image = document.getElementById('main_image');
-  main_image.setAttribute('src', result.data.main_image);
+  const mainImage = document.getElementById('main_image');
+  mainImage.setAttribute('src', result.data.main_image);
   // name
   const name = document.getElementById('name');
   name.innerHTML = result.data.name;
@@ -17,17 +19,17 @@ function showProduct(result) {
   const number = document.getElementById('number');
   number.innerHTML = `商品編號 ${result.data.number}`;
   // track number
-  const track_number = document.getElementById('track_number');
-  track_number.value = result.data.number;
+  const trackNumber = document.getElementById('track_number');
+  trackNumber.value = result.data.number;
   // highest_price
-  const highest_price = document.getElementById('highest_price');
-  highest_price.innerHTML = `${result.data.highest_price} 歷史高價`;
+  const highestPrice = document.getElementById('highest_price');
+  highestPrice.innerHTML = `${result.data.highest_price} 歷史高價`;
   // lowest_price
-  const lowest_price = document.getElementById('lowest_price');
-  lowest_price.innerHTML = `${result.data.lowest_price} 歷史低價`;
+  const lowestPrice = document.getElementById('lowest_price');
+  lowestPrice.innerHTML = `${result.data.lowest_price} 歷史低價`;
   // current_price
-  const current_price = document.getElementById('current_price');
-  current_price.innerHTML = `${result.data.current_price} </br> 現在售價`;
+  const currentPrice = document.getElementById('current_price');
+  currentPrice.innerHTML = `${result.data.current_price} </br> 現在售價`;
   // price_curve
   drawDatePrice(result.data);
   // about
@@ -48,7 +50,7 @@ function showProduct(result) {
   }
 }
 function drawDatePrice(data) {
-  const date_price = {
+  const datePrice = {
     x: data.date,
     y: data.price,
     mode: 'lines + markers',
@@ -75,7 +77,7 @@ function drawDatePrice(data) {
       t: 30,
     },
   };
-  Plotly.newPlot('date_price', [date_price], layout, { scrollZoom: true, displayModeBar: false });
+  Plotly.newPlot('date_price', [datePrice], layout, { scrollZoom: true, displayModeBar: false });
 }
 window.onload = getProductNumber();
 
@@ -93,8 +95,8 @@ function postData(url, data, cb) {
 }
 
 // Track
-const track_btn = document.getElementById('track_btn');
-track_btn.addEventListener('click', () => {
+const trackBtn = document.getElementById('track_btn');
+trackBtn.addEventListener('click', () => {
   event.preventDefault();
   const number = document.getElementById('track_number').value;
   const price = document.getElementById('track_price').value;
@@ -102,8 +104,8 @@ track_btn.addEventListener('click', () => {
     alert('請輸入期望價格');
     return;
   }
-  if (price < 0 || price > 100000) {
-    alert('價格必須介於 0 至 100,000');
+  if (price < 0 || price > `${product.data.current_price}`) {
+    alert(`價格必須介於 0 至 ${product.data.current_price}`);
     return;
   }
   const email = document.getElementById('track_email').value;

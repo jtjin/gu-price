@@ -7,8 +7,8 @@ async function getAllProducts() {
   createProducts(result);
 }
 function createProducts(result) {
-  const view_title = document.getElementById('view_title');
-  view_title.innerHTML = result.data[0].type;
+  const viewTitle = document.getElementById('view_title');
+  viewTitle.innerHTML = result.data[0].type;
   const products = document.getElementById('products');
   for (let i = 0; i < result.data.length; i += 1) {
     // Create <a class='prdocut'>
@@ -20,20 +20,20 @@ function createProducts(result) {
     img.setAttribute('src', result.data[i].main_image);
     a.appendChild(img);
     // Create <div clsas='name'>
-    const div_name = document.createElement('div');
-    div_name.setAttribute('class', 'name');
-    div_name.innerHTML = result.data[i].name;
-    a.appendChild(div_name);
+    const divName = document.createElement('div');
+    divName.setAttribute('class', 'name');
+    divName.innerHTML = result.data[i].name;
+    a.appendChild(divName);
     // Create <div clsas='number'>
-    const div_number = document.createElement('div');
-    div_number.setAttribute('class', 'number');
-    div_number.innerHTML = result.data[i].number;
-    a.appendChild(div_number);
+    const divNumber = document.createElement('div');
+    divNumber.setAttribute('class', 'number');
+    divNumber.innerHTML = result.data[i].number;
+    a.appendChild(divNumber);
     // Create <div clsas='price'>
-    const div_price = document.createElement('div');
-    div_price.setAttribute('class', 'price');
-    div_price.innerHTML = `$${result.data[i].highest_price} ⇢ $${result.data[i].current_price}`;
-    a.appendChild(div_price);
+    const divPrice = document.createElement('div');
+    divPrice.setAttribute('class', 'price');
+    divPrice.innerHTML = `$${result.data[i].highest_price} ⇢ $${result.data[i].current_price}`;
+    a.appendChild(divPrice);
     products.appendChild(a);
   }
   product.data = result.data;

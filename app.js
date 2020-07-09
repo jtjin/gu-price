@@ -30,13 +30,13 @@ app.use('/', require('./server/routes/index_route'));
 
 // Page not found
 app.use((req, res, next) => {
-  res.status(404).render('error');
+  res.status(404).render('error', { title: 'Not Found | GU 搜尋 | GU 比價', status: '404', message: 'Not Found' });
 });
 
-// Error Response
+// Internal Server Error Response
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).send('Internal Server Error');
+  res.status(500).render('error', { title: 'Internal Server Error | GU 搜尋 | GU 比價', status: '500', message: 'Internal Server Error' });
 });
 
 app.listen(PORT, () => { console.log(`Listening on port: ${PORT}`); });

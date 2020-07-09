@@ -1,7 +1,7 @@
 extends layout
 
 block title
-  title Not Found | GU 搜尋 | GU 比價
+  title= title
 
 block append css
    link(rel='stylesheet' href='/static/css/error.css')
@@ -10,8 +10,8 @@ block content
   main
     .ctn
       img(src='/static/imgs/error.png')
-      h1 404
-      h2 Not Found
+      h1= status
+      h2= message
 
 
 

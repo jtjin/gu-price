@@ -1,47 +1,56 @@
-const search_header = document.getElementById('search_header');
-const menu_img = document.getElementById('menu_img');
-const menu_list = document.getElementById('menu_list');
+const searchHeader = document.getElementById('search_header');
+const menuImg = document.getElementById('menu_img');
+const menuList = document.getElementById('menu_list');
 const main = document.getElementsByTagName('main');
-const nav_login = document.getElementById('nav_login');
-const nav_signup = document.getElementById('nav_signup');
-const login_form = document.getElementById('login_form');
-const signup_form = document.getElementById('signup_form');
+const navLogin = document.getElementById('nav_login');
+const navSignup = document.getElementById('nav_signup');
+const loginForm = document.getElementById('login_form');
+const signupForm = document.getElementById('signup_form');
 const signupBtn = document.getElementById('signupBtn');
 const loginBtn = document.getElementById('loginBtn');
 
-nav_login.addEventListener('click', () => {
-  signup_form.style.display = 'none';
-  login_form.style.display = 'block';
-  nav_signup.style.background = 'none';
-  nav_login.style.background = 'white';
+navLogin.addEventListener('click', () => {
+  signupForm.style.display = 'none';
+  loginForm.style.display = 'block';
+  navSignup.style.background = 'none';
+  navLogin.style.background = 'white';
 });
 
-nav_signup.addEventListener('click', () => {
-  signup_form.style.display = 'block';
-  login_form.style.display = 'none';
-  nav_signup.style.background = 'white';
-  nav_login.style.background = 'none';
+navSignup.addEventListener('click', () => {
+  signupForm.style.display = 'block';
+  loginForm.style.display = 'none';
+  navSignup.style.background = 'white';
+  navLogin.style.background = 'none';
 });
 
-menu_img.addEventListener('click', () => {
-  if (menu_list.className == 'show') {
-    menu_list.classList.remove('show');
+menuImg.addEventListener('click', () => {
+  if (menuList.className == 'show') {
+    menuList.classList.remove('show');
   } else {
-    menu_list.classList.add('show');
+    menuList.classList.add('show');
   }
 });
 main[0].addEventListener('click', () => {
-  if (menu_list.className == 'show') {
-    menu_list.classList.remove('show');
+  if (menuList.className == 'show') {
+    menuList.classList.remove('show');
   }
 });
+
+function isValid(str) {
+  return !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?\ ]/g.test(str);
+}
+
 function headerSearchBtn() {
-  if (search_header.value) {
-    window.location.href = `/search/${search_header.value}`;
+  if (searchHeader.value) {
+    if (!isValid(searchHeader.value)) {
+      alert('請勿輸入符號');
+      return;
+    }
+    window.location.href = `/search/${searchHeader.value}`;
   }
 }
 function headerSearch() {
-  search_header.addEventListener('keyup', (e) => {
+  searchHeader.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') headerSearchBtn();
   });
 }
@@ -159,7 +168,7 @@ window.fbAsyncInit = function () {
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-function FB_login() {
+function FacebookLogin() {
   FB.login((response) => {
     if (response.status === 'connected') {
       const result = {
@@ -175,23 +184,23 @@ function FB_login() {
 }
 
 // Member Modal
-const member_modal = document.getElementById('member_modal');
-const member_btn = document.getElementById('member_btn');
+const memberModal = document.getElementById('member_modal');
+const memberBtn = document.getElementById('member_btn');
 
 // When the user clicks the button, open the modal
-member_btn.onclick = function () {
-  member_modal.style.display = 'flex';
+memberBtn.onclick = function () {
+  memberModal.style.display = 'flex';
 };
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-  if (event.target == member_modal) {
-    member_modal.style.display = 'none';
+  if (event.target == memberModal) {
+    memberModal.style.display = 'none';
   }
 };
 
 /* Integrate Google Login */
-function Google_login() {
+function GoogleLogin() {
   const auth2 = gapi.auth2.getAuthInstance();
   auth2.signIn()
     .then((GoogleUser) => {
