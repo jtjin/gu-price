@@ -61,8 +61,6 @@ const sendEmail = async (protocol, hostname, email) => {
   const mykey = crypto.createCipheriv('aes-128-cbc', process.env.CRYPTO_KEY, process.env.CRYPTO_IV);
   let emailToken = mykey.update(email, 'utf8', 'hex');
   emailToken += mykey.final('hex');
-	console.log(protocol)
-	console.log(hostname)
   let url;
   if (protocol == 'http') {
     url = `${protocol}://${hostname}:${port}/confirmation/${emailToken}/`;
