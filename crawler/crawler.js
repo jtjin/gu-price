@@ -203,7 +203,7 @@ async function start() {
   await main('women');
   await main('kids');
   console.log('Everything has done!');
-  mysql.end();
+  mysql.pool.end();
 }
 
 start();

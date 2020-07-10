@@ -2,6 +2,25 @@ require('dotenv').config('../');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+const send = async (mail) => {
+  try {
+    const info = await transporter.sendMail(mail);
+    return { info, status: 'mail sent' };
+  } catch (error) {
+    console.log(error);
+    throw (`Unable to send email: ${error}`);
+  }
+};
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.S3_AWS_ACCESS_KEY,
@@ -28,6 +47,7 @@ const wrapAsync = (fn) => function (req, res, next) {
 };
 
 module.exports = {
+  send,
   uploadS3,
   wrapAsync,
 };

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { wrapAsync, uploadS3 } = require('../../util/util');
-const { getProducts, imageSearch } = require('../controllers/index_controller');
+const { getProducts, imageSearch, confirmEmail } = require('../controllers/index_controller');
 
 const uploadImageSearch = uploadS3.single('imageSearch');
 
@@ -11,6 +11,9 @@ router.get('/', (req, res, next) => {
     next(error);
   }
 });
+
+router.route('/confirmation/:token')
+  .get(wrapAsync(confirmEmail));
 
 router.route('/:category')
   .get(wrapAsync(getProducts));

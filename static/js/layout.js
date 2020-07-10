@@ -75,7 +75,7 @@ function signupRender(obj) {
   if (obj.error) {
     alert(obj.error);
   } else if (obj.data.access_token) {
-    alert('Sign Up Complete! Please Log In!');
+    alert('註冊成功! 系統已發送「認證信」至您的電子信箱!');
   } else {
     alert('Oops, something went wrong!');
   }

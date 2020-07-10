@@ -37,16 +37,9 @@ imageSearchIcon.addEventListener('mouseover', () => {
 imageSearchIcon.addEventListener('mouseout', () => {
   imageSearchText.style.display = 'none';
 });
-imageSearchIcon.addEventListener('click', async () => {
+imageSearchIcon.addEventListener('click', () => {
   imageSearchFile.click();
 });
-imageSearchFile.addEventListener('change', async () => {
-  // const fd = new FormData()
-  // fd.append('imageSearch', imageSearchFile.files[0])
-  // const result = await fetch('/api/1.0/products/imageSearch', {
-  //   method: 'POST',
-  //   body: fd
-  // }).then(res => res.json())
-  // console.log(result)
+imageSearchFile.addEventListener('change', () => {
   imageSearchSubmit.click();
 });

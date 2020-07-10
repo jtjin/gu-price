@@ -1,7 +1,10 @@
 require('dotenv').config();
 const validator = require('validator');
+const crypto = require('crypto');
 const User = require('../models/user_model');
+const { send } = require('../../util/util.js');
 
+const port = process.env.PORT;
 const expire = process.env.TOKEN_EXPIRE;
 
 const signUp = async (req, res) => {
@@ -32,6 +35,12 @@ const signUp = async (req, res) => {
     return;
   }
 
+  const emailResult = await sendEmail(req.protocol, req.hostname, result.user.email);
+  if (!emailResult.status) {
+    res.status(500).send({ error: 'Nodemailer Error' });
+    return;
+  }
+
   res.status(200).send({
     data: {
       access_token: accessToken,
@@ -46,6 +55,29 @@ const signUp = async (req, res) => {
       },
     },
   });
+};
+
+const sendEmail = async (protocol, hostname, email) => {
+  const mykey = crypto.createCipheriv('aes-128-cbc', process.env.CRYPTO_KEY, process.env.CRYPTO_IV);
+  let emailToken = mykey.update(email, 'utf8', 'hex');
+  emailToken += mykey.final('hex');
+
+  let url;
+  if (protocol == 'http') {
+    url = `${protocol}://${hostname}:${port}/confirmation/${emailToken}/`;
+  } else {
+    url = `${protocol}://${hostname}/confirmation/${emailToken}/`;
+  }
+
+  const mail = {
+    from: 'GU-price <B10031029@gapps.ntust.edu.tw>',
+    subject: 'Confirm Email',
+    to: email,
+    html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
+  };
+
+  const result = await send(mail);
+  return result;
 };
 
 const nativeSignIn = async (email, password, provider) => {

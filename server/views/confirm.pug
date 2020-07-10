@@ -1,0 +1,22 @@
+extends layout
+
+block title
+  title 信箱驗證 | GU 搜尋 | GU 比價
+
+block append css
+   link(rel='stylesheet' href='/static/css/confirm.css')
+
+block append js
+   script.
+      setTimeout(() => {
+         window.location.href = '/'
+      }, 3000)
+
+block content
+  main
+   .view
+      img(src= image)
+      h2= confirmMsg
+
+
+      

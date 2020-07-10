@@ -16,9 +16,8 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 const promiseQuery = promisify(pool.query).bind(pool);
-const promiseEnd = promisify(pool.end).bind(pool);
 
 module.exports = {
+  pool,
   query: promiseQuery,
-  end: promiseEnd,
 };

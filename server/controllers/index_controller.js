@@ -1,3 +1,5 @@
+require('dotenv').config();
+const crypto = require('crypto');
 const Index = require('../models/index_model');
 
 const getProducts = async (req, res) => {
@@ -41,7 +43,21 @@ const imageSearch = async (req, res) => {
   }
 };
 
+const confirmEmail = async (req, res) => {
+  const mykey = crypto.createDecipheriv('aes-128-cbc', process.env.CRYPTO_KEY, process.env.CRYPTO_IV);
+  let email = mykey.update(req.params.token, 'hex', 'utf8');
+  email += mykey.final('utf8');
+  const result = await Index.updateUser(email);
+  if (result.error) {
+    res.status(200).render('confirm', { image: '/static/imgs/unconfirm.png', confirmMsg: result.error });
+    return;
+  }
+
+  res.status(200).render('confirm', { image: '/static/imgs/confirm.png', confirmMsg: `您的信箱 ${email} 已成功啟用` });
+};
+
 module.exports = {
   getProducts,
   imageSearch,
+  confirmEmail,
 };

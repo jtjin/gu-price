@@ -20,6 +20,7 @@ const signUp = async (name, email, password, provider, expire) => {
     const sha = crypto.createHash('sha256');
     sha.update(email + password + loginAt);
     const accessToken = sha.digest('hex');
+
     const user = {
       provider: 'native',
       email,
@@ -29,6 +30,7 @@ const signUp = async (name, email, password, provider, expire) => {
       access_token: accessToken,
       access_expired: expire,
       login_at: loginAt,
+      confirmed: false,
     };
     const queryStr = 'INSERT INTO user SET ?';
 
@@ -53,6 +55,11 @@ const nativeSignIn = async (email, password, provider, expire) => {
     if (!user) {
       await query('COMMIT');
       return { error: 'Sorry, this email didn\'t exist, please sign up' };
+    }
+
+    if (!user.confirmed) {
+      await query('COMMIT');
+      return { error: 'Please confirm your email to login' };
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
@@ -90,6 +97,7 @@ const facebookSignIn = async (id, name, email, accessToken, expire) => {
       access_token: accessToken,
       access_expired: expire,
       login_at: loginAt,
+      confirmed: true,
     };
 
     const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE', [email]);
@@ -127,6 +135,7 @@ const googleSignIn = async (name, email, picture, accessToken, expire) => {
       access_token: accessToken,
       access_expired: expire,
       login_at: loginAt,
+      confirmed: true,
     };
 
     const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'google\' FOR UPDATE', [email]);
