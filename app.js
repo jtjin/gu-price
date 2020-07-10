@@ -8,6 +8,7 @@ const logger = require('morgan'); // HTTP request logger
 
 const app = express();
 
+app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
 
 app.use('/static', express.static('static'));
