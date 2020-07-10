@@ -33,6 +33,15 @@ const getProducts = async (req, res) => {
   }
 };
 
+const imageSearch = async (req, res) => {
+  if (req.file) {
+    res.status(200).render('imageSearch', { imageSearch: req.file.location });
+  } else {
+    res.status(200).render('search', { msg: '我們無法找到符合此圖片的任何項目。' });
+  }
+};
+
 module.exports = {
   getProducts,
+  imageSearch,
 };

@@ -186,10 +186,16 @@ function FacebookLogin() {
 // Member Modal
 const memberModal = document.getElementById('member_modal');
 const memberBtn = document.getElementById('member_btn');
+const modalClose = document.getElementById('modal_close');
 
 // When the user clicks the button, open the modal
 memberBtn.onclick = function () {
   memberModal.style.display = 'flex';
+};
+
+// When the user clicks the close button, close the modal
+modalClose.onclick = function () {
+  memberModal.style.display = 'none';
 };
 
 // When the user clicks anywhere outside of the modal, close it

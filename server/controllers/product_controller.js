@@ -26,6 +26,9 @@ const getProducts = async (req, res) => {
           return await Product.getProducts(pageSize, paging, { number });
         }
       }
+      case 'imageSearch': {
+        return await Product.getProductsImageUrls();
+      }
     }
     return Promise.resolve({});
   }
@@ -41,6 +44,11 @@ const getProducts = async (req, res) => {
     } else {
       res.status(200).json({ data: [] });
     }
+    return;
+  }
+
+  if (category == 'imageSearch') {
+    res.status(200).json(products);
     return;
   }
 

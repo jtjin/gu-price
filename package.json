@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jtjin/GUprice#readme",
   "dependencies": {
+    "aws-sdk": "^2.712.0",
     "bcrypt": "^5.0.0",
     "cheerio": "^1.0.0-rc.3",
     "crypto": "^1.0.1",
@@ -27,6 +28,8 @@
     "fs": "0.0.1-security",
     "got": "^11.4.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.10",
     "pug": "^3.0.0",

@@ -1,0 +1,26 @@
+extends layout
+
+block title
+  title 搜尋結果 | GU 搜尋 | GU 比價
+
+block append css
+   link(rel='stylesheet' href='/static/css/imageSearch.css')
+
+block append js
+   script(src="https://cdnjs.deepai.org/deepai.min.js")
+   script.
+      deepai.setApiKey('448cb99d-695b-4428-a7bd-0bc03620dc3b');
+   script(src='/static/js/imageSearch.js')
+
+block content
+  main
+   .view
+      h2 搜尋結果
+      #products.products
+      #msg.msg
+      img#loading_gif.loading_gif(src='/static/imgs/loading.gif')
+      #image_search.image_search= imageSearch
+
+
+
+      

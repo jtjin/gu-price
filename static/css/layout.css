@@ -151,7 +151,23 @@ summary:hover {
   overflow: auto;
   max-width: 300px;
   display: flex;
+  flex-direction: column;
   border-radius: 5px;
+  box-shadow: 0 0 1em black;
+}
+
+.member_modal > .modal_content > .modal_close {
+  height: 0;
+  cursor: pointer;
+  text-align: right;
+}
+
+.member_modal > .modal_content > .modal_close > p {
+  position: relative;
+  margin: 0;
+  right: 15px;
+  font-size: 1.25rem;
+  font-weight: 550;
 }
 
 .member_modal > .modal_content > .modal_container {
@@ -163,6 +179,7 @@ summary:hover {
 .member_modal > .modal_content > .modal_container > .nav {
   width: 50%;
   background: white;
+  color: #555;
   float: left;
   height: 35px;
   line-height: 35px;
@@ -380,6 +397,10 @@ summary:hover {
     font-size: 1rem;
   }
 
+  .member_modal > .modal_content > .modal_close > p {
+    font-size: 1.5rem;
+  }
+
   .main_header > .container > .box > .title > .logo {
     height: 30px;
     width: 30px;
@@ -462,6 +483,10 @@ summary:hover {
 
   .member_modal > .modal_content {
     max-width: 450px;
+  }
+
+  .member_modal > .modal_content > .modal_close > p {
+    font-size: 1.75rem;
   }
 
   .member_modal > .modal_content > .modal_container {

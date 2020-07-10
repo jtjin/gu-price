@@ -40,7 +40,13 @@ const getProductsPrices = async (productIds) => {
   return await query(queryStr, bindings);
 };
 
+const getProductsImageUrls = async () => {
+  const products = await query('SELECT number, main_image FROM product GROUP BY number');
+  return { products };
+};
+
 module.exports = {
   getProducts,
   getProductsPrices,
+  getProductsImageUrls,
 };

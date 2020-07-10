@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const { wrapAsync } = require('../../util/util');
-const { getProducts } = require('../controllers/index_controller');
+const { wrapAsync, uploadS3 } = require('../../util/util');
+const { getProducts, imageSearch } = require('../controllers/index_controller');
+
+const uploadImageSearch = uploadS3.single('imageSearch');
 
 router.get('/', (req, res, next) => {
   try {
@@ -15,5 +17,8 @@ router.route('/:category')
 
 router.route('/:category/:type')
   .get(wrapAsync(getProducts));
+
+router.route('/imageSearch')
+  .post(uploadImageSearch, wrapAsync(imageSearch));
 
 module.exports = router;

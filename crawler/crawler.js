@@ -86,16 +86,16 @@ async function getProductUrls(typeUrl) {
   }
   result = [...new Set(result.map((item) => JSON.stringify(item)))];
   result = result.map((item) => JSON.parse(item));
-  const product_url = typeUrl.split('/');
-  const product_category = product_url[product_url.length - 3];
-  const product_type = product_url[product_url.length - 2];
+  const productUrl = typeUrl.split('/');
+  const productCategory = productUrl[productUrl.length - 3];
+  const productType = productUrl[productUrl.length - 2];
   await browser.close();
-  return { result, product_category, product_type };
+  return { result, productCategory, productType };
 }
 
 // Get product details
 // ex: { date: '20200701', category: 'men', ...}
-async function getProductDetails(productUrl, product_category, product_type) {
+async function getProductDetails(productUrl, productCategory, productType) {
   const browser = await puppeteer.launch({
     headless: true,
     ignoreDefaultArgs: ['--enable-automation'],
@@ -116,7 +116,7 @@ async function getProductDetails(productUrl, product_category, product_type) {
   const texture = $('#prodDetail > div > dl > dd:nth-child(2)').text();
   const style = $('#prodDetail > div > dl > dd:nth-child(4)').text();
   const wash = $('#prodDetail > div > dl > dd:nth-child(6)').html();
-  const main_image = $('#prodImgDefault > img').attr('src');
+  const mainImage = $('#prodImgDefault > img').attr('src');
   const images = [];
   const colors = $('#listChipColor').find('.chipCover');
   for (let i = 1; i <= colors.length; i += 1) {
@@ -133,11 +133,11 @@ async function getProductDetails(productUrl, product_category, product_type) {
     images.push($('#prodImgDefault > img').attr('src'));
   }
   const date = getTodayDate();
-  const category = product_category;
-  const type = product_type;
+  const category = productCategory;
+  const type = productType;
   await browser.close();
   return {
-    date, category, type, name, number, price, about, texture, style, wash, main_image, images,
+    date, category, type, name, number, price, about, texture, style, wash, mainImage, images,
   };
 }
 
@@ -146,7 +146,7 @@ async function createProduct(data) {
   const product = await mysql.query('SELECT * FROM product WHERE category =? and type = ? and name = ? and number = ?', [data.category, data.type, data.name, data.number]);
   if (product.length !== 0) {
     // Product already exists, insert date_price table only
-    await CreateDate_Price(data.date, product[0].id, parseInt(data.price.replace(',', '')));
+    await CreateDatePrice(data.date, product[0].id, parseInt(data.price.replace(',', '')));
   } else {
     // New product, insert both product & date_price tables
     const newData = {
@@ -158,20 +158,24 @@ async function createProduct(data) {
       texture: data.texture,
       style: data.style,
       wash: data.wash,
-      main_image: data.main_image,
+      main_image: data.mainImage,
       images: JSON.stringify(data.images),
     };
     const result = await mysql.query('INSERT INTO product SET ?', newData);
-    await CreateDate_Price(data.date, result.insertId, parseInt(data.price.replace(',', '')));
+    await CreateDatePrice(data.date, result.insertId, parseInt(data.price.replace(',', '')));
   }
 }
 
-async function CreateDate_Price(date, product_id, price) {
+async function CreateDatePrice(date, productId, price) {
   const newData = {
     date,
     price,
-    product_id,
+    product_id: productId,
   };
+  const duplicated = await mysql.query('SELECT * FROM date_price WHERE date = ? AND product_id = ?', [date, productId]);
+  if (duplicated.length != 0) {
+    return;
+  }
   await mysql.query('INSERT INTO date_price SET ?', newData);
 }
 
@@ -180,13 +184,14 @@ async function main(category) {
   let typeUrls = await getTypeUrls(category);
   typeUrls = typeUrls.flatMap((url) => Object.values(url));
   for (let i = 0; i < typeUrls.length; i += 1) {
-    const productUrls_result = await getProductUrls(typeUrls[i]);
-    const productUrls = productUrls_result.result.flatMap((url) => Object.values(url));
+    const productUrlsResult = await getProductUrls(typeUrls[i]);
+    const productUrls = productUrlsResult.result.flatMap((url) => Object.values(url));
     for (let j = 0; j < productUrls.length; j += 1) {
       try {
-        const productDetails = await getProductDetails(productUrls[j], productUrls_result.product_category, productUrls_result.product_type);
+        const productDetails = await getProductDetails(productUrls[j], productUrlsResult.productCategory, productUrlsResult.productType);
         await createProduct(productDetails);
       } catch (error) {
+        console.log(productUrls[j]);
         console.log(error);
       }
     }
