@@ -79,6 +79,7 @@ function signupRender(obj) {
     alert(obj.error);
   } else if (obj.data.access_token) {
     alert('註冊成功! 系統已發送「認證信」至您的電子信箱!');
+    location.reload();
   } else {
     alert('Oops, something went wrong!');
   }
