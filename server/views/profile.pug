@@ -1,0 +1,31 @@
+extends layout
+
+block title
+  title 個人頁面 | GU 搜尋 | GU 比價
+
+block append css
+   link(rel='stylesheet' href='/static/css/profile.css')
+
+block append js
+   script(src='/static/js/profile.js')
+
+block content
+  main
+   .view_1_background
+      .view_1
+         img#photo
+         h2#name
+   .view_2_background
+      .view_2
+         .profile_box
+            h2 個人資料
+            #email
+            #loginAt
+         .favorite_box
+            h2 收藏清單
+            #products.products
+            #msg.msg
+
+
+
+      

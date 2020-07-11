@@ -25,7 +25,6 @@ block content
           form(action="/imageSearch", method="post", enctype="multipart/form-data")
             input#image_search_file(type='file' name="imageSearch" accept='image/*')
             input#image_search_submit(type='submit')
-          //- input#image_search_file.image_search_file(type='file' name="imageSearch")
       .image_search_text
           img#image_search_text(src='/static/imgs/image_search.png')
       button(onclick='mainSearchBtn()')

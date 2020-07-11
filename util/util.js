@@ -33,32 +33,31 @@ const fileFilter = (req, file, cb) => {
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (mimetype && extname) {
-      return cb(null, true);
-  } else {
-      cb("Error: Allow images only of extensions jpeg|jpg|png !");
+    return cb(null, true);
   }
-}
+  cb('Error: Allow images only of extensions jpeg|jpg|png !');
+};
 
 const multerS3Config = multerS3({
   s3: s3Config,
   acl: 'public-read',
   bucket: process.env.S3_Bucket,
-  metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
+  metadata(req, file, cb) {
+    cb(null, { fieldName: file.fieldname });
   },
-  key: function (req, file, cb) {
-      const fullPath = `test/${file.originalname}`;
-      cb(null, fullPath)
-  }
+  key(req, file, cb) {
+    const fullPath = `test/${file.originalname}`;
+    cb(null, fullPath);
+  },
 });
 
 const uploadS3 = multer({
   storage: multerS3Config,
-  fileFilter: fileFilter,
+  fileFilter,
   limits: {
-      fileSize: 1024 * 1024 * 5
-  }
-})
+    fileSize: 1024 * 1024 * 5,
+  },
+});
 
 const wrapAsync = (fn) => function (req, res, next) {
   fn(req, res, next).catch(next);

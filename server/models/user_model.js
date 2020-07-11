@@ -172,6 +172,9 @@ const getUserProfile = async (accessToken) => {
       name: results[0].name,
       email: results[0].email,
       picture: results[0].picture,
+      access_expired: results[0].access_expired,
+      login_at: results[0].login_at,
+      favorite: results[0].favorite,
     },
   };
 };

@@ -90,6 +90,19 @@ const getProductsWithDetail = async (products) => {
   });
 };
 
+const updateFavorite = async (req, res) => {
+  const { favorite } = req.body;
+  const { id } = req.body;
+
+  const { result } = await Product.updateFavorite(favorite, id);
+  if (result.changedRows == 0) {
+    res.status(500).send({ error: 'Database Query Error' });
+  } else {
+    res.status(200).send({ changedRows: result.changedRows });
+  }
+};
+
 module.exports = {
   getProducts,
+  updateFavorite,
 };

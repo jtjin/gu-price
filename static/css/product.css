@@ -19,6 +19,28 @@ main {
   width: 100%;
 }
 
+.container_1 > .main_image_box > .favorite {
+  width: 100px;
+  margin: 10px 0 0 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.container_1 > .main_image_box > .favorite:hover {
+  opacity: 0.7;
+}
+
+.container_1 > .main_image_box > .favorite > img {
+  height: 25px;
+  width: 25px;
+}
+
+.container_1 > .main_image_box > .favorite > div {
+  margin-left: 5px;
+  color: #868686;
+}
+
 .container_1 > .main_image_box > .main_image {
   height: 100%;
   width: 100%;

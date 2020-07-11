@@ -41,8 +41,8 @@ imageSearchIcon.addEventListener('click', () => {
   imageSearchFile.click();
 });
 imageSearchFile.addEventListener('change', () => {
-  if ( /\.(jpe?g|png)$/i.test(imageSearchFile.files[0].name) === false ) { 
-    alert("請上傳正確圖片格式!"); 
+  if (/\.(jpe?g|png)$/i.test(imageSearchFile.files[0].name) === false) {
+    alert('請上傳正確圖片格式!');
   } else {
     imageSearchSubmit.click();
   }

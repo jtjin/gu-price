@@ -12,6 +12,14 @@ router.get('/', (req, res, next) => {
   }
 });
 
+router.get('/profile', (req, res, next) => {
+  try {
+    res.status(200).render('profile');
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.route('/confirmation/:token')
   .get(wrapAsync(confirmEmail));
 

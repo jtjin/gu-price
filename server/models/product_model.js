@@ -45,8 +45,21 @@ const getProductsImageUrls = async () => {
   return { products };
 };
 
+const updateFavorite = async (favorite, id) => {
+  try {
+    await query('START TRANSACTION');
+    const result = await query('UPDATE user SET favorite = ? WHERE id = ?', [favorite, id]);
+    await query('COMMIT');
+    return { result };
+  } catch (error) {
+    await query('ROLLBACK');
+    return { error };
+  }
+};
+
 module.exports = {
   getProducts,
   getProductsPrices,
   getProductsImageUrls,
+  updateFavorite,
 };

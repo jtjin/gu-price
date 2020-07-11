@@ -54,12 +54,10 @@ main > .view > .products > .product {
   background: #fff;
   border-color: #e9e9e9;
   text-decoration: none;
-  box-shadow: none;
-  transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
 
 main > .view > .products > .product:hover {
-  box-shadow: 0 5px 10px 0 #a19f9f;
+  box-shadow: 0 0 1em #a19f9f;
 }
 
 main > .view > .products > .product > img {

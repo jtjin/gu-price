@@ -54,7 +54,10 @@ function headerSearch() {
     if (e.key === 'Enter') headerSearchBtn();
   });
 }
-window.onload = headerSearch();
+function memberLogo() {
+  document.getElementById('member_logo').src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
+}
+window.onload = [headerSearch(), memberLogo()];
 
 function postData(url, data, cb) {
   return fetch(url, {
@@ -87,9 +90,10 @@ function loginRender(obj) {
     alert(obj.error);
   } else if (obj.data.access_token) {
     localStorage.setItem('token', obj.data.access_token);
+    localStorage.setItem('id', obj.data.user.id);
+    localStorage.setItem('photo', obj.data.user.picture);
     alert('登入成功!');
-    // location.reload();
-    // window.location.href = './profile.html';
+    window.location.href = '/profile';
   } else {
     alert('Oops, something went wrong!');
   }
@@ -190,7 +194,12 @@ const modalClose = document.getElementById('modal_close');
 
 // When the user clicks the button, open the modal
 memberBtn.onclick = function () {
-  memberModal.style.display = 'flex';
+  if (!localStorage.getItem('token')) {
+    // Check if token is available
+    memberModal.style.display = 'flex';
+  } else {
+    window.location.href = '/profile';
+  }
 };
 
 // When the user clicks the close button, close the modal

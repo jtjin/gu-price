@@ -127,6 +127,7 @@ summary:hover {
 .main_header > .container > .member_box > .member_btn > .member_logo {
   max-width: 30px;
   max-height: 30px;
+  border-radius: 50%;
 }
 
 /* ---- Member Modal ---- */
@@ -311,6 +312,7 @@ summary:hover {
   background: #333;
   margin: 0;
   width: 100%;
+  min-height: 100px;
   height: auto;
   padding: auto;
 }

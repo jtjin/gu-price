@@ -4,8 +4,8 @@ async function getProductNumber() {
   const number = window.location.pathname.substr(10);
   const result = await fetch(`/api/1.0/products/details?number=${number}`).then((res) => res.json());
   document.title = `${result.data.name} | GU 比價 | GU 搜尋`;
-  showProduct(result);
   product = result;
+  showProduct(result);
 }
 // Render page
 function showProduct(result) {
@@ -48,6 +48,8 @@ function showProduct(result) {
     img.setAttribute('src', result.data.images[i]);
     document.getElementById('images_box').appendChild(img);
   }
+  // favorite
+  checkFavorite(result.data.number);
 }
 function drawDatePrice(data) {
   const datePrice = {
@@ -79,6 +81,54 @@ function drawDatePrice(data) {
   };
   Plotly.newPlot('date_price', [datePrice], layout, { scrollZoom: true, displayModeBar: false });
 }
+
+const favorite = document.getElementById('favorite');
+const favoriteIcon = document.getElementById('favoriteIcon');
+const favoriteText = document.getElementById('favoriteText');
+
+function checkFavorite(number) {
+  // check if item in userFavorite
+  const userFavorite = localStorage.getItem('favorite').split(',');
+  const duplicateFavorite = userFavorite.find((p) => p == number);
+  if (duplicateFavorite) {
+    favoriteIcon.src = '/static/imgs/fullStar.png';
+    favoriteText.innerHTML = '已收藏';
+    favoriteText.style.color = 'black';
+  }
+}
+favorite.addEventListener('click', async () => {
+  if (favoriteText.innerHTML == '已收藏') {
+    alert('此商品已在您的商藏清單');
+  } else {
+    const userFavorite = localStorage.getItem('favorite');
+    if (userFavorite == 'undefined' || !userFavorite) {
+      localStorage.setItem('favorite', product.data.number);
+    } else {
+      localStorage.setItem('favorite', `${userFavorite},${product.data.number}`);
+    }
+    // Post the updateFavorite to server
+    const updateFavorite = {
+      favorite: localStorage.getItem('favorite'),
+      id: localStorage.getItem('id'),
+    };
+    const result = await fetch('/api/1.0/favorite', {
+      body: JSON.stringify(updateFavorite),
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'POST',
+    }).then((res) => res.json());
+
+    if (result.error) {
+      alert('收藏失敗');
+    } else {
+      favoriteIcon.src = '/static/imgs/fullStar.png';
+      favoriteText.innerHTML = '已收藏';
+      favoriteText.style.color = 'black';
+      alert('商品收藏成功');
+    }
+  }
+});
 window.onload = getProductNumber();
 
 function postData(url, data, cb) {
