@@ -25,6 +25,7 @@ const getProducts = async (req, res) => {
         if (Number.isInteger(number)) {
           return await Product.getProducts(pageSize, paging, { number });
         }
+        break;
       }
       case 'imageSearch': {
         return await Product.getProductsImageUrls();

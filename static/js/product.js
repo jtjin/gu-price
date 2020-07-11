@@ -101,7 +101,7 @@ favorite.addEventListener('click', async () => {
     alert('此商品已在您的商藏清單');
   } else {
     const userFavorite = localStorage.getItem('favorite');
-    if (userFavorite == 'undefined' || !userFavorite) {
+    if (userFavorite == 'undefined' || userFavorite == 'null' || !userFavorite) {
       localStorage.setItem('favorite', product.data.number);
     } else {
       localStorage.setItem('favorite', `${userFavorite},${product.data.number}`);
