@@ -178,7 +178,7 @@ summary:hover {
 }
 
 .member_modal > .modal_content > .modal_container > .nav {
-  width: 50%;
+  width: 90px;
   background: white;
   color: #555;
   float: left;
@@ -200,7 +200,7 @@ summary:hover {
   background: white;
   padding: 10px 15px;
   clear: both;
-  width: 100%;
+  width: 180px;
   box-sizing: border-box;
   max-height: 450px;
   border-radius: 0 0 5px 5px;
@@ -281,7 +281,7 @@ summary:hover {
   background-color: #4267b2;
   border: 0;
   border-radius: 5px;
-  margin: 10px 0;
+  margin: 10px auto;
   display: block;
   cursor: pointer;
 }
@@ -425,12 +425,14 @@ summary:hover {
 
   .member_modal > .modal_content > .modal_container > .form {
     padding: 15px;
+    width: 230px;
   }
 
   .member_modal > .modal_content > .modal_container > .nav {
     height: 40px;
     line-height: 40px;
     font-size: 0.8rem;
+    width: 115px;
   }
 
   .member_modal > .modal_content > .modal_container > .form > .input {
@@ -497,12 +499,14 @@ summary:hover {
 
   .member_modal > .modal_content > .modal_container > .form {
     padding: 20px;
+    width: 270px;
   }
 
   .member_modal > .modal_content > .modal_container > .nav {
     height: 45px;
     line-height: 45px;
     font-size: 1rem;
+    width: 135px;
   }
 
   .member_modal > .modal_content > .modal_container > .form > .input {
