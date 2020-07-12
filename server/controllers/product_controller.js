@@ -114,21 +114,18 @@ const getProductsName = async (req, res) => {
     let result;
     productsName = productsName.flatMap((p) => p.name);
     switch (process.env.SYSTEM) {
-	case "windows" :
-	jieba.loadDict(fs.readFileSync(`${__dirname}/../data/dict.txt`));
-	productsName = productsName.flatMap((name) => jieba.cut(name, false));
-	result = jieba.extract(productsName.join(' '), 10000);
-   	productsName = productsName.filter((x) => new Set(result).has(x));
-	break
-	default:
-	jieba.load({
-  		userDict: `${__dirname}/../data/dict.txt`,
-	});
-    	productsName = productsName.flatMap((name) => jieba.cut(name, false));    	
-	result = jieba.extract(productsName.join(' '), 10000);
-	result = result.flatMap(p => p.word)
-    	productsName = productsName.filter((x) => new Set(result).has(x));
+      case 'windows':
+        jieba.loadDict(fs.readFileSync(`${__dirname}/../data/dict.txt`));
+        productsName = productsName.flatMap((name) => jieba.cut(name, false));
+        result = jieba.extract(productsName.join(' '), 10000);
+        break;
+      default:
+        jieba.load({ userDict: `${__dirname}/../data/dict.txt` });
+        productsName = productsName.flatMap((name) => jieba.cut(name, false));
+        result = jieba.extract(productsName.join(' '), 10000);
+        result = result.flatMap((p) => p.word);
     }
+    productsName = productsName.filter((x) => new Set(result).has(x));
     res.status(200).json(productsName.join(' '));
   }
 };
