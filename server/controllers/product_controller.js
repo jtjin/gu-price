@@ -1,9 +1,19 @@
 require('dotenv').config();
 const _ = require('lodash');
-const jieba = process.env.SYSTEM == 'windows' ? require('@node-rs/jieba') : require('nodejieba');
 const fs = require('fs');
 const Product = require('../models/product_model');
 const data = require('../data/data.json');
+
+let jieba;
+switch (process.env.SYSTEM) {
+  case 'windows':
+    jieba = require('@node-rs/jieba');
+    jieba.loadDict(fs.readFileSync(`${__dirname}/../data/dict.txt`));
+    break;
+  default :
+    jieba = require('nodejieba');
+    jieba.load({ userDict: `${__dirname}/../data/dict.txt` });
+}
 
 const pageSize = 8;
 
@@ -115,12 +125,10 @@ const getProductsName = async (req, res) => {
     productsName = productsName.flatMap((p) => p.name);
     switch (process.env.SYSTEM) {
       case 'windows':
-        jieba.loadDict(fs.readFileSync(`${__dirname}/../data/dict.txt`));
         productsName = productsName.flatMap((name) => jieba.cut(name, false));
         result = jieba.extract(productsName.join(' '), 10000);
         break;
       default:
-        jieba.load({ userDict: `${__dirname}/../data/dict.txt` });
         productsName = productsName.flatMap((name) => jieba.cut(name, false));
         result = jieba.extract(productsName.join(' '), 10000);
         result = result.flatMap((p) => p.word);
