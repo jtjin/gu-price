@@ -4,16 +4,18 @@ block title
   title 首頁 | GU 搜尋 | GU 比價
 
 block append css
-   link(rel='stylesheet' href='/static/css/index.css')
+  link(rel='stylesheet' href='/static/css/index.css')
 
 block append js
-   script(src='/static/js/index.js')
+  script(src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js")
+  script(src="https://cdn.anychart.com/releases/8.7.1/js/anychart-tag-cloud.min.js")
+  script(src='/static/js/index.js')
    
 block content
   main
-    .ctn
+    #ctn.ctn
       h1
-        img(src='/static/imgs/logo.png')
+        img#image_main(src='/static/imgs/logo.png')
         |GU 搜尋
       .search_main
         select#select_main.search_select_main
@@ -29,4 +31,4 @@ block content
           img#image_search_text(src='/static/imgs/image_search.png')
       button(onclick='mainSearchBtn()')
         |查看商品
-
+    #container

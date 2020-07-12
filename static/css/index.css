@@ -128,3 +128,14 @@ main > .ctn > button {
 main > .ctn > button:hover {
   background-color: #c9c9c9;
 }
+
+main > #container {
+  display: none;
+  margin: 5px auto 10px;
+  height: 500px;
+  width: 80%;
+}
+
+#container > div > .anychart-credits {
+  display: none;
+}
