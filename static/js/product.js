@@ -97,6 +97,10 @@ function checkFavorite(number) {
   }
 }
 favorite.addEventListener('click', async () => {
+  if (!localStorage.getItem('id')) {
+    alert('請先登入再收藏商品')
+    return
+  }
   if (favoriteText.innerHTML == '已收藏') {
     alert('此商品已在您的商藏清單');
   } else {
