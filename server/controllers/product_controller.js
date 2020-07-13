@@ -10,7 +10,7 @@ switch (process.env.SYSTEM) {
     jieba = require('@node-rs/jieba');
     jieba.loadDict(fs.readFileSync(`${__dirname}/../data/dict.txt`));
     break;
-  default :
+  default:
     jieba = require('nodejieba');
     jieba.load({ userDict: `${__dirname}/../data/dict.txt` });
 }

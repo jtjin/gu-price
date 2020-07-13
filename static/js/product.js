@@ -98,8 +98,8 @@ function checkFavorite(number) {
 }
 favorite.addEventListener('click', async () => {
   if (!localStorage.getItem('id')) {
-    alert('請先登入再收藏商品')
-    return
+    alert('請先登入再收藏商品');
+    return;
   }
   if (favoriteText.innerHTML == '已收藏') {
     alert('此商品已在您的商藏清單');
@@ -133,7 +133,6 @@ favorite.addEventListener('click', async () => {
     }
   }
 });
-window.onload = getProductNumber();
 
 function postData(url, data, cb) {
   return fetch(url, {
@@ -150,6 +149,13 @@ function postData(url, data, cb) {
 
 // Track
 const trackBtn = document.getElementById('track_btn');
+
+function getTrackEmail() {
+  if (localStorage.getItem('email')) {
+    document.getElementById('track_email').value = localStorage.getItem('email');
+  }
+}
+
 trackBtn.addEventListener('click', () => {
   event.preventDefault();
   const number = document.getElementById('track_number').value;
@@ -188,3 +194,5 @@ trackBtn.addEventListener('click', () => {
     })
     .catch((err) => console.log(err));
 });
+
+window.onload = [getProductNumber(), getTrackEmail()];

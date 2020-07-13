@@ -8,6 +8,7 @@ const loginForm = document.getElementById('login_form');
 const signupForm = document.getElementById('signup_form');
 const signupBtn = document.getElementById('signupBtn');
 const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
 navLogin.addEventListener('click', () => {
   signupForm.style.display = 'none';
@@ -93,6 +94,8 @@ function loginRender(obj) {
     localStorage.setItem('token', obj.data.access_token);
     localStorage.setItem('id', obj.data.user.id);
     localStorage.setItem('photo', obj.data.user.picture);
+    localStorage.setItem('name', obj.data.user.name);
+    localStorage.setItem('email', obj.data.user.email);
     alert('登入成功!');
     window.location.href = '/profile';
   } else {
@@ -192,6 +195,8 @@ function FacebookLogin() {
 const memberModal = document.getElementById('member_modal');
 const memberBtn = document.getElementById('member_btn');
 const modalClose = document.getElementById('modal_close');
+const profileModal = document.getElementById('profile_modal');
+const profileClose = document.getElementById('profile_close');
 
 // When the user clicks the button, open the modal
 memberBtn.onclick = function () {
@@ -199,7 +204,14 @@ memberBtn.onclick = function () {
     // Check if token is available
     memberModal.style.display = 'flex';
   } else {
-    window.location.href = '/profile';
+    switch (profileModal.style.display) {
+      case 'flex':
+        profileModal.style.display = 'none';
+        break;
+      default:
+        document.getElementById('profile_name').innerHTML = localStorage.getItem('name');
+        profileModal.style.display = 'flex';
+    }
   }
 };
 
@@ -207,7 +219,9 @@ memberBtn.onclick = function () {
 modalClose.onclick = function () {
   memberModal.style.display = 'none';
 };
-
+profileClose.onclick = function () {
+  profileModal.style.display = 'none';
+};
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
   if (event.target == memberModal) {
@@ -233,3 +247,8 @@ function GoogleLogin() {
       console.log(error);
     });
 }
+
+logoutBtn.addEventListener('click', () => {
+  localStorage.clear();
+  location.reload();
+});

@@ -90,13 +90,4 @@ function createProducts(data) {
   products.appendChild(a);
 }
 
-//  function logOut() {
-// localStorage.clear()
-//    localStorage.removeItem('token');
-// localStorage.removeItem('photo');
-// localStorage.removeItem('favorite');
-// localStorage.removeItem('id');
-//    window.location.href = './';
-//  }
-
 window.onload = getProfile();

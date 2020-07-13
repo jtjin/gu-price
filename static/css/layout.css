@@ -130,6 +130,83 @@ summary:hover {
   border-radius: 50%;
 }
 
+.main_header > .profile_ctn_bg {
+  display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  justify-content: flex-end;
+  top: -5px;
+  display: none;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn {
+  background-color: #fff;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.08);
+  padding: 10px 0 5px;
+  margin-right: 10px;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > .profile_close {
+  height: 0;
+  cursor: pointer;
+  text-align: right;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > .profile_close > p {
+  position: relative;
+  margin: 0;
+  top: -10px;
+  right: 10px;
+  font-size: 1.25rem;
+  font-weight: 550;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > .profile_name {
+  font-size: 1.2rem;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(9, 30, 66, 0.13);
+  color: #5e6c84;
+  height: 40px;
+  display: block;
+  line-height: 40px;
+  margin: 0 10px 5px;
+  padding: 0 50px;
+  text-align: center;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > a {
+  color: #172b4d;
+  text-decoration: none;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > a > p {
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > p {
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > .logout {
+  margin: 5px 10px 5px;
+  border-top: 1px solid rgba(9, 30, 66, 0.13);
+}
+
+.main_header > .profile_ctn_bg > .profile_ctn > a > p:hover,
+.main_header > .profile_ctn_bg > .profile_ctn > p:hover {
+  background-color: #f3f3f3;
+}
+
 /* ---- Member Modal ---- */
 .member_modal {
   display: none;
@@ -147,7 +224,7 @@ summary:hover {
 
 .member_modal > .modal_content {
   position: fixed;
-  background-color: lightgray;
+  background-color: lightgrey;
   max-height: 100%;
   overflow: auto;
   max-width: 300px;
