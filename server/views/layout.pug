@@ -82,8 +82,20 @@ body
                 button.fb_btn(onclick="FacebookLogin()")
                     img.fb_icon(src="/static/imgs/fb.png")
                     p Log in with Facebook
-
+    #member_modal_bg.member_modal_bg
     block content
+    #comparsion_arrow.comparsion_arrow
+        img(src="/static/imgs/compare_arrow.png")
+    #comparison_bg.comparison_bg
+        #comparsion_close.comparsion_close
+            p x
+        .comparison
+            .comparsion_title
+                h3 產品比較表
+                p 產品已加入比較。至多可選取 4 項產品或直接查看比較結果。
+            .comparsion_items
+                ul#comparsion_ul.comparsion_ul
+            a#go_to_compare.go_to_compare 立即比較
 
     footer.main_footer
         .container_footer

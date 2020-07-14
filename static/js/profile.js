@@ -68,6 +68,14 @@ function createProducts(data) {
   const a = document.createElement('a');
   a.setAttribute('class', 'product');
   a.setAttribute('href', `/products/${data.number}`);
+  // Create <div class='delete'>
+  const divDelete = document.createElement('div');
+  const imgDelete = document.createElement('img');
+  divDelete.setAttribute('class', 'delete');
+  imgDelete.setAttribute('src', '/static/imgs/remove.png');
+  imgDelete.setAttribute('onclick', 'deleteFavorite()');
+  divDelete.appendChild(imgDelete);
+  a.appendChild(divDelete);
   // Create <img>, <div clsas='colors'>
   const img = document.createElement('img');
   img.setAttribute('src', data.main_image);
@@ -88,6 +96,36 @@ function createProducts(data) {
   divPrice.innerHTML = `$${data.highest_price} ⇢ $${data.current_price}`;
   a.appendChild(divPrice);
   products.appendChild(a);
+}
+
+async function deleteFavorite() {
+  event.preventDefault();
+  const product = event.target.parentElement.parentElement;
+  let number = product.getElementsByClassName('number');
+  number = number[0].innerHTML;
+  // Post the updateFavorite to server
+  let userFavorite = localStorage.getItem('favorite').split(',');
+  const deleteFavoriteIndex = userFavorite.findIndex((p) => p == number);
+  userFavorite.splice(deleteFavoriteIndex, 1);
+  userFavorite = userFavorite.join(',');
+  const updateFavorite = {
+    favorite: userFavorite,
+    id: localStorage.getItem('id'),
+  };
+  const result = await fetch('/api/1.0/favorite', {
+    body: JSON.stringify(updateFavorite),
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST',
+  }).then((res) => res.json());
+
+  if (result.error) {
+    alert('收藏移除失敗');
+  } else {
+    alert('收藏移除成功');
+    location.reload();
+  }
 }
 
 window.onload = getProfile();

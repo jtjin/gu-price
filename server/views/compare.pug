@@ -1,0 +1,22 @@
+extends layout
+
+block title
+  title 比較結果 | GU 搜尋 | GU 比價
+
+block append css
+   link(rel='stylesheet' href='/static/css/compare.css')
+
+block append js
+   script(src='https://cdn.plot.ly/plotly-latest.min.js')
+   script(src='/static/js/compare.js')
+
+block content
+  main
+   .view
+      h2 比較結果
+      #products.products
+         ul#products_ul.products_ul
+      #msg.msg
+
+
+      

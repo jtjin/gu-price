@@ -103,6 +103,28 @@ main > .view_2_background > .view_2 > .favorite_box > .products > .product:hover
   box-shadow: 0 0 1em #a19f9f;
 }
 
+main > .view_2_background > .view_2 > .favorite_box > .products > .product:hover .delete {
+  display: block;
+}
+
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete {
+  text-align: right;
+  z-index: 1;
+  margin: 0 5px 0 auto;
+  height: 0;
+  display: none;
+}
+
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete > img {
+  margin-top: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete:hover {
+  opacity: 0.7;
+}
+
 main > .view_2_background > .view_2 > .favorite_box > .products > .product > img {
   width: 100%;
 }

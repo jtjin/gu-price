@@ -49,7 +49,7 @@ function showProduct(result) {
     document.getElementById('images_box').appendChild(img);
   }
   // favorite
-  checkFavorite(result.data.number);
+  if (localStorage.getItem('favorite')) checkFavorite(result.data.number);
 }
 function drawDatePrice(data) {
   const datePrice = {

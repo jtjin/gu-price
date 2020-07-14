@@ -28,7 +28,7 @@ summary:hover {
   margin: 0;
   width: 100%;
   height: 60px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .main_header > .container {
@@ -142,13 +142,13 @@ summary:hover {
 
 .main_header > .profile_ctn_bg > .profile_ctn {
   background-color: #fff;
-  width: 200px;
+  width: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.08);
-  padding: 10px 0 5px;
+  padding: 5px 0;
   margin-right: 10px;
 }
 
@@ -163,20 +163,20 @@ summary:hover {
   margin: 0;
   top: -10px;
   right: 10px;
-  font-size: 1.25rem;
-  font-weight: 550;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .main_header > .profile_ctn_bg > .profile_ctn > .profile_name {
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 600;
   border-bottom: 1px solid rgba(9, 30, 66, 0.13);
   color: #5e6c84;
   height: 40px;
   display: block;
   line-height: 40px;
   margin: 0 10px 5px;
-  padding: 0 50px;
+  padding: 0 30px;
   text-align: center;
 }
 
@@ -189,12 +189,14 @@ summary:hover {
   margin: 0;
   padding: 10px;
   cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .main_header > .profile_ctn_bg > .profile_ctn > p {
   margin: 0;
   padding: 10px;
   cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .main_header > .profile_ctn_bg > .profile_ctn > .logout {
@@ -211,7 +213,7 @@ summary:hover {
 .member_modal {
   display: none;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   top: 0;
   width: 100%;
@@ -383,6 +385,164 @@ summary:hover {
   opacity: 0.7;
 }
 
+.member_modal_bg {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+
+/* ---- Comparison ---- */
+.comparsion_arrow {
+  text-align: right;
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  display: none;
+}
+
+.comparsion_arrow > img {
+  position: fixed;
+  height: 25px;
+  width: 35px;
+  z-index: 2;
+  bottom: 0;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.comparsion_arrow > img:hover {
+  opacity: 0.7;
+}
+
+.comparison_bg {
+  position: fixed;
+  background-color: #efefef;
+  border-top: 2px solid #e6e6e6;
+  width: 100%;
+  height: 110px;
+  z-index: 2;
+  bottom: 0;
+  display: none;
+}
+
+.comparison_bg > .comparsion_close {
+  height: 0;
+  text-align: right;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.comparison_bg > .comparsion_close > p {
+  position: relative;
+  cursor: pointer;
+  margin: 0 10px 0 auto;
+  width: 10px;
+}
+
+.comparison_bg > .comparsion_close > p:hover {
+  opacity: 0.7;
+}
+
+.comparison_bg > .comparison {
+  display: flex;
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.comparison_bg > .comparison > .comparsion_title {
+  margin: 0 10px 0 20px;
+  max-width: 200px;
+}
+
+.comparison_bg > .comparison > .comparsion_title > h3 {
+  font-size: 0.75rem;
+}
+
+.comparison_bg > .comparison > .comparsion_title > p {
+  font-size: 0.75rem;
+  color: #737373;
+  display: none;
+}
+
+.comparison_bg > .comparison > .comparsion_items {
+  flex: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul {
+  flex: auto;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  height: 100%;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+  margin: 0 auto 8px;
+  text-align: center;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info {
+  cursor: pointer;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > .delete_compare {
+  height: 0;
+  text-align: right;
+  display: none;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info:hover .delete_compare {
+  display: block;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > .delete_compare > img {
+  position: relative;
+  height: 15px;
+  width: 15px;
+  top: -5px;
+  right: 8px;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > img {
+  height: 40px;
+  width: 40px;
+}
+
+.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > h4 {
+  font-size: 0.5rem;
+  margin: 5px 0 0 0;
+}
+
+.comparison_bg > .comparison > .go_to_compare {
+  width: 70px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #5a5a5a;
+  padding: 7px 5px;
+  color: #5a5a5a;
+  font-size: 10px;
+  font-weight: 550;
+  text-align: center;
+  min-height: 30px;
+  height: auto;
+  margin: auto 15px auto 10px;
+}
+
+.comparison_bg > .comparison > .go_to_compare:hover {
+  opacity: 0.7;
+}
+
 /* ---- Footer ---- */
 .main_footer {
   color: #efefef;
@@ -540,6 +700,10 @@ summary:hover {
     line-height: 40px;
   }
 
+  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+    width: 60px;
+  }
+
   .main_footer > .container_footer > .copyright > h4 {
     font-size: 1em;
     line-height: 2rem;
@@ -554,6 +718,39 @@ summary:hover {
     margin-right: 20px;
     height: 40px;
     width: 40px;
+  }
+}
+
+@media (min-width: 600px) {
+  .comparison_bg {
+    height: 150px;
+  }
+
+  .comparison_bg > .comparison > .go_to_compare {
+    width: 100px;
+    padding: 7px 20px;
+    font-size: 12px;
+  }
+
+  .comparison_bg > .comparsion_close > p {
+    font-size: 1.25rem;
+  }
+
+  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > h4 {
+    font-size: 0.7rem;
+  }
+
+  .comparison_bg > .comparison > .comparsion_title > h3 {
+    font-size: 1rem;
+  }
+
+  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+    width: 80px;
+  }
+
+  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > img {
+    height: 80px;
+    width: 80px;
   }
 }
 
@@ -615,6 +812,14 @@ summary:hover {
   .member_modal > .modal_content > .modal_container > .google_btn > p {
     font-size: 1rem;
     line-height: 45px;
+  }
+
+  .comparison_bg > .comparison > .comparsion_title > p {
+    display: block;
+  }
+
+  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+    width: 100px;
   }
 
   .main_footer > .container_footer {

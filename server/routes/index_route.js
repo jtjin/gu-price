@@ -20,6 +20,14 @@ router.get('/profile', (req, res, next) => {
   }
 });
 
+router.get('/compare', (req, res, next) => {
+  try {
+    res.status(200).render('compare');
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.route('/confirmation/:token')
   .get(wrapAsync(confirmEmail));
 

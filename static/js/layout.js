@@ -58,7 +58,6 @@ function headerSearch() {
 function memberLogo() {
   document.getElementById('member_logo').src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
 }
-window.onload = [headerSearch(), memberLogo()];
 
 function postData(url, data, cb) {
   return fetch(url, {
@@ -76,6 +75,7 @@ function signupRender(obj) {
   document.getElementById('signup_name').value = '';
   document.getElementById('signup_email').value = '';
   document.getElementById('signup_password').value = '';
+  document.getElementById('member_modal_bg').style.display = 'none';
   if (obj.error) {
     alert(obj.error);
   } else if (obj.data.access_token) {
@@ -129,6 +129,7 @@ signupBtn.addEventListener('click', () => {
   const result = {
     name, email, password, provider,
   };
+  document.getElementById('member_modal_bg').style.display = 'block';
   postData('/api/1.0/user/signup', result, signupRender);
 });
 // Login function
@@ -250,5 +251,139 @@ function GoogleLogin() {
 
 logoutBtn.addEventListener('click', () => {
   localStorage.clear();
-  location.reload();
+  if (window.location.pathname == '/profile') {
+    window.location.href = '/';
+  } else {
+    location.reload();
+  }
 });
+
+// Compare products
+
+function updateCompare() {
+  event.preventDefault();
+  document.getElementById('comparison_bg').style.display = 'block';
+  document.getElementById('comparsion_arrow').style.display = 'flex';
+  let product;
+  let img;
+  let userCompare = sessionStorage.getItem('compare');
+  // Check the user click div or img or p
+  if (event.target.className == 'compare') {
+    product = event.target.parentElement;
+    img = event.target.getElementsByTagName('img');
+  } else {
+    product = event.target.parentElement.parentElement;
+    img = event.target.parentElement.getElementsByTagName('img');
+  }
+  let number = product.getElementsByClassName('number');
+  let name = product.getElementsByClassName('name');
+  let mainImage = product.getElementsByTagName('img');
+  number = number[0].innerHTML;
+  name = name[0].innerHTML;
+  mainImage = mainImage[0].getAttribute('src');
+  img = img[0];
+
+  if (img.getAttribute('src') == '/static/imgs/unchecked.png') {
+    // Add it into localstroage
+    if (userCompare == 'undefined' || userCompare == 'null' || userCompare == '' || !userCompare) {
+      sessionStorage.setItem('compare', number);
+    } else {
+      if (userCompare.split(',').length > 3) {
+        alert('比較列表已滿，請移除1 項不須比較的商品');
+        return;
+      }
+      sessionStorage.setItem('compare', `${userCompare},${number}`);
+    }
+    img.setAttribute('src', '/static/imgs/checked.png');
+    addCompare(mainImage, name, number);
+  } else {
+    img.setAttribute('src', '/static/imgs/unchecked.png');
+    // Remove it from localstroage
+    userCompare = userCompare.split(',');
+    const deleteCompareIndex = userCompare.findIndex((p) => p == number);
+    userCompare.splice(deleteCompareIndex, 1);
+    userCompare = userCompare.join(',');
+    sessionStorage.setItem('compare', userCompare);
+    removeCompare(number);
+  }
+}
+
+function addCompare(mainImage, name, number) {
+  const comparsionUl = document.getElementById('comparsion_ul');
+  // create <li class='item'>
+  const li = document.createElement('li');
+  li.setAttribute('class', 'item');
+  li.setAttribute('number', number);
+  // create <div class='compare_product_info'>
+  const div = document.createElement('div');
+  div.setAttribute('class', 'compare_product_info');
+  li.appendChild(div);
+  // create <div class='delete_compare'> <img>
+  const divDelete = document.createElement('div');
+  const imgDelete = document.createElement('img');
+  divDelete.setAttribute('class', 'delete_compare');
+  imgDelete.setAttribute('src', '/static/imgs/remove.png');
+  imgDelete.setAttribute('onclick', 'clickRemoveCompare()');
+  divDelete.appendChild(imgDelete);
+  div.appendChild(divDelete);
+  // create <img> <h4>
+  const img = document.createElement('img');
+  const h4 = document.createElement('h4');
+  img.setAttribute('src', mainImage);
+  h4.innerHTML = name;
+  div.appendChild(img);
+  div.appendChild(h4);
+  comparsionUl.appendChild(li);
+}
+function removeCompare(number) {
+  const deleteItem = document.querySelector(`li[number='${number}']`);
+  if (deleteItem) deleteItem.remove();
+}
+
+function clickRemoveCompare() {
+  const li = event.target.parentElement.parentElement.parentElement;
+  const number = li.getAttribute('number');
+  // change checked img
+  const checkedImg = document.querySelector(`img[number='${number}']`);
+  if (checkedImg) checkedImg.setAttribute('src', '/static/imgs/unchecked.png');
+  // Remove it from localstroage
+  let userCompare = sessionStorage.getItem('compare');
+  userCompare = userCompare.split(',');
+  const deleteCompareIndex = userCompare.findIndex((p) => p == number);
+  userCompare.splice(deleteCompareIndex, 1);
+  userCompare = userCompare.join(',');
+  sessionStorage.setItem('compare', userCompare);
+  // Remove li
+  li.remove();
+}
+
+document.getElementById('comparsion_close').addEventListener('click', () => {
+  document.getElementById('comparison_bg').style.display = 'none';
+  document.getElementById('comparsion_arrow').style.display = 'flex';
+});
+
+document.getElementById('comparsion_arrow').addEventListener('click', () => {
+  document.getElementById('comparison_bg').style.display = 'block';
+});
+
+async function checkCompare() {
+  if (sessionStorage.getItem('compare')) {
+    if (window.location.pathname == '/compare') {
+      document.getElementById('comparsion_arrow').style.display = 'none';
+    } else {
+      let userCompare = sessionStorage.getItem('compare');
+      userCompare = userCompare.split(',');
+      for (let i = 0; i < userCompare.length; i += 1) {
+        const result = await fetch(`/api/1.0/products/details?number=${userCompare[i]}`).then((res) => res.json());
+        addCompare(result.data.main_image, result.data.name, result.data.number);
+      }
+      document.getElementById('comparsion_arrow').style.display = 'flex';
+    }
+  }
+}
+
+document.getElementById('go_to_compare').addEventListener('click', () => {
+  if (sessionStorage.getItem('compare')) window.location.href = '/compare';
+});
+
+window.onload = [headerSearch(), memberLogo(), checkCompare()];
