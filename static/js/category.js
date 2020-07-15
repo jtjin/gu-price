@@ -49,6 +49,30 @@ function createProducts(type, result) {
     const img = document.createElement('img');
     img.setAttribute('src', result.data[i].main_image);
     a.appendChild(img);
+    // Create <div class='compare'> <img> <p>
+    const divCompare = document.createElement('div');
+    const imgCompare = document.createElement('img');
+    const pCompare = document.createElement('p');
+    divCompare.setAttribute('class', 'compare');
+    divCompare.setAttribute('onclick', 'updateCompare()');
+    imgCompare.setAttribute('number', result.data[i].number);
+    // check if item in userCompare
+    let userCompare = sessionStorage.getItem('compare');
+    if (userCompare == 'undefined' || userCompare == 'null' || userCompare == '' || !userCompare) {
+      imgCompare.setAttribute('src', '/static/imgs/unchecked.png');
+    } else {
+      userCompare = userCompare.split(',');
+      const duplicateCompare = userCompare.find((p) => p == result.data[i].number);
+      if (duplicateCompare) {
+        imgCompare.setAttribute('src', '/static/imgs/checked.png');
+      } else {
+        imgCompare.setAttribute('src', '/static/imgs/unchecked.png');
+      }
+    }
+    pCompare.innerHTML = '加入比較表';
+    divCompare.appendChild(imgCompare);
+    divCompare.appendChild(pCompare);
+    a.appendChild(divCompare);
     // Create <div clsas='name'>
     const divName = document.createElement('div');
     divName.setAttribute('class', 'name');

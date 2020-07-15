@@ -56,8 +56,12 @@ main > .view > .products > .products_ul > .product > .productInfo {
   padding: 10px 5px;
 }
 
-main > .view > .products > .products_ul > .product > .productInfo > img {
+main > .view > .products > .products_ul > .product > .productInfo > a {
   width: 85%;
+}
+
+main > .view > .products > .products_ul > .product > .productInfo > a > img {
+  width: 100%;
   border-radius: 5px;
 }
 
@@ -98,9 +102,26 @@ main > .view > .products > .products_ul > .product > .productInfo > .price > .hi
 }
 
 main > .view > .msg {
-  margin: 20px;
+  margin: 0 20px;
   text-align: center;
   flex: 1 100%;
   font-size: 1.5rem;
   font-weight: 600;
+}
+
+main > .view > .back {
+  margin: 0 20px;
+  border-top: 1px solid #e6e6e6;
+  padding-top: 6px;
+  color: #7a7a7a;
+}
+
+main > .view > .back > p {
+  width: 150px;
+  margin: 0;
+  cursor: pointer;
+}
+
+main > .view > .back > p:hover {
+  opacity: 0.7;
 }
