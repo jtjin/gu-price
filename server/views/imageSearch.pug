@@ -16,10 +16,10 @@ block content
   main
    .view
       h2 搜尋結果
+         img#image_url.image_url(src= imageUrl)
       #products.products
       #msg.msg= msg
       img#loading_gif.loading_gif(src='/static/imgs/loading.gif')
-      #image_url.image_url= imageUrl
       #object.object= object
 
 

@@ -1,4 +1,4 @@
-const url = document.getElementById('image_url').innerHTML;
+const url = document.getElementById('image_url').getAttribute('src');
 const object = document.getElementById('object').innerHTML;
 const loadingGif = document.getElementById('loading_gif');
 const products = document.getElementById('products');
@@ -35,26 +35,6 @@ async function getAllProducts() {
   }
   loadingGif.style.display = 'none';
 }
-
-// async function getAllProducts() {
-//   const allImageUrls = await fetch('/api/1.0/products/imageSearch').then((res) => res.json());
-//   for (let i = 0; i < allImageUrls.length; i += 1) {
-//     const result = await imageSimilarity(imageSearch, allImageUrls[i].main_image);
-//     if (result.output.distance < 20) {
-//       const data = await fetch(`/api/1.0/products/details?number=${allImageUrls[i].number}`).then((res) => res.json());
-//       createProducts(data.data);
-//     }
-//   }
-//   loadingGif.style.display = 'none';
-//   if (!products.innerHTML) {
-//     const msg = document.getElementById('msg');
-//     msg.innerHTML = '我們無法找到符合此圖片的任何項目。';
-//   }
-// }
-
-// async function imageSimilarity(image1, image2) {
-//   return await deepai.callStandardApi('image-similarity', { image1, image2 });
-// }
 
 function createProducts(data, imageUrl) {
   // Create <a class='prdocut'>
