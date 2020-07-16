@@ -43,7 +43,8 @@ main > .view > .msg {
   font-weight: 600;
 }
 
-main > .view > .image_search {
+main > .view > .image_url,
+main > .view > .object {
   display: none;
 }
 

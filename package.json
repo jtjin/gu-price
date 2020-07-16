@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jtjin/GUprice#readme",
   "dependencies": {
+    "@google-cloud/vision": "^2.1.1",
     "@node-rs/jieba": "^0.3.0",
     "aws-sdk": "^2.712.0",
     "bcrypt": "^5.0.0",

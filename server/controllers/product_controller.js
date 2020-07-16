@@ -1,8 +1,16 @@
 require('dotenv').config();
 const _ = require('lodash');
 const fs = require('fs');
+const vision = require('@google-cloud/vision');
 const Product = require('../models/product_model');
 const data = require('../data/data.json');
+
+const productSearchClient = new vision.ProductSearchClient({
+  keyFilename: './mykey.json',
+});
+const imageAnnotatorClient = new vision.ImageAnnotatorClient({
+  keyFilename: './mykey.json',
+});
 
 let jieba;
 switch (process.env.SYSTEM) {
@@ -39,9 +47,6 @@ const getProducts = async (req, res) => {
           return await Product.getProducts(pageSize, paging, { number });
         }
         break;
-      }
-      case 'imageSearch': {
-        return await Product.getProductsImageUrls();
       }
     }
     return Promise.resolve({});
@@ -138,8 +143,63 @@ const getProductsName = async (req, res) => {
   }
 };
 
+const imageSearch = async (req, res) => {
+  const result = await getSimilarProducts(req.body.url, req.body.object);
+  if (result.error) {
+    console.log(result.error);
+    res.status(400).send({ error: 'Wrong Request' });
+  } else if (result.length == 0) {
+    res.status(200).send({ error: 'No similar product' });
+  } else {
+    res.status(200).json(result);
+  }
+};
+
+const getSimilarProducts = async (url, object) => {
+  const projectId = 'gu-price';
+  const location = 'asia-east1';
+  const productSetId = object;
+  const productCategory = 'apparel-v2';
+  const filePath = url;
+  const filter = '';
+  const productSetPath = productSearchClient.productSetPath(
+    projectId,
+    location,
+    productSetId,
+  );
+  const request = {
+    image: { source: { imageUri: filePath } },
+    features: [{ type: 'PRODUCT_SEARCH', maxResults: '10' }],
+    imageContext: {
+      productSearchParams: {
+        productSet: productSetPath,
+        productCategories: [productCategory],
+        filter,
+      },
+    },
+  };
+  const [response] = await imageAnnotatorClient.batchAnnotateImages({
+    requests: [request],
+  });
+  if (response.responses[0].error) {
+    return { error: response.responses[0].error };
+  }
+  const { results } = response.responses[0].productSearchResults;
+  const similarProducts = [];
+  results.flatMap((result) => {
+    if (result.score >= 0.8) {
+      name = result.product.name.split('/').pop(-1);
+      imageUrl = `https://storage.cloud.google.com/jtjin-gu-price/${object}/${name}.jpg`;
+      number = result.product.displayName;
+      similarProducts.push({ imageUrl, number });
+    }
+  });
+  return similarProducts;
+};
+
 module.exports = {
   getProducts,
   updateFavorite,
   getProductsName,
+  imageSearch,
 };

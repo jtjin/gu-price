@@ -1,35 +1,69 @@
-const imageSearch = document.getElementById('image_search').innerHTML;
+const url = document.getElementById('image_url').innerHTML;
+const object = document.getElementById('object').innerHTML;
 const loadingGif = document.getElementById('loading_gif');
 const products = document.getElementById('products');
 
 async function getAllProducts() {
-  const allImageUrls = await fetch('/api/1.0/products/imageSearch').then((res) => res.json());
-  for (let i = 0; i < allImageUrls.length; i += 1) {
-    const result = await imageSimilarity(imageSearch, allImageUrls[i].main_image);
-    if (result.output.distance < 20) {
-      const data = await fetch(`/api/1.0/products/details?number=${allImageUrls[i].number}`).then((res) => res.json());
-      createProducts(data.data);
-    }
+  if (document.getElementById('msg').innerHTML) {
+    // No file upload
+    loadingGif.style.display = 'none';
+    return;
   }
-  loadingGif.style.display = 'none';
-  if (!products.innerHTML) {
+
+  const uploadImage = { url, object };
+  const similarProducts = await fetch('/api/1.0/imageSearch', {
+    body: JSON.stringify(uploadImage),
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST',
+  }).then((res) => res.json());
+
+  if (similarProducts.error) {
+    // no similar product
+    console.log(similarProducts.error);
+    loadingGif.style.display = 'none';
     const msg = document.getElementById('msg');
     msg.innerHTML = '我們無法找到符合此圖片的任何項目。';
+    return;
   }
+
+  for (let i = 0; i < similarProducts.length; i += 1) {
+    // get product detail with number
+    const data = await fetch(`/api/1.0/products/details?number=${similarProducts[i].number}`).then((res) => res.json());
+    createProducts(data.data, similarProducts[i].imageUrl);
+  }
+  loadingGif.style.display = 'none';
 }
 
-async function imageSimilarity(image1, image2) {
-  return await deepai.callStandardApi('image-similarity', { image1, image2 });
-}
+// async function getAllProducts() {
+//   const allImageUrls = await fetch('/api/1.0/products/imageSearch').then((res) => res.json());
+//   for (let i = 0; i < allImageUrls.length; i += 1) {
+//     const result = await imageSimilarity(imageSearch, allImageUrls[i].main_image);
+//     if (result.output.distance < 20) {
+//       const data = await fetch(`/api/1.0/products/details?number=${allImageUrls[i].number}`).then((res) => res.json());
+//       createProducts(data.data);
+//     }
+//   }
+//   loadingGif.style.display = 'none';
+//   if (!products.innerHTML) {
+//     const msg = document.getElementById('msg');
+//     msg.innerHTML = '我們無法找到符合此圖片的任何項目。';
+//   }
+// }
 
-function createProducts(data) {
+// async function imageSimilarity(image1, image2) {
+//   return await deepai.callStandardApi('image-similarity', { image1, image2 });
+// }
+
+function createProducts(data, imageUrl) {
   // Create <a class='prdocut'>
   const a = document.createElement('a');
   a.setAttribute('class', 'product');
   a.setAttribute('href', `/products/${data.number}`);
   // Create <img>, <div clsas='colors'>
   const img = document.createElement('img');
-  img.setAttribute('src', data.main_image);
+  img.setAttribute('src', imageUrl);
   a.appendChild(img);
   // Create <div clsas='compare'> <img> <p>
   const divCompare = document.createElement('div');

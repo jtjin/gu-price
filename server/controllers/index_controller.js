@@ -1,6 +1,11 @@
 require('dotenv').config();
 const crypto = require('crypto');
+const vision = require('@google-cloud/vision');
 const Index = require('../models/index_model');
+
+const client = new vision.ImageAnnotatorClient({
+  keyFilename: './mykey.json',
+});
 
 const getProducts = async (req, res) => {
   const { category, type } = req.params;
@@ -37,10 +42,25 @@ const getProducts = async (req, res) => {
 
 const imageSearch = async (req, res) => {
   if (req.file) {
-    res.status(200).render('imageSearch', { imageSearch: req.file.location });
+    const object = await localizeObjects(req.file.location);
+    if (object.length > 1) {
+      // too many objects
+      res.status(200).render('imageSearch', { msg: '我們無法找到符合此圖片的任何項目。' });
+    } else if (object.length == 0) {
+      // no object found
+      res.status(200).render('imageSearch', { msg: '請再嘗試一次。' });
+    } else {
+      res.status(200).render('imageSearch', { imageUrl: req.file.location, object: object[0].toLowerCase() });
+    }
   } else {
-    res.status(200).render('search', { msg: '我們無法找到符合此圖片的任何項目。' });
+    res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });
   }
+};
+
+const localizeObjects = async (uri) => {
+  const [result] = await client.objectLocalization(uri);
+  const objects = result.localizedObjectAnnotations;
+  return objects.flatMap((object) => object.name);
 };
 
 const confirmEmail = async (req, res) => {

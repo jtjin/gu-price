@@ -40,11 +40,6 @@ const getProductsPrices = async (productIds) => {
   return await query(queryStr, bindings);
 };
 
-const getProductsImageUrls = async () => {
-  const products = await query('SELECT number, main_image FROM product GROUP BY number');
-  return { products };
-};
-
 const updateFavorite = async (favorite, id) => {
   try {
     await query('START TRANSACTION');
@@ -62,7 +57,6 @@ const getProductsName = async () => await query('SELECT name FROM product GROUP 
 module.exports = {
   getProducts,
   getProductsPrices,
-  getProductsImageUrls,
   updateFavorite,
   getProductsName,
 };
