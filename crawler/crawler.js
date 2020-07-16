@@ -160,6 +160,7 @@ async function createProduct(data) {
       wash: data.wash,
       main_image: data.mainImage,
       images: JSON.stringify(data.images),
+      date: data.date,
     };
     const result = await mysql.query('INSERT INTO product SET ?', newData);
     await CreateDatePrice(data.date, result.insertId, parseInt(data.price.replace(',', '')));
