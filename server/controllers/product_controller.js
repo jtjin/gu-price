@@ -189,7 +189,7 @@ const getSimilarProducts = async (url, object) => {
   results.flatMap((result) => {
     if (result.score >= 0.8) {
       name = result.product.name.split('/').pop(-1);
-      imageUrl = `https://storage.cloud.google.com/jtjin-gu-price/${object}/${name}.jpg`;
+      imageUrl = `https://storage.googleapis.com/jtjin-gu-price/${object}/${name}.jpg`;
       number = result.product.displayName;
       similarProducts.push({ imageUrl, number });
     }
