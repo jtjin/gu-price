@@ -69,7 +69,7 @@ const sendEmail = async (protocol, hostname, email) => {
   }
 
   const mail = {
-    from: 'GU-price <B10031029@gapps.ntust.edu.tw>',
+    from: 'GU-Price <gu.price.search@gmail.com>',
     subject: 'Confirm Email',
     to: email,
     html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
