@@ -292,6 +292,10 @@ function updateCompare() {
         alert('比較列表已滿，請移除1 項不須比較的商品');
         return;
       }
+      if (userCompare.split(',').find((p) => p == number)) {
+        alert('商品已在比較列表');
+        return;
+      }
       sessionStorage.setItem('compare', `${userCompare},${number}`);
     }
     img.setAttribute('src', '/static/imgs/checked.png');

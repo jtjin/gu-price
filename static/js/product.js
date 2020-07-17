@@ -55,7 +55,7 @@ function drawDatePrice(data) {
   const datePrice = {
     x: data.date,
     y: data.price,
-    mode: 'lines + markers',
+    mode: 'lines+markers',
     type: 'scatter',
     fill: 'tozeroy',
   };
