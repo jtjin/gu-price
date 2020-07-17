@@ -20,11 +20,16 @@ async function getAllProducts() {
   }).then((res) => res.json());
 
   if (similarProducts.error) {
-    // no similar product
     console.log(similarProducts.error);
     loadingGif.style.display = 'none';
     const msg = document.getElementById('msg');
-    msg.innerHTML = '我們無法找到符合此圖片的任何項目。';
+    if (similarProducts.error.code == 5) {
+      // no similar product
+      msg.innerHTML = '我們無法找到符合此圖片的任何項目。';
+      return;
+    }
+    // access URL problem
+    msg.innerHTML = '請再嘗試一次。';
     return;
   }
 

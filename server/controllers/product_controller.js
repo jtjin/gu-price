@@ -147,9 +147,7 @@ const imageSearch = async (req, res) => {
   const result = await getSimilarProducts(req.body.url, req.body.object);
   if (result.error) {
     console.log(result.error);
-    res.status(400).send({ error: 'Wrong Request' });
-  } else if (result.length == 0) {
-    res.status(200).send({ error: 'No similar product' });
+    res.status(400).send({ error: result.error });
   } else {
     res.status(200).json(result);
   }
@@ -187,13 +185,19 @@ const getSimilarProducts = async (url, object) => {
   const { results } = response.responses[0].productSearchResults;
   const similarProducts = [];
   results.flatMap((result) => {
-    if (result.score >= 0.65) {
+    if (result.score >= 0.75) {
       name = result.product.name.split('/').pop(-1);
       imageUrl = `https://storage.googleapis.com/jtjin-gu-price/${object}/${name}.jpg`;
       number = result.product.displayName;
       similarProducts.push({ imageUrl, number });
     }
   });
+  if (results.length > 0 && similarProducts.length == 0) {
+    name = results[0].product.name.split('/').pop(-1);
+    imageUrl = `https://storage.googleapis.com/jtjin-gu-price/${object}/${name}.jpg`;
+    number = results[0].product.displayName;
+    similarProducts.push({ imageUrl, number });
+  }
   return similarProducts;
 };
 
