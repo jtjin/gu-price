@@ -25,11 +25,11 @@ async function getAllProducts() {
     const msg = document.getElementById('msg');
     if (similarProducts.error.code == 5) {
       // no similar product
-      msg.innerHTML = '我們無法找到符合此圖片的任何項目。';
+      msg.innerHTML = '我們無法找到符合此圖片的任何項目。<br>(資料庫商品分類不夠多...)';
       return;
     }
     // access URL problem
-    msg.innerHTML = '請再嘗試一次。';
+    msg.innerHTML = '圖片上傳失敗，請再嘗試一次。';
     return;
   }
 

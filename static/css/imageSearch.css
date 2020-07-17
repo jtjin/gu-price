@@ -47,6 +47,7 @@ main > .view > .msg {
   flex: 1 100%;
   font-size: 1.5rem;
   font-weight: 600;
+  line-height: 2.5rem;
 }
 
 main > .view > .object {
