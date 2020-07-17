@@ -23,6 +23,10 @@ html
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'UA-172748058-1');
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
+        script.
+            const socket = io();
+            socket.emit('message', window.location.href)
 body
     header.main_header
         .container
