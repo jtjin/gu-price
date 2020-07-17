@@ -46,14 +46,11 @@ const imageSearch = async (req, res) => {
     if (object.length > 1) {
       // too many objects
       res.status(200).render('imageSearch', { imageUrl: req.file.location, msg: '圖片中包含的商品種類過多，請縮小範圍。' });
-      return
     } else if (object.length == 0) {
       // no object found
       res.status(200).render('imageSearch', { imageUrl: req.file.location, msg: '找不到圖片中包含的商品種類，請再嘗試一次。' });
-      return
     } else {
       res.status(200).render('imageSearch', { imageUrl: req.file.location, object: object[0].toLowerCase() });
-      return
     }
   } else {
     res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });

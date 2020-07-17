@@ -18,9 +18,6 @@ function showProduct(result) {
   // number
   const number = document.getElementById('number');
   number.innerHTML = `商品編號 ${result.data.number}`;
-  // track number
-  const trackNumber = document.getElementById('track_number');
-  trackNumber.value = result.data.number;
   // highest_price
   const highestPrice = document.getElementById('highest_price');
   highestPrice.innerHTML = `${result.data.highest_price} 歷史高價`;
@@ -30,6 +27,7 @@ function showProduct(result) {
   // current_price
   const currentPrice = document.getElementById('current_price');
   currentPrice.innerHTML = `${result.data.current_price} </br> 現在售價`;
+  document.getElementById('track_price').setAttribute('max', result.data.current_price);
   // price_curve
   drawDatePrice(result.data);
   // about
@@ -158,14 +156,17 @@ function getTrackEmail() {
 
 trackBtn.addEventListener('click', () => {
   event.preventDefault();
-  const number = document.getElementById('track_number').value;
+  const { number } = product.data;
+  const { name } = product.data;
+  const currentPrice = product.data.current_price;
+  const mainImage = product.data.main_image;
   const price = document.getElementById('track_price').value;
   if (!price) {
     alert('請輸入期望價格');
     return;
   }
-  if (price < 0 || price > `${product.data.current_price}`) {
-    alert(`價格必須介於 0 至 ${product.data.current_price}`);
+  if (price < 0 || price > currentPrice) {
+    alert(`價格必須介於 0 至 ${currentPrice}`);
     return;
   }
   const email = document.getElementById('track_email').value;
@@ -178,7 +179,9 @@ trackBtn.addEventListener('click', () => {
     alert('請輸入正確信箱格式');
     return;
   }
-  const data = { number, price, email };
+  const data = {
+    name, number, mainImage, currentPrice, price, email,
+  };
   fetch('/api/1.0/user/track', {
     body: JSON.stringify(data),
     headers: {

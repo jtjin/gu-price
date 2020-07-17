@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const mysql = require('../util/mysqlcon');
+const { send } = require('../util/util.js');
 
 // Create Today Date(ex: 20200701)
 function getTodayDate() {
@@ -199,12 +200,67 @@ async function main(category) {
   }
   console.log(`Finished ${category} data at ${new Date()}`);
 }
+
+// Send e-mail to users who track the product
+async function getTrack() {
+  console.log(`Start sending track mail at ${new Date()}`);
+  const queryStr = `
+              SELECT t.id, t.email, p.name, p.number, p.main_image AS mainImage, t.price AS trackPrice, d.price AS currentPrice FROM product AS p
+              INNER JOIN track AS t ON p.number = t.number
+              INNER JOIN date_price AS d ON p.id = d.product_id
+              WHERE d.date = ? AND t.confirmed = 0
+              `;
+  const result = await mysql.query(queryStr, getTodayDate());
+  for (let i = 0; i < result.length; i += 1) {
+    if (result[i].currentPrice <= result[i].trackPrice) {
+      try {
+        await sendTrackEmail(result[i].name, result[i].number, result[i].mainImage, result[i].currentPrice, result[i].email);
+        await updateTrackStatus(result[i].id);
+      } catch (error) {
+        console.log(result[i]);
+        console.log(error);
+      }
+    }
+  }
+  console.log(`Finished sending track mail at ${new Date()}`);
+}
+
+const sendTrackEmail = async (name, number, mainImage, currentPrice, email) => {
+  const mail = {
+    from: 'GU-Price <gu.price.search@gmail.com>',
+    subject: `GU-Price 降價通知- ${name}`,
+    to: email,
+    html: `
+            <p>Hi! ${email.split('@')[0]}</p>
+            <h2>您在 GU-Price 追蹤的「${name}」商品有降價優惠，請<a href="https://gu-price.jtjin.xyz/products/${number}">點此</a>查看詳情。</h2>
+            <h3>目前售價： ${currentPrice} 元</h3>
+            <img src="${mainImage}" height="150">
+          `,
+  };
+  await send(mail);
+};
+
+const updateTrackStatus = async (id) => {
+  try {
+    await mysql.query('START TRANSACTION');
+    const queryStr = 'UPDATE track SET confirmed = ? WHERE id = ?';
+    await mysql.query(queryStr, [true, id]);
+    await mysql.query('COMMIT');
+    return;
+  } catch (error) {
+    await mysql.query('ROLLBACK');
+    return { error };
+  }
+};
+
 async function start() {
   await main('men');
   await main('women');
   await main('kids');
+  await getTrack();
   console.log('Everything has done!');
   mysql.pool.end();
 }
 
 start();
+

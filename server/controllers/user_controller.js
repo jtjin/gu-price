@@ -35,7 +35,7 @@ const signUp = async (req, res) => {
     return;
   }
 
-  const emailResult = await sendEmail(req.protocol, req.hostname, result.user.email);
+  const emailResult = await sendConfirmEmail(req.protocol, req.hostname, result.user.email);
   if (!emailResult.status) {
     res.status(500).send({ error: 'Nodemailer Error' });
     return;
@@ -57,7 +57,7 @@ const signUp = async (req, res) => {
   });
 };
 
-const sendEmail = async (protocol, hostname, email) => {
+const sendConfirmEmail = async (protocol, hostname, email) => {
   const mykey = crypto.createCipheriv('aes-128-cbc', process.env.CRYPTO_KEY, process.env.CRYPTO_IV);
   let emailToken = mykey.update(email, 'utf8', 'hex');
   emailToken += mykey.final('hex');
@@ -197,9 +197,37 @@ const createTrack = async (req, res) => {
     number: body.number,
     price: body.price,
     email: body.email,
+    confirmed: false,
   };
   const trackId = await User.createTrack(track);
+  if (!trackId) {
+    res.status(500).send({ error: 'Database Query Error' });
+    return;
+  }
+
+  const emailResult = await sendTrackEmail(body.name, body.mainImage, body.currentPrice, body.price, body.email);
+  if (!emailResult.status) {
+    res.status(500).send({ error: 'Nodemailer Error' });
+    return;
+  }
   res.status(200).send({ trackId });
+};
+
+const sendTrackEmail = async (name, mainImage, currentPrice, price, email) => {
+  const mail = {
+    from: 'GU-Price <gu.price.search@gmail.com>',
+    subject: `GU-Price 價格追蹤- ${name}`,
+    to: email,
+    html: `
+            <p>Hi! ${email.split('@')[0]}</p>
+            <h2>您已在 GU-Price 追蹤「${name}」商品的價格</h2>
+            <img src="${mainImage}" height="150">
+            <p>當前的價格為 ${currentPrice} 元，若商品價格低於您設定的 ${price} 元以下，我們將會發通知信給您。</p>
+          `,
+  };
+
+  const result = await send(mail);
+  return result;
 };
 
 module.exports = {
