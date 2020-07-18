@@ -29,7 +29,7 @@ html
             if (window.location.pathname != '/dashboard') {
                 socket.emit('in', window.location.pathname)
                 window.onbeforeunload = () => {
-                    socket.emit('out', window.location.pathname)
+                    socket.emit('out')
                 }
             }
 body

@@ -51,21 +51,19 @@ http_io.on('connection', (socket) => {
       id: socket.id,
       ip,
       url,
-      ip2: `***.***.***.${ip.substring(ip.lastIndexOf('.') + 1)}`,
       connections: Object.keys(http_io.sockets.connected).length,
     });
   });
-  socket.on('out', (msg) => {
-    url = msg;
+  socket.on('out', () => {
     http_io.emit('pageviewDisconnect', {
       id: socket.id,
-      ip,
-      url,
-      ip2: `***.***.***.${ip.substring(ip.lastIndexOf('.') + 1)}`,
       connections: Object.keys(http_io.sockets.connected).length,
     });
   });
   socket.on('disconnect', () => {
-    http_io.emit('pageviewDisconnect', { connections: Object.keys(http_io.sockets.connected).length });
+    http_io.emit('pageviewDisconnect', { 
+      id: socket.id,
+      connections: Object.keys(http_io.sockets.connected).length
+    });
   });
 });

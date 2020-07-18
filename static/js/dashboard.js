@@ -35,7 +35,7 @@ socket.on('pageviewConnect', (msg) => {
 
 socket.on('pageviewDisconnect', (msg) => {
   $('#connections').html(msg.connections);
-  if (msg.url && $(`#${msg.id}`)) {
+  if ($(`#${msg.id}`)) {
     $(`#${msg.id}`).remove();
   }
 });
