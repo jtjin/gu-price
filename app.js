@@ -4,8 +4,6 @@ const { PORT, API_VERSION } = process.env;
 const express = require('express');
 const bodyparser = require('body-parser');
 const path = require('path');
-const logger = require('morgan'); // HTTP request logger
-const _ = require('lodash');
 
 const app = express();
 const httpServer = require('http').createServer(app);
@@ -15,7 +13,6 @@ app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
 
 app.use('/static', express.static('static'));
-app.use(logger('dev'));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 
@@ -47,14 +44,28 @@ httpServer.listen(PORT, () => { console.log(`Listening on port: ${PORT}`); });
 
 // Socket
 http_io.on('connection', (socket) => {
-  console.log('a user connected');
-
-  socket.on('message', (msg) => {
-    console.log("Got message: " + msg);
-    ip = socket.request.connection.remoteAddress;
+  ip = socket.handshake.headers['x-real-ip'] ? socket.handshake.headers['x-real-ip'] : socket.handshake.address;
+  socket.on('in', (msg) => {
     url = msg;
-    console.log(url);
-    console.log(ip)
-    // http_io.emit('someone_paid', 'Update dashboard');
+    http_io.emit('pageviewConnect', {
+      id: socket.id,
+      ip,
+      url,
+      ip2: `***.***.***.${ip.substring(ip.lastIndexOf('.') + 1)}`,
+      connections: Object.keys(http_io.sockets.connected).length,
+    });
+  });
+  socket.on('out', (msg) => {
+    url = msg;
+    http_io.emit('pageviewDisconnect', {
+      id: socket.id,
+      ip,
+      url,
+      ip2: `***.***.***.${ip.substring(ip.lastIndexOf('.') + 1)}`,
+      connections: Object.keys(http_io.sockets.connected).length,
+    });
+  });
+  socket.on('disconnect', () => {
+    http_io.emit('pageviewDisconnect', { connections: Object.keys(http_io.sockets.connected).length });
   });
 });

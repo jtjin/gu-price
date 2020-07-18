@@ -26,7 +26,12 @@ html
         script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
         script.
             const socket = io();
-            socket.emit('message', window.location.href)
+            if (window.location.pathname != '/dashboard') {
+                socket.emit('in', window.location.pathname)
+                window.onbeforeunload = () => {
+                    socket.emit('out', window.location.pathname)
+                }
+            }
 body
     header.main_header
         .container
