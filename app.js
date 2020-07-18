@@ -51,19 +51,19 @@ http_io.on('connection', (socket) => {
       id: socket.id,
       ip,
       url,
-      connections: Object.keys(http_io.sockets.connected).length,
+      connections: Object.keys(http_io.sockets.connected).length - 1,
     });
   });
   socket.on('out', () => {
     http_io.emit('pageviewDisconnect', {
       id: socket.id,
-      connections: Object.keys(http_io.sockets.connected).length,
+      connections: Object.keys(http_io.sockets.connected).length - 1,
     });
   });
   socket.on('disconnect', () => {
     http_io.emit('pageviewDisconnect', {
       id: socket.id,
-      connections: Object.keys(http_io.sockets.connected).length,
+      connections: Object.keys(http_io.sockets.connected).length - 1,
     });
   });
 });
