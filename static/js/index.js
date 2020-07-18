@@ -13,7 +13,13 @@ function isValid(str) {
 function mainSearchBtn() {
   if (searchMain.value) {
     if (!isValid(searchMain.value)) {
-      alert('請勿輸入符號');
+      Swal.fire({
+        icon: 'warning',
+        title: '請勿輸入特殊符號！',
+        text: '不接受空格、@、!、$、^、&...等特殊符號',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText:　'我知道了',
+      });
       return;
     }
     switch (selectMain.value) {
@@ -43,9 +49,21 @@ imageSearchIcon.addEventListener('click', () => {
 });
 imageSearchFile.addEventListener('change', () => {
   if (/\.(jpe?g|png)$/i.test(imageSearchFile.files[0].name) === false) {
-    alert('請上傳正確圖片格式!');
+    Swal.fire({
+      icon: 'error',
+      title: '請上傳正確圖片格式！',
+      text: '只接受 JPG/JPEG/PNG 圖檔',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText:　'我知道了',
+    });
   } else {
     imageSearchSubmit.click();
+    Swal.fire({
+      imageUrl: '/static/imgs/spinner.gif',
+      title: '圖片上傳中...',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
   }
 });
 

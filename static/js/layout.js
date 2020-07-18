@@ -44,7 +44,13 @@ function isValid(str) {
 function headerSearchBtn() {
   if (searchHeader.value) {
     if (!isValid(searchHeader.value)) {
-      alert('請勿輸入符號');
+      Swal.fire({
+        icon: 'warning',
+        title: '請勿輸入特殊符號！',
+        text: '不接受空格、@、!、$、^、&...等特殊符號',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText:　'我知道了',
+      });
       return;
     }
     window.location.href = `/search/${searchHeader.value}`;
@@ -75,31 +81,61 @@ function signupRender(obj) {
   document.getElementById('signup_name').value = '';
   document.getElementById('signup_email').value = '';
   document.getElementById('signup_password').value = '';
-  document.getElementById('member_modal_bg').style.display = 'none';
   if (obj.error) {
-    alert(obj.error);
+    Swal.fire({
+      icon: 'warning',
+      text: obj.error,
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } else if (obj.data.access_token) {
-    alert('註冊成功! 系統已發送「認證信」至您的電子信箱!');
-    location.reload();
+    Swal.fire({
+      icon: 'success',
+      title: '註冊成功！',
+      text: '系統已發送「認證信」至您的電子信箱',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText:　'確定',
+    });
+    document.getElementById('member_modal').style.display = 'none';
   } else {
-    alert('Oops, something went wrong!');
+    Swal.fire({
+      icon: 'warning',
+      text: '請再嘗試一次',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }
-function loginRender(obj) {
+async function loginRender(obj) {
   document.getElementById('login_email').value = '';
   document.getElementById('login_password').value = '';
   if (obj.error) {
-    alert(obj.error);
+    Swal.fire({
+      icon: 'warning',
+      text: obj.error,
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } else if (obj.data.access_token) {
     localStorage.setItem('token', obj.data.access_token);
     localStorage.setItem('id', obj.data.user.id);
     localStorage.setItem('photo', obj.data.user.picture);
     localStorage.setItem('name', obj.data.user.name);
     localStorage.setItem('email', obj.data.user.email);
-    alert('登入成功!');
+    await Swal.fire({
+      icon: 'success',
+      text: '登入成功',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     window.location.href = '/profile';
   } else {
-    alert('Oops, something went wrong!');
+    Swal.fire({
+      icon: 'warning',
+      text: '請再嘗試一次',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }
 // Native Signup Function
@@ -107,29 +143,53 @@ signupBtn.addEventListener('click', () => {
   event.preventDefault();
   const name = document.getElementById('signup_name').value;
   if (!name) {
-    alert('Please enter your name');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入用戶名稱',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   const email = document.getElementById('signup_email').value;
   const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
   if (!email) {
-    alert('Please enter your email');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入 Email',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   if (email.search(emailRule) == -1) {
-    alert('Invalid email address');
+    Swal.fire({
+      icon: 'error',
+      text: 'Email 格式錯誤',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   const password = document.getElementById('signup_password').value;
   if (!password) {
-    alert('Please enter your password');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入密碼',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   const provider = 'native';
   const result = {
     name, email, password, provider,
   };
-  document.getElementById('member_modal_bg').style.display = 'block';
+  Swal.fire({
+    imageUrl: '/static/imgs/spinner.gif',
+    showConfirmButton: false,
+    allowOutsideClick: false,
+  });
   postData('/api/1.0/user/signup', result, signupRender);
 });
 // Login function
@@ -138,16 +198,31 @@ loginBtn.addEventListener('click', () => {
   const email = document.getElementById('login_email').value;
   const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
   if (!email) {
-    alert('Please enter your email');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入 Email',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   if (email.search(emailRule) == -1) {
-    alert('Invalid email address');
+    Swal.fire({
+      icon: 'error',
+      text: 'Email 格式錯誤',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   const password = document.getElementById('login_password').value;
   if (!password) {
-    alert('Please enter your password');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入密碼',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   const provider = 'native';
@@ -187,7 +262,12 @@ function FacebookLogin() {
       };
       postData('/api/1.0/user/signin', result, loginRender);
     } else {
-      alert('Please try again');
+      Swal.fire({
+        icon: 'warning',
+        text: '請再嘗試一次',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   }, { scope: 'public_profile, email' });
 }
@@ -244,7 +324,12 @@ function GoogleLogin() {
       postData('/api/1.0/user/signin', result, loginRender);
     })
     .catch((error) => {
-      alert('Please try again');
+      Swal.fire({
+        icon: 'warning',
+        text: '請再嘗試一次',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       console.log(error);
     });
 }
@@ -289,11 +374,21 @@ function updateCompare() {
       sessionStorage.setItem('compare', number);
     } else {
       if (userCompare.split(',').length > 3) {
-        alert('比較列表已滿，請移除1 項不須比較的商品');
+        Swal.fire({
+          icon: 'warning',
+          title: '比較列表已滿！',
+          text: '請移除 1 項不須比較的商品',
+          confirmButtonText:　'確定',
+        });
         return;
       }
       if (userCompare.split(',').find((p) => p == number)) {
-        alert('商品已在比較列表');
+        Swal.fire({
+          icon: 'warning',
+          title: '商品已在比較列表中！',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         return;
       }
       sessionStorage.setItem('compare', `${userCompare},${number}`);

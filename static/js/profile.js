@@ -1,7 +1,13 @@
 async function getProfile() {
   if (!localStorage.getItem('token')) {
     // Check if token is available
-    alert('Invalid acess, please signup or login!');
+    await Swal.fire({
+      icon: 'error',
+      title: '存取無效！',
+      text: '請註冊帳號或登入會員',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     window.location.href = '/';
   } else {
     const bearer = `Bearer ${localStorage.getItem('token')}`;
@@ -12,7 +18,12 @@ async function getProfile() {
     }).then((res) => res.json());
     // Check if token correct
     if (result.error) {
-      alert('Invalid acess, please signup or login!');
+      await Swal.fire({
+        icon: 'warning',
+        text: result.error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       localStorage.clear();
       window.location.href = '/';
     }
@@ -21,7 +32,12 @@ async function getProfile() {
     if (time <= result.data.access_expired) {
       createProfile(result.data);
     } else {
-      alert('Your token has expired, please login again!');
+      await Swal.fire({
+        icon: 'warning',
+        text: '您的存取權杖已過期，請重新登入',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       localStorage.clear();
       window.location.href = '/';
     }
@@ -101,31 +117,53 @@ function createProducts(data) {
 async function deleteFavorite() {
   event.preventDefault();
   const product = event.target.parentElement.parentElement;
-  let number = product.getElementsByClassName('number');
-  number = number[0].innerHTML;
-  // Post the updateFavorite to server
-  let userFavorite = localStorage.getItem('favorite').split(',');
-  const deleteFavoriteIndex = userFavorite.findIndex((p) => p == number);
-  userFavorite.splice(deleteFavoriteIndex, 1);
-  userFavorite = userFavorite.join(',');
-  const updateFavorite = {
-    favorite: userFavorite,
-    id: localStorage.getItem('id'),
-  };
-  const result = await fetch('/api/1.0/favorite', {
-    body: JSON.stringify(updateFavorite),
-    headers: {
-      'content-type': 'application/json',
-    },
-    method: 'POST',
-  }).then((res) => res.json());
+  Swal.fire({
+    title: '確定要移除收藏嗎？',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '確定',
+    cancelButtonText: '取消',
+  }).then(async (result) => {
+    if (result.value) {
+      let number = product.getElementsByClassName('number');
+      number = number[0].innerHTML;
+      // Post the updateFavorite to server
+      let userFavorite = localStorage.getItem('favorite').split(',');
+      const deleteFavoriteIndex = userFavorite.findIndex((p) => p == number);
+      userFavorite.splice(deleteFavoriteIndex, 1);
+      userFavorite = userFavorite.join(',');
+      const updateFavorite = {
+        favorite: userFavorite,
+        id: localStorage.getItem('id'),
+      };
+      const result = await fetch('/api/1.0/favorite', {
+        body: JSON.stringify(updateFavorite),
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: 'POST',
+      }).then((res) => res.json());
 
-  if (result.error) {
-    alert('收藏移除失敗');
-  } else {
-    alert('收藏移除成功');
-    location.reload();
-  }
+      if (result.error) {
+        await Swal.fire({
+          icon: 'error',
+          title: '收藏移除失敗',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        await Swal.fire({
+          icon: 'success',
+          title: '收藏移除成功',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        location.reload();
+      }
+    }
+  });
 }
 
 window.onload = getProfile();

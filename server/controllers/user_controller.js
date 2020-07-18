@@ -12,12 +12,12 @@ const signUp = async (req, res) => {
   const { email, password, provider } = req.body;
 
   if (!name || !email || !password) {
-    res.status(400).send({ error: 'Request Error: name, email and password are required.' });
+    res.status(400).send({ error: '請輸入用戶名稱、Email、密碼' });
     return;
   }
 
   if (!validator.isEmail(email)) {
-    res.status(400).send({ error: 'Request Error: Invalid email format' });
+    res.status(400).send({ error: '請輸入正確的 Email 格式' });
     return;
   }
 
@@ -31,13 +31,13 @@ const signUp = async (req, res) => {
 
   const { accessToken, loginAt, user } = result;
   if (!user) {
-    res.status(500).send({ error: 'Database Query Error' });
+    res.status(500).send({ error: '資料讀取失敗' });
     return;
   }
 
   const emailResult = await sendConfirmEmail(req.protocol, req.hostname, result.user.email);
   if (!emailResult.status) {
-    res.status(500).send({ error: 'Nodemailer Error' });
+    res.status(500).send({ error: 'Email 認證失敗' });
     return;
   }
 
@@ -70,9 +70,9 @@ const sendConfirmEmail = async (protocol, hostname, email) => {
 
   const mail = {
     from: 'GU-Price <gu.price.search@gmail.com>',
-    subject: 'Confirm Email',
+    subject: 'Email 認證信',
     to: email,
-    html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
+    html: `請點擊以下連結確認您的 Email : <a href="${url}">${url}</a>`,
   };
 
   const result = await send(mail);
@@ -81,7 +81,7 @@ const sendConfirmEmail = async (protocol, hostname, email) => {
 
 const nativeSignIn = async (email, password, provider) => {
   if (!email || !password) {
-    return { error: 'Request Error: email and password are required.', status: 400 };
+    return { error: '請輸入 Email、密碼', status: 400 };
   }
 
   try {
@@ -93,7 +93,7 @@ const nativeSignIn = async (email, password, provider) => {
 
 const facebookSignIn = async (accessToken) => {
   if (!accessToken) {
-    return { error: 'Request Error: access token is required.', status: 400 };
+    return { error: '無法取得 Facebook 存取權杖', status: 400 };
   }
 
   try {
@@ -101,7 +101,7 @@ const facebookSignIn = async (accessToken) => {
     const { id, name, email } = profile;
 
     if (!id || !name || !email) {
-      return { error: 'Permissions Error: facebook access token can not get user id, name or email' };
+      return { error: '您的 Facebook 存取權杖無法取得個人資料' };
     }
 
     return await User.facebookSignIn(id, name, email, accessToken, expire);
@@ -112,7 +112,7 @@ const facebookSignIn = async (accessToken) => {
 
 const googleSignIn = async (accessToken) => {
   if (!accessToken) {
-    return { error: 'Request Error: access token is required.', status: 400 };
+    return { error: '無法取得 Google 存取權杖', status: 400 };
   }
 
   try {
@@ -120,7 +120,7 @@ const googleSignIn = async (accessToken) => {
     const { name, email, picture } = profile;
 
     if (!name || !email) {
-      return { error: 'Permissions Error: facebook access token can not get user name or email' };
+      return { error: '您的 Google 存取權杖無法取得個人資料' };
     }
 
     return await User.googleSignIn(name, email, picture, accessToken, expire);
@@ -144,7 +144,7 @@ const signIn = async (req, res) => {
       result = await googleSignIn(data.access_token);
       break;
     default:
-      result = { error: 'Wrong Request' };
+      result = { error: '錯誤的要求' };
   }
 
   if (result.error) {
@@ -155,7 +155,7 @@ const signIn = async (req, res) => {
 
   const { accessToken, loginAt, user } = result;
   if (!user) {
-    res.status(500).send({ error: 'Database Query Error' });
+    res.status(500).send({ error: '資料讀取失敗' });
     return;
   }
 
@@ -180,7 +180,7 @@ const getUserProfile = async (req, res) => {
   if (accessToken) {
     accessToken = accessToken.replace('Bearer ', '');
   } else {
-    res.status(400).send({ error: 'Wrong Request: authorization is required.' });
+    res.status(400).send({ error: '授權失敗' });
     return;
   }
   const profile = await User.getUserProfile(accessToken);
@@ -201,13 +201,13 @@ const createTrack = async (req, res) => {
   };
   const trackId = await User.createTrack(track);
   if (!trackId) {
-    res.status(500).send({ error: 'Database Query Error' });
+    res.status(500).send({ error: '資料存取失敗' });
     return;
   }
 
   const emailResult = await sendTrackEmail(body.name, body.mainImage, body.currentPrice, body.price, body.email);
   if (!emailResult.status) {
-    res.status(500).send({ error: 'Nodemailer Error' });
+    res.status(500).send({ error: '信箱認證失敗' });
     return;
   }
   res.status(200).send({ trackId });

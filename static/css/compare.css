@@ -19,7 +19,7 @@ main > .view {
 }
 
 main > .view > h2 {
-  margin: 0 20px 10px;
+  margin: 0 20px;
   flex: 1 100%;
   font-size: 1.25rem;
   color: #404040;
@@ -29,7 +29,7 @@ main > .view > h2 {
 }
 
 main > .view > .products {
-  display: flex;
+  display: none;
   flex: auto;
 }
 
@@ -102,7 +102,7 @@ main > .view > .products > .products_ul > .product > .productInfo > .price > .hi
 }
 
 main > .view > .msg {
-  margin: 0 20px;
+  margin: 20px;
   text-align: center;
   flex: 1 100%;
   font-size: 1.5rem;
@@ -124,4 +124,11 @@ main > .view > .back > p {
 
 main > .view > .back > p:hover {
   opacity: 0.7;
+}
+
+main > .view > .loading_gif {
+  width: 50px;
+  height: 50px;
+  align-self: center;
+  margin-bottom: 30px;
 }

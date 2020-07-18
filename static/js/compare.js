@@ -9,8 +9,11 @@ async function getProductNumber() {
       await showProduct(result);
       await drawDatePrice(result.data);
     }
+    document.getElementById('loading_gif').remove();
+    document.getElementById('products').style.display = 'flex';
+    document.getElementById('msg').remove();
   } else {
-    document.getElementById('products').remove();
+    document.getElementById('loading_gif').remove();
     document.getElementById('msg').innerHTML = '比較表空空的耶';
   }
 }

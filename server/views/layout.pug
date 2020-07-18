@@ -32,6 +32,7 @@ html
                     socket.emit('out')
                 }
             }
+        script(src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.0/dist/sweetalert2.all.min.js" integrity="sha256-/nYT133d9/Yn9geJKEbS8ZVJgGK6gnpSbg22eMwG3Po=" crossorigin="anonymous")
 body
     header.main_header
         .container
@@ -73,31 +74,30 @@ body
             #modal_close.modal_close
                 p x
             .modal_container
-                #nav_signup.nav.signup Sign Up
-                #nav_login.nav.login Log In
+                #nav_signup.nav.signup 註冊帳號
+                #nav_login.nav.login 會員登入
                 //- Signup Form
                 form#signup_form.form.signup-form
-                    input#signup_name.input(type='text' name='name' placeholder='Your Name')
+                    input#signup_name.input(type='text' name='name' placeholder='用戶名稱')
                     br
-                    input#signup_email.input(type='email' name='email' placeholder='Your Email Address')
+                    input#signup_email.input(type='email' name='email' placeholder='Email 信箱')
                     br
-                    input#signup_password.input(type='password' name='password' placeholder='Choose a Password')
+                    input#signup_password.input(type='password' name='password' placeholder='密碼')
                     br
-                    button#signupBtn.btn Create account
+                    button#signupBtn.btn 註冊
                 //- Login Form
                 form#login_form.form.login-form
-                    input#login_email.input(type='email' name='email' placeholder='Email')
+                    input#login_email.input(type='email' name='email' placeholder='Email 信箱')
                     br
-                    input#login_password.input(type='password' name='password' placeholder='Password')
+                    input#login_password.input(type='password' name='password' placeholder='密碼')
                     br
-                    button#loginBtn.btn log in
+                    button#loginBtn.btn 登入
                 button.google_btn(onclick="GoogleLogin()")
                     img.google_icon(src="/static/imgs/google.png")
-                    p Log in with Google
+                    p 使用 Google 登入
                 button.fb_btn(onclick="FacebookLogin()")
                     img.fb_icon(src="/static/imgs/fb.png")
-                    p Log in with Facebook
-    #member_modal_bg.member_modal_bg
+                    p 使用 Facebook 登入
     block content
     #comparsion_arrow.comparsion_arrow
         img(src="/static/imgs/compare_arrow.png")

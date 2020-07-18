@@ -96,11 +96,21 @@ function checkFavorite(number) {
 }
 favorite.addEventListener('click', async () => {
   if (!localStorage.getItem('id')) {
-    alert('請先登入再收藏商品');
+    Swal.fire({
+      icon: 'warning',
+      text: '請先登入再收藏商品',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   if (favoriteText.innerHTML == '已收藏') {
-    alert('此商品已在您的商藏清單');
+    Swal.fire({
+      icon: 'warning',
+      text: '此商品已在您的商藏清單',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } else {
     const userFavorite = localStorage.getItem('favorite');
     if (userFavorite == 'undefined' || userFavorite == 'null' || !userFavorite) {
@@ -122,12 +132,22 @@ favorite.addEventListener('click', async () => {
     }).then((res) => res.json());
 
     if (result.error) {
-      alert('收藏失敗');
+      Swal.fire({
+        icon: 'error',
+        title: '商品收藏失敗！',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
       favoriteIcon.src = '/static/imgs/fullStar.png';
       favoriteText.innerHTML = '已收藏';
       favoriteText.style.color = 'black';
-      alert('商品收藏成功');
+      Swal.fire({
+        icon: 'success',
+        title: '商品商藏成功！',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   }
 });
@@ -162,26 +182,51 @@ trackBtn.addEventListener('click', () => {
   const mainImage = product.data.main_image;
   const price = document.getElementById('track_price').value;
   if (!price) {
-    alert('請輸入期望價格');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入期望價格',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   if (price < 0 || price > currentPrice) {
-    alert(`價格必須介於 0 至 ${currentPrice}`);
+    Swal.fire({
+      icon: 'warning',
+      text: `價格必須介於 0 至 ${currentPrice}`,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText:　'我知道了',
+    });
     return;
   }
   const email = document.getElementById('track_email').value;
   const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
   if (!email) {
-    alert('請輸入通知信箱');
+    Swal.fire({
+      icon: 'warning',
+      text: '請輸入通知信箱',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   if (email.search(emailRule) == -1) {
-    alert('請輸入正確信箱格式');
+    Swal.fire({
+      icon: 'error',
+      text: 'Email 格式錯誤',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     return;
   }
   const data = {
     name, number, mainImage, currentPrice, price, email,
   };
+  Swal.fire({
+    imageUrl: '/static/imgs/spinner.gif',
+    showConfirmButton: false,
+    allowOutsideClick: false,
+  });
   fetch('/api/1.0/user/track', {
     body: JSON.stringify(data),
     headers: {
@@ -191,11 +236,24 @@ trackBtn.addEventListener('click', () => {
   })
     .then((res) => res.json())
     .then(() => {
-      alert('追蹤商品成功!');
+      Swal.fire({
+        icon: 'success',
+        title: '商品追蹤成功！',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       document.getElementById('track_price').value = '';
       document.getElementById('track_email').value = '';
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      Swal.fire({
+        icon: 'error',
+        title: '商品追蹤失敗！',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(err);
+    });
 });
 
 window.onload = [getProductNumber(), getTrackEmail()];

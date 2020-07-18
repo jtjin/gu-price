@@ -13,7 +13,7 @@ const signUp = async (name, email, password, provider, expire) => {
     const emails = await query('SELECT email FROM user WHERE email = ? AND provider = ? FOR UPDATE', [email, provider]);
     if (emails.length > 0) {
       await query('COMMIT');
-      return { error: 'Email Already Exists' };
+      return { error: 'Email 已被註冊' };
     }
 
     const loginAt = new Date();
@@ -54,17 +54,17 @@ const nativeSignIn = async (email, password, provider, expire) => {
 
     if (!user) {
       await query('COMMIT');
-      return { error: 'Sorry, this email didn\'t exist, please sign up' };
+      return { error: 'Email 不存在，請註冊帳號' };
     }
 
     if (!user.confirmed) {
       await query('COMMIT');
-      return { error: 'Please confirm your email to login' };
+      return { error: '請先完成 Email 認證' };
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
       await query('COMMIT');
-      return { error: 'Password is wrong' };
+      return { error: '密碼錯誤' };
     }
 
     const loginAt = new Date();
@@ -163,7 +163,7 @@ const googleSignIn = async (name, email, picture, accessToken, expire) => {
 const getUserProfile = async (accessToken) => {
   const results = await query('SELECT * FROM user WHERE access_token = ?', [accessToken]);
   if (results.length === 0) {
-    return { error: 'Invalid Access Token' };
+    return { error: '無效的存取權杖' };
   }
   return {
     data: {
@@ -187,7 +187,7 @@ const getFacebookProfile = async function (accessToken) {
     return res.body;
   } catch (e) {
     console.log(e);
-    throw ('Permissions Error: facebook access token is wrong');
+    throw ('Facebook 存取權杖錯誤');
   }
 };
 
@@ -199,7 +199,7 @@ const getGoogleProfile = async function (accessToken) {
     return res.body;
   } catch (e) {
     console.log(e);
-    throw ('Permissions Error: facebook access token is wrong');
+    throw ('Google 存取權杖錯誤');
   }
 };
 

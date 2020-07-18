@@ -53,7 +53,7 @@ const getProducts = async (req, res) => {
   }
   const { products, productCount } = await findProduct(category);
   if (!products) {
-    res.status(400).send({ error: 'Wrong Request' });
+    res.status(400).send({ error: '錯誤的要求' });
     return;
   }
 
@@ -115,7 +115,7 @@ const updateFavorite = async (req, res) => {
 
   const { result } = await Product.updateFavorite(favorite, id);
   if (result.changedRows == 0) {
-    res.status(500).send({ error: 'Database Query Error' });
+    res.status(500).send({ error: '資料庫存取失敗' });
   } else {
     res.status(200).send({ changedRows: result.changedRows });
   }
@@ -124,7 +124,7 @@ const updateFavorite = async (req, res) => {
 const getProductsName = async (req, res) => {
   let productsName = await Product.getProductsName();
   if (productsName.length == 0) {
-    res.status(500).json({ error: 'Database Query Error' });
+    res.status(500).json({ error: '資料庫存取失敗' });
   } else {
     let result;
     productsName = productsName.flatMap((p) => p.name);

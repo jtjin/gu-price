@@ -31,13 +31,13 @@ app.use('/', require('./server/routes/index_route'));
 
 // Page not found
 app.use((req, res, next) => {
-  res.status(404).render('error', { title: 'Not Found | GU 搜尋 | GU 比價', status: '404', message: 'Not Found' });
+  res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
 });
 
 // Internal Server Error Response
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).render('error', { title: 'Internal Server Error | GU 搜尋 | GU 比價', status: '500', message: 'Internal Server Error' });
+  res.status(500).render('error', { title: '伺服器錯誤 | GU 搜尋 | GU 比價', status: '500', message: '伺服器錯誤' });
 });
 
 httpServer.listen(PORT, () => { console.log(`Listening on port: ${PORT}`); });
@@ -61,9 +61,9 @@ http_io.on('connection', (socket) => {
     });
   });
   socket.on('disconnect', () => {
-    http_io.emit('pageviewDisconnect', { 
+    http_io.emit('pageviewDisconnect', {
       id: socket.id,
-      connections: Object.keys(http_io.sockets.connected).length
+      connections: Object.keys(http_io.sockets.connected).length,
     });
   });
 });

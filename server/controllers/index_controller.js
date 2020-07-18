@@ -15,7 +15,7 @@ const getProducts = async (req, res) => {
       case 'men': case 'women': case 'kids': case 'products': case 'search':
         return await Index.getProducts({ category, type });
       default:
-        res.status(404).render('error', { title: 'Not Found | GU 搜尋 | GU 比價', status: '404', message: 'Not Found' });
+        res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
     }
     return Promise.resolve({});
   }
