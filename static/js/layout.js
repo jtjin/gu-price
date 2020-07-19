@@ -358,7 +358,7 @@ logoutBtn.addEventListener('click', () => {
         location.reload();
       }
     }
-  })
+  });
 });
 
 // Compare products
@@ -504,3 +504,21 @@ document.getElementById('go_to_compare').addEventListener('click', () => {
 });
 
 window.onload = [headerSearch(), memberLogo(), checkCompare()];
+
+// toTop-arrow
+backTop = document.getElementById('backTop');
+
+// When the user scrolls down 20px from the top of the document, show the button
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    backTop.style.display = 'block';
+  } else {
+    backTop.style.display = 'none';
+  }
+}
+window.onscroll = () => scrollFunction();
+
+// When the user clicks on the button, scroll to the top of the document
+backTop.addEventListener('click', () => {
+  document.documentElement.scrollTop = 0;
+});

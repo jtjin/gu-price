@@ -13,7 +13,7 @@ async function getAllProducts() {
       confirmButtonColor: '#3085d6',
       confirmButtonText:　'確定',
     });
-    window.location.href = '/'
+    window.location.href = '/';
     return;
   }
 
@@ -37,7 +37,7 @@ async function getAllProducts() {
         confirmButtonColor: '#3085d6',
         confirmButtonText:　'確定',
       });
-      window.location.href = '/'
+      window.location.href = '/';
       return;
     }
     // access URL problem
@@ -47,7 +47,7 @@ async function getAllProducts() {
       confirmButtonColor: '#3085d6',
       confirmButtonText:　'確定',
     });
-    window.location.href = '/'
+    window.location.href = '/';
     return;
   }
 
