@@ -42,7 +42,9 @@ const getProducts = async (req, res) => {
 
 const imageSearch = async (req, res) => {
   if (req.file) {
-    const object = await localizeObjects(req.file.location);
+    let object = await localizeObjects(req.file.location);
+    // Catch "Top"、"Pants" object only
+    object = ['Top', 'Pants'].filter((obj) => new Set(object).has(obj));
     if (object.length > 1) {
       // too many objects
       res.status(200).render('imageSearch', { imageUrl: req.file.location, msg: '圖片中包含的商品種類過多，請縮小範圍。' });
