@@ -124,7 +124,7 @@ async function loginRender(obj) {
     localStorage.setItem('email', obj.data.user.email);
     await Swal.fire({
       icon: 'success',
-      text: '登入成功',
+      title: '登入成功',
       showConfirmButton: false,
       timer: 1500,
     });
@@ -335,12 +335,30 @@ function GoogleLogin() {
 }
 
 logoutBtn.addEventListener('click', () => {
-  localStorage.clear();
-  if (window.location.pathname == '/profile') {
-    window.location.href = '/';
-  } else {
-    location.reload();
-  }
+  Swal.fire({
+    title: '確定要登出嗎？',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '確定',
+    cancelButtonText: '取消',
+  }).then(async (result) => {
+    if (result.value) {
+      localStorage.clear();
+      await Swal.fire({
+        icon: 'success',
+        title: '登出成功',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      if (window.location.pathname == '/profile') {
+        window.location.href = '/';
+      } else {
+        location.reload();
+      }
+    }
+  })
 });
 
 // Compare products
