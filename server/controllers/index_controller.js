@@ -43,16 +43,13 @@ const getProducts = async (req, res) => {
 const imageSearch = async (req, res) => {
   if (req.file) {
     let object = await localizeObjects(req.file.location);
-    // Catch "Top"、"Pants" object only
-    object = ['Top', 'Pants'].filter((obj) => new Set(object).has(obj));
-    if (object.length > 1) {
-      // too many objects
-      res.status(200).render('imageSearch', { imageUrl: req.file.location, msg: '圖片中包含的商品種類過多，請縮小範圍。' });
-    } else if (object.length == 0) {
+    // Catch "Top","Outerwear","Shorts","Pants","Skirt" object only
+    object = ['Top', 'Outerwear', 'Shorts', 'Pants', 'Skirt'].filter((obj) => new Set(object).has(obj));
+    if (object.length == 0) {
       // no object found
       res.status(200).render('imageSearch', { imageUrl: req.file.location, msg: '找不到圖片中包含的商品種類，請再嘗試一次。' });
     } else {
-      res.status(200).render('imageSearch', { imageUrl: req.file.location, object: object[0].toLowerCase() });
+      res.status(200).render('imageSearch', { imageUrl: req.file.location, object });
     }
   } else {
     res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });

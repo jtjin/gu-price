@@ -144,12 +144,17 @@ const getProductsName = async (req, res) => {
 };
 
 const imageSearch = async (req, res) => {
-  const result = await getSimilarProducts(req.body.url, req.body.object);
-  if (result.error) {
-    res.status(400).send({ error: result.error });
-  } else {
-    res.status(200).json(result);
+  const object = req.body.object.split(',');
+  let result = [];
+  for (let i = 0; i < object.length; i += 1) {
+    similarProducts = await getSimilarProducts(req.body.url, object[i].toLowerCase());
+    if (similarProducts.error) {
+      res.status(400).send({ error: similarProducts.error });
+      return;
+    }
+    result = [...result, ...similarProducts];
   }
+  res.status(200).json(result);
 };
 
 const getSimilarProducts = async (url, object) => {
