@@ -5,8 +5,8 @@ async function getProfile() {
       icon: 'error',
       title: '存取無效！',
       text: '請註冊帳號或登入會員',
-      showConfirmButton: false,
-      timer: 1500,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText:　'確定',
     });
     window.location.href = '/';
   } else {
@@ -21,8 +21,8 @@ async function getProfile() {
       await Swal.fire({
         icon: 'warning',
         text: result.error,
-        showConfirmButton: false,
-        timer: 1500,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText:　'確定',
       });
       localStorage.clear();
       window.location.href = '/';
@@ -35,8 +35,8 @@ async function getProfile() {
       await Swal.fire({
         icon: 'warning',
         text: '您的存取權杖已過期，請重新登入',
-        showConfirmButton: false,
-        timer: 1500,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText:　'確定',
       });
       localStorage.clear();
       window.location.href = '/';
