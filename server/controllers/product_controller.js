@@ -146,7 +146,6 @@ const getProductsName = async (req, res) => {
 const imageSearch = async (req, res) => {
   const result = await getSimilarProducts(req.body.url, req.body.object);
   if (result.error) {
-    console.log(result.error);
     res.status(400).send({ error: result.error });
   } else {
     res.status(200).json(result);

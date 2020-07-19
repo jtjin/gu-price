@@ -41,15 +41,7 @@ main > .view > .products {
   flex: 1 100%;
 }
 
-main > .view > .msg {
-  margin: 20px;
-  text-align: center;
-  flex: 1 100%;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 2.5rem;
-}
-
+main > .view > .msg,
 main > .view > .object {
   display: none;
 }
