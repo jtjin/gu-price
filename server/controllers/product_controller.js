@@ -192,8 +192,9 @@ const getSimilarProducts = async (filePath, object) => {
     return { error: response.responses[0].error };
   }
   const { productGroupedResults } = response.responses[0].productSearchResults;
-  const results = productGroupedResults.flatMap((object) => object.results);
+  let results = productGroupedResults.flatMap((object) => object.results);
   const similarProducts = [];
+  results = results.sort((a, b) => b.score - a.score); // sort by score
   results.flatMap((result) => {
     if (result.score >= 0.75) {
       name = result.product.name.split('/').pop(-1);
