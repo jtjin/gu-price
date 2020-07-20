@@ -52,11 +52,8 @@ const updateFavorite = async (favorite, id) => {
   }
 };
 
-const getProductsName = async () => await query('SELECT name FROM product GROUP BY number');
-
 module.exports = {
   getProducts,
   getProductsPrices,
   updateFavorite,
-  getProductsName,
 };

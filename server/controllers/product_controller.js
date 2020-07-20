@@ -13,17 +13,6 @@ const imageAnnotatorClient = new vision.ImageAnnotatorClient({
   keyFilename: './mykey.json',
 });
 
-let jieba;
-switch (process.env.SYSTEM) {
-  case 'windows':
-    jieba = require('@node-rs/jieba');
-    jieba.loadDict(fs.readFileSync(`${__dirname}/../data/dict.txt`));
-    break;
-  default:
-    jieba = require('nodejieba');
-    jieba.load({ userDict: `${__dirname}/../data/dict.txt` });
-}
-
 const pageSize = 8;
 
 const getProducts = async (req, res) => {
@@ -122,28 +111,6 @@ const updateFavorite = async (req, res) => {
   }
 };
 
-const getProductsName = async (req, res) => {
-  let productsName = await Product.getProductsName();
-  if (productsName.length == 0) {
-    res.status(500).json({ error: '資料庫存取失敗' });
-  } else {
-    let result;
-    productsName = productsName.flatMap((p) => p.name);
-    switch (process.env.SYSTEM) {
-      case 'windows':
-        productsName = productsName.flatMap((name) => jieba.cut(name, false));
-        result = jieba.extract(productsName.join(' '), 10000);
-        break;
-      default:
-        productsName = productsName.flatMap((name) => jieba.cut(name, false));
-        result = jieba.extract(productsName.join(' '), 10000);
-        result = result.flatMap((p) => p.word);
-    }
-    productsName = productsName.filter((x) => new Set(result).has(x));
-    res.status(200).json(productsName.join(' '));
-  }
-};
-
 const imageSearch = async (req, res) => {
   const object = req.body.object.split(',');
   const filePath = path.join(__dirname, `../..${req.body.url}`);
@@ -215,6 +182,5 @@ const getSimilarProducts = async (filePath, object) => {
 module.exports = {
   getProducts,
   updateFavorite,
-  getProductsName,
   imageSearch,
 };
