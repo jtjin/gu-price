@@ -201,7 +201,7 @@ const createTrack = async (req, res) => {
   };
   const trackId = await User.createTrack(track);
   if (!trackId) {
-    res.status(500).send({ error: '資料存取失敗' });
+    res.status(500).send({ error: '資料讀取失敗' });
     return;
   }
 

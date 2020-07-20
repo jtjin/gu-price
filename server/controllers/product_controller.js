@@ -101,11 +101,11 @@ const getProductsWithDetail = async (products) => {
 
 const updateFavorite = async (req, res) => {
   const { favorite } = req.body;
-  const { id } = req.body;
+  const { access_token } = req.body;
 
-  const { result } = await Product.updateFavorite(favorite, id);
-  if (result.changedRows == 0) {
-    res.status(500).send({ error: '資料庫存取失敗' });
+  const result = await Product.updateFavorite(favorite, access_token);
+  if (result.error || result.changedRows == 0) {
+    res.status(500).send({ error: '資料讀取失敗' });
   } else {
     res.status(200).send({ changedRows: result.changedRows });
   }

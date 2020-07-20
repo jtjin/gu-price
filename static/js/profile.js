@@ -121,7 +121,7 @@ async function deleteFavorite() {
     title: '確定要移除收藏嗎？',
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#28a745',
     cancelButtonColor: '#d33',
     confirmButtonText: '確定',
     cancelButtonText: '取消',
@@ -136,7 +136,7 @@ async function deleteFavorite() {
       userFavorite = userFavorite.join(',');
       const updateFavorite = {
         favorite: userFavorite,
-        id: localStorage.getItem('id'),
+        access_token: localStorage.getItem('token'),
       };
       const result = await fetch('/api/1.0/favorite', {
         body: JSON.stringify(updateFavorite),

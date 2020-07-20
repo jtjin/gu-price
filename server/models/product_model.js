@@ -40,12 +40,17 @@ const getProductsPrices = async (productIds) => {
   return await query(queryStr, bindings);
 };
 
-const updateFavorite = async (favorite, id) => {
+const updateFavorite = async (favorite, access_token) => {
   try {
     await query('START TRANSACTION');
-    const result = await query('UPDATE user SET favorite = ? WHERE id = ?', [favorite, id]);
+    const users = await query('SELECT id FROM user WHERE access_token = ? FOR UPDATE', [access_token]);
+    if (users.length === 0) {
+      await query('COMMIT');
+      return { error: '存取權杖無效' };
+    }
+    const result = await query('UPDATE user SET favorite = ? WHERE id = ?', [favorite, users[0].id]);
     await query('COMMIT');
-    return { result };
+    return { changedRows: result.changedRows };
   } catch (error) {
     await query('ROLLBACK');
     return { error };
