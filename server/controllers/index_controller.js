@@ -1,6 +1,8 @@
 require('dotenv').config();
 const crypto = require('crypto');
 const vision = require('@google-cloud/vision');
+const fs = require('fs');
+const path = require('path');
 const Index = require('../models/index_model');
 
 const client = new vision.ImageAnnotatorClient({
@@ -42,16 +44,22 @@ const getProducts = async (req, res) => {
 
 const imageSearch = async (req, res) => {
   if (req.file) {
-    let object = await localizeObjects(req.file.location);
+    const fileName = path.join(__dirname, `../../static/pictures/${req.file.filename}`);
+    const request = {
+      image: { content: fs.readFileSync(fileName) },
+    };
+    let object = await localizeObjects(request);
     // Catch "Top","Outerwear","Shorts","Pants","Skirt" object only
     object = ['Top', 'Outerwear', 'Shorts', 'Pants', 'Skirt'].filter((obj) => new Set(object).has(obj));
     if (object.length == 0) {
       // no object found
-      res.status(200).render('imageSearch', { imageUrl: req.file.location, msg: '找不到圖片中包含的商品種類，請再嘗試一次。' });
+      fs.unlinkSync(fileName); // Delete picture
+      res.status(200).render('imageSearch', { msg: '找不到圖片中包含的商品種類，請再嘗試一次。' });
     } else {
-      res.status(200).render('imageSearch', { imageUrl: req.file.location, object });
+      res.status(200).render('imageSearch', { imageUrl: `/static/pictures/${req.file.filename}`, object });
     }
   } else {
+    fs.unlinkSync(fileName); // Delete picture
     res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });
   }
 };

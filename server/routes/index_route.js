@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { wrapAsync, uploadS3 } = require('../../util/util');
+const { wrapAsync, upload } = require('../../util/util');
 const { getProducts, imageSearch, confirmEmail } = require('../controllers/index_controller');
 
-const uploadImageSearch = uploadS3.single('imageSearch');
+const uploadImageSearch = upload.single('imageSearch');
 
 router.get('/', (req, res, next) => {
   try {

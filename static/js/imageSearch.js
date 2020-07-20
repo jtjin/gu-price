@@ -7,6 +7,7 @@ async function getAllProducts() {
   if (document.getElementById('msg').innerHTML) {
     // No file upload
     loadingGif.style.display = 'none';
+    document.getElementById('image_url').style.display = 'none';
     await Swal.fire({
       icon: 'warning',
       text: document.getElementById('msg').innerHTML,

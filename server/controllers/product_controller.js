@@ -1,6 +1,7 @@
 require('dotenv').config();
 const _ = require('lodash');
 const fs = require('fs');
+const path = require('path');
 const vision = require('@google-cloud/vision');
 const Product = require('../models/product_model');
 const data = require('../data/data.json');
@@ -145,24 +146,27 @@ const getProductsName = async (req, res) => {
 
 const imageSearch = async (req, res) => {
   const object = req.body.object.split(',');
+  const filePath = path.join(__dirname, `../..${req.body.url}`);
   let result = [];
   for (let i = 0; i < object.length; i += 1) {
-    similarProducts = await getSimilarProducts(req.body.url, object[i].toLowerCase());
+    similarProducts = await getSimilarProducts(filePath, object[i].toLowerCase());
     if (similarProducts.error) {
+      fs.unlinkSync(filePath); // Delete picture
       res.status(400).send({ error: similarProducts.error });
       return;
     }
     result = [...result, ...similarProducts];
   }
+  fs.unlinkSync(filePath); // Delete picture
   res.status(200).json(result);
 };
 
-const getSimilarProducts = async (url, object) => {
+const getSimilarProducts = async (filePath, object) => {
   const projectId = 'gu-price';
   const location = 'asia-east1';
   const productSetId = object;
   const productCategory = 'apparel-v2';
-  const filePath = url;
+  const content = fs.readFileSync(filePath, 'base64');
   const filter = '';
   const productSetPath = productSearchClient.productSetPath(
     projectId,
@@ -170,7 +174,8 @@ const getSimilarProducts = async (url, object) => {
     productSetId,
   );
   const request = {
-    image: { source: { imageUri: filePath } },
+    // image: { source: { imageUri: filePath } },
+    image: { content },
     features: [{ type: 'PRODUCT_SEARCH', maxResults: '10' }],
     imageContext: {
       productSearchParams: {
@@ -186,7 +191,8 @@ const getSimilarProducts = async (url, object) => {
   if (response.responses[0].error) {
     return { error: response.responses[0].error };
   }
-  const { results } = response.responses[0].productSearchResults;
+  const { productGroupedResults } = response.responses[0].productSearchResults;
+  const results = productGroupedResults.flatMap((object) => object.results);
   const similarProducts = [];
   results.flatMap((result) => {
     if (result.score >= 0.75) {
