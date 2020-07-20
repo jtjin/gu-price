@@ -66,4 +66,10 @@ http_io.on('connection', (socket) => {
       connections: Object.keys(http_io.sockets.connected).length - 1,
     });
   });
+  socket.on('waitPairs', (msg) => {
+    http_io.emit('match', { id: msg.id, number: msg.number });
+  });
+  socket.on('matchId', (msg) => {
+    http_io.emit('someoneMatch', { id: msg.id, number: msg.number });
+  });
 });

@@ -95,7 +95,7 @@ function checkFavorite(number) {
   }
 }
 favorite.addEventListener('click', async () => {
-  if (!localStorage.getItem('id')) {
+  if (!localStorage.getItem('token')) {
     Swal.fire({
       icon: 'warning',
       text: '請先登入再收藏商品',
@@ -113,15 +113,16 @@ favorite.addEventListener('click', async () => {
     });
   } else {
     const userFavorite = localStorage.getItem('favorite');
+    let addFavorite;
     if (userFavorite == 'undefined' || userFavorite == 'null' || !userFavorite) {
-      localStorage.setItem('favorite', product.data.number);
+      addFavorite = product.data.number;
     } else {
-      localStorage.setItem('favorite', `${userFavorite},${product.data.number}`);
+      addFavorite = `${userFavorite},${product.data.number}`;
     }
     // Post the updateFavorite to server
     const updateFavorite = {
-      favorite: localStorage.getItem('favorite'),
-      id: localStorage.getItem('id'),
+      favorite: addFavorite,
+      access_token: localStorage.getItem('token'),
     };
     const result = await fetch('/api/1.0/favorite', {
       body: JSON.stringify(updateFavorite),
@@ -139,6 +140,11 @@ favorite.addEventListener('click', async () => {
         timer: 1500,
       });
     } else {
+      if (userFavorite == 'undefined' || userFavorite == 'null' || !userFavorite) {
+        localStorage.setItem('favorite', product.data.number);
+      } else {
+        localStorage.setItem('favorite', `${userFavorite},${product.data.number}`);
+      }
       favoriteIcon.src = '/static/imgs/fullStar.png';
       favoriteText.innerHTML = '已收藏';
       favoriteText.style.color = 'black';

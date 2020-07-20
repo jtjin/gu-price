@@ -24,14 +24,6 @@ html
             gtag('js', new Date());
             gtag('config', 'UA-172748058-1');
         script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
-        script.
-            const socket = io();
-            if (window.location.pathname != '/dashboard') {
-                socket.emit('in', window.location.pathname)
-                window.onbeforeunload = () => {
-                    socket.emit('out')
-                }
-            }
         script(src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.0/dist/sweetalert2.all.min.js" integrity="sha256-/nYT133d9/Yn9geJKEbS8ZVJgGK6gnpSbg22eMwG3Po=" crossorigin="anonymous")
 body
     header.main_header
