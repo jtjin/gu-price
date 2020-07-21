@@ -233,7 +233,7 @@ loginBtn.addEventListener('click', () => {
 // Initialization
 window.fbAsyncInit = function () {
   FB.init({
-    appId: '606485106744129',
+    appId: '1031835573900181',
     cookie: true,
     xfbml: true,
     version: 'v7.0',
