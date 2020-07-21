@@ -7,7 +7,6 @@ async function getAllProducts() {
   if (document.getElementById('msg').innerHTML) {
     // No file upload
     loadingGif.style.display = 'none';
-    document.getElementById('image_url').style.display = 'none';
     await Swal.fire({
       icon: 'warning',
       text: document.getElementById('msg').innerHTML,
@@ -17,7 +16,7 @@ async function getAllProducts() {
     window.location.href = '/';
     return;
   }
-
+  document.getElementById('image_url').style.display = 'inline-block';
   const uploadImage = { url, object };
   const similarProducts = await fetch('/api/1.0/imageSearch', {
     body: JSON.stringify(uploadImage),
