@@ -35,6 +35,8 @@
     "nodemailer": "^6.4.10",
     "pug": "^3.0.0",
     "puppeteer": "^2.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
     "socket.io": "^2.3.0",
     "validator": "^13.1.1"
   },
