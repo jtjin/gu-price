@@ -56,11 +56,6 @@ const getProducts = async (req, res) => {
     return;
   }
 
-  if (category == 'imageSearch') {
-    res.status(200).json(products);
-    return;
-  }
-
   let productsWithDetail = await getProductsWithDetail(products);
 
   if (category == 'details') {
@@ -83,7 +78,7 @@ const getProductsWithDetail = async (products) => {
   const pricesMap = _.groupBy(prices, (p) => p.product_id);
 
   return products.map((p) => {
-    p.type = data[p.category][0][p.type];
+    p.type = data[p.category][0][p.type] ? data[p.category][0][p.type] : p.type;
     const productPrices = pricesMap[p.id];
 
     if (!productPrices) { return p; }

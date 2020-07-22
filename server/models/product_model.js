@@ -21,7 +21,7 @@ const getProducts = async (pageSize, paging = 0, requirement = {}) => {
     binding: [pageSize * paging, pageSize],
   };
 
-  const productQuery = `SELECT * FROM product ${condition.sql} GROUP BY number ORDER BY id ${limit.sql}`;
+  const productQuery = `SELECT * FROM product ${condition.sql} GROUP BY number ORDER BY id DESC ${limit.sql}`;
   const productBindings = condition.binding.concat(limit.binding);
   const products = await query(productQuery, productBindings);
 
