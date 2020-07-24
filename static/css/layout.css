@@ -393,7 +393,7 @@ summary:hover {
 }
 
 /* ---- Comparison ---- */
-.comparsion_arrow {
+.comparison_arrow {
   text-align: right;
   max-width: 1050px;
   margin: 0 auto;
@@ -402,7 +402,7 @@ summary:hover {
   display: none;
 }
 
-.comparsion_arrow > img {
+.comparison_arrow > img {
   position: fixed;
   height: 25px;
   width: 35px;
@@ -412,7 +412,7 @@ summary:hover {
   margin: 0 auto;
 }
 
-.comparsion_arrow > img:hover {
+.comparison_arrow > img:hover {
   opacity: 0.7;
 }
 
@@ -427,21 +427,21 @@ summary:hover {
   display: none;
 }
 
-.comparison_bg > .comparsion_close {
+.comparison_bg > .comparison_close {
   height: 0;
   text-align: right;
   max-width: 1000px;
   margin: 0 auto;
 }
 
-.comparison_bg > .comparsion_close > p {
+.comparison_bg > .comparison_close > p {
   position: relative;
   cursor: pointer;
   margin: 0 10px 0 auto;
   width: 10px;
 }
 
-.comparison_bg > .comparsion_close > p:hover {
+.comparison_bg > .comparison_close > p:hover {
   opacity: 0.7;
 }
 
@@ -452,28 +452,28 @@ summary:hover {
   margin: 0 auto;
 }
 
-.comparison_bg > .comparison > .comparsion_title {
+.comparison_bg > .comparison > .comparison_title {
   margin: 0 10px 0 20px;
   max-width: 200px;
 }
 
-.comparison_bg > .comparison > .comparsion_title > h3 {
+.comparison_bg > .comparison > .comparison_title > h3 {
   font-size: 0.75rem;
 }
 
-.comparison_bg > .comparison > .comparsion_title > p {
+.comparison_bg > .comparison > .comparison_title > p {
   font-size: 0.75rem;
   color: #737373;
   display: none;
 }
 
-.comparison_bg > .comparison > .comparsion_items {
+.comparison_bg > .comparison > .comparison_items {
   flex: auto;
   display: flex;
   justify-content: space-between;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul {
   flex: auto;
   display: flex;
   justify-content: space-between;
@@ -483,26 +483,26 @@ summary:hover {
   margin-top: 10px;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item {
   margin: 0 auto 8px;
   text-align: center;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info {
   cursor: pointer;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > .delete_compare {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > .delete_compare {
   height: 0;
   text-align: right;
   display: none;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info:hover .delete_compare {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info:hover .delete_compare {
   display: block;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > .delete_compare > img {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > .delete_compare > img {
   position: relative;
   height: 15px;
   width: 15px;
@@ -510,17 +510,17 @@ summary:hover {
   right: 8px;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > img {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > img {
   height: 40px;
   width: 40px;
 }
 
-.comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > h4 {
+.comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > h4 {
   font-size: 0.5rem;
   margin: 5px 0 0 0;
 }
 
-.comparison_bg > .comparison > .comparsion_btn {
+.comparison_bg > .comparison > .comparison_btn {
   display: flex;
   flex-direction: column;
   margin: 0 5px 0 0;
@@ -528,7 +528,7 @@ summary:hover {
   justify-items: space-around;
 }
 
-.comparison_bg > .comparison > .comparsion_btn > .go_to_compare {
+.comparison_bg > .comparison > .comparison_btn > .go_to_compare {
   width: 70px;
   border-radius: 4px;
   cursor: pointer;
@@ -543,7 +543,7 @@ summary:hover {
   margin: auto 15px 15px 10px;
 }
 
-.comparison_bg > .comparison > .comparsion_btn > .clear_compare {
+.comparison_bg > .comparison > .comparison_btn > .clear_compare {
   cursor: pointer;
   border-bottom: 0.8px solid #5a5a5a;
   padding: 0 2px 2px;
@@ -555,7 +555,7 @@ summary:hover {
   margin: 0 15px auto 10px;
 }
 
-.comparison_bg > .comparison > .comparsion_btn > a:hover {
+.comparison_bg > .comparison > .comparison_btn > a:hover {
   opacity: 0.7;
 }
 
@@ -737,7 +737,7 @@ summary:hover {
     line-height: 40px;
   }
 
-  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+  .comparison_bg > .comparison > .comparison_items > .comparison_ul > .item {
     width: 60px;
   }
 
@@ -763,38 +763,38 @@ summary:hover {
     height: 150px;
   }
 
-  .comparison_bg > .comparison > .comparsion_btn {
+  .comparison_bg > .comparison > .comparison_btn {
     margin-right: 10px;
   }
 
-  .comparison_bg > .comparison > .comparsion_btn > .go_to_compare {
+  .comparison_bg > .comparison > .comparison_btn > .go_to_compare {
     width: 100px;
     padding: 7px 20px;
     font-size: 12px;
     margin-bottom: 20px;
   }
 
-  .comparison_bg > .comparison > .comparsion_btn > .clear_compare {
+  .comparison_bg > .comparison > .comparison_btn > .clear_compare {
     font-size: 10px;
   }
 
-  .comparison_bg > .comparsion_close > p {
+  .comparison_bg > .comparison_close > p {
     font-size: 1.25rem;
   }
 
-  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > h4 {
+  .comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > h4 {
     font-size: 0.7rem;
   }
 
-  .comparison_bg > .comparison > .comparsion_title > h3 {
+  .comparison_bg > .comparison > .comparison_title > h3 {
     font-size: 1rem;
   }
 
-  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+  .comparison_bg > .comparison > .comparison_items > .comparison_ul > .item {
     width: 80px;
   }
 
-  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item > .compare_product_info > img {
+  .comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > img {
     height: 80px;
     width: 80px;
   }
@@ -860,11 +860,11 @@ summary:hover {
     line-height: 45px;
   }
 
-  .comparison_bg > .comparison > .comparsion_title > p {
+  .comparison_bg > .comparison > .comparison_title > p {
     display: block;
   }
 
-  .comparison_bg > .comparison > .comparsion_items > .comparsion_ul > .item {
+  .comparison_bg > .comparison > .comparison_items > .comparison_ul > .item {
     width: 100px;
   }
 

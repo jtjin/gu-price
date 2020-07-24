@@ -368,7 +368,7 @@ logoutBtn.addEventListener('click', () => {
 function updateCompare() {
   event.preventDefault();
   document.getElementById('comparison_bg').style.display = 'block';
-  document.getElementById('comparsion_arrow').style.display = 'flex';
+  document.getElementById('comparison_arrow').style.display = 'flex';
   let product;
   let img;
   let userCompare = sessionStorage.getItem('compare');
@@ -428,7 +428,7 @@ function updateCompare() {
 }
 
 function addCompare(mainImage, name, number) {
-  const comparsionUl = document.getElementById('comparsion_ul');
+  const comparisonUl = document.getElementById('comparison_ul');
   // create <li class='item'>
   const li = document.createElement('li');
   li.setAttribute('class', 'item');
@@ -452,7 +452,7 @@ function addCompare(mainImage, name, number) {
   h4.innerHTML = name;
   div.appendChild(img);
   div.appendChild(h4);
-  comparsionUl.appendChild(li);
+  comparisonUl.appendChild(li);
 }
 function removeCompare(number) {
   const deleteItem = document.querySelector(`li[number='${number}']`);
@@ -476,19 +476,19 @@ function clickRemoveCompare() {
   li.remove();
 }
 
-document.getElementById('comparsion_close').addEventListener('click', () => {
+document.getElementById('comparison_close').addEventListener('click', () => {
   document.getElementById('comparison_bg').style.display = 'none';
-  document.getElementById('comparsion_arrow').style.display = 'flex';
+  document.getElementById('comparison_arrow').style.display = 'flex';
 });
 
-document.getElementById('comparsion_arrow').addEventListener('click', () => {
+document.getElementById('comparison_arrow').addEventListener('click', () => {
   document.getElementById('comparison_bg').style.display = 'block';
 });
 
 async function checkCompare() {
   if (sessionStorage.getItem('compare')) {
     if (window.location.pathname == '/compare') {
-      document.getElementById('comparsion_arrow').style.display = 'none';
+      document.getElementById('comparison_arrow').style.display = 'none';
     } else {
       let userCompare = sessionStorage.getItem('compare');
       userCompare = userCompare.split(',');
@@ -496,7 +496,7 @@ async function checkCompare() {
         const result = await fetch(`/api/1.0/products/details?number=${userCompare[i]}`).then((res) => res.json());
         addCompare(result.data.main_image, result.data.name, result.data.number);
       }
-      document.getElementById('comparsion_arrow').style.display = 'flex';
+      document.getElementById('comparison_arrow').style.display = 'flex';
     }
   }
 }
