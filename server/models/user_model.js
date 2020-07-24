@@ -179,7 +179,7 @@ const getUserProfile = async (accessToken) => {
   };
 };
 
-const getFacebookProfile = async function (accessToken) {
+const getFacebookProfile = async (accessToken) => {
   try {
     const res = await got(`https://graph.facebook.com/me?fields=id,name,email&access_token=${accessToken}`, {
       responseType: 'json',
@@ -191,7 +191,7 @@ const getFacebookProfile = async function (accessToken) {
   }
 };
 
-const getGoogleProfile = async function (accessToken) {
+const getGoogleProfile = async (accessToken) => {
   try {
     const res = await got(`https://oauth2.googleapis.com/tokeninfo?id_token=${accessToken}`, {
       responseType: 'json',

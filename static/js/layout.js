@@ -61,6 +61,45 @@ function headerSearch() {
     if (e.key === 'Enter') headerSearchBtn();
   });
 }
+
+// Member Modal
+const memberModal = document.getElementById('member_modal');
+const memberBtn = document.getElementById('member_btn');
+const modalClose = document.getElementById('modal_close');
+const profileModal = document.getElementById('profile_modal');
+const profileClose = document.getElementById('profile_close');
+
+// When the user clicks the button, open the modal
+memberBtn.onclick = function () {
+  if (!localStorage.getItem('token')) {
+    // Check if token is available
+    memberModal.style.display = 'flex';
+  } else {
+    switch (profileModal.style.display) {
+      case 'flex':
+        profileModal.style.display = 'none';
+        break;
+      default:
+        document.getElementById('profile_name').innerHTML = localStorage.getItem('name');
+        profileModal.style.display = 'flex';
+    }
+  }
+};
+
+// When the user clicks the close button, close the modal
+modalClose.onclick = function () {
+  memberModal.style.display = 'none';
+};
+profileClose.onclick = function () {
+  profileModal.style.display = 'none';
+};
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == memberModal) {
+    memberModal.style.display = 'none';
+  }
+};
+
 function memberLogo() {
   document.getElementById('member_logo').src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
 }
@@ -229,6 +268,7 @@ loginBtn.addEventListener('click', () => {
   const result = { email, password, provider };
   postData('/api/1.0/user/signin', result, loginRender);
 });
+
 /* Integrate Facebook Login */
 // Initialization
 window.fbAsyncInit = function () {
@@ -271,44 +311,6 @@ function FacebookLogin() {
     }
   }, { scope: 'public_profile, email' });
 }
-
-// Member Modal
-const memberModal = document.getElementById('member_modal');
-const memberBtn = document.getElementById('member_btn');
-const modalClose = document.getElementById('modal_close');
-const profileModal = document.getElementById('profile_modal');
-const profileClose = document.getElementById('profile_close');
-
-// When the user clicks the button, open the modal
-memberBtn.onclick = function () {
-  if (!localStorage.getItem('token')) {
-    // Check if token is available
-    memberModal.style.display = 'flex';
-  } else {
-    switch (profileModal.style.display) {
-      case 'flex':
-        profileModal.style.display = 'none';
-        break;
-      default:
-        document.getElementById('profile_name').innerHTML = localStorage.getItem('name');
-        profileModal.style.display = 'flex';
-    }
-  }
-};
-
-// When the user clicks the close button, close the modal
-modalClose.onclick = function () {
-  memberModal.style.display = 'none';
-};
-profileClose.onclick = function () {
-  profileModal.style.display = 'none';
-};
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target == memberModal) {
-    memberModal.style.display = 'none';
-  }
-};
 
 /* Integrate Google Login */
 function GoogleLogin() {
@@ -503,6 +505,23 @@ document.getElementById('go_to_compare').addEventListener('click', () => {
   if (sessionStorage.getItem('compare')) window.location.href = '/compare';
 });
 
+document.getElementById('clear_compare').addEventListener('click', () => {
+  let userCompare = sessionStorage.getItem('compare');
+  if (userCompare) {
+    userCompare = userCompare.split(',');
+    for (let i = 0; i < userCompare.length; i += 1) {
+      number = userCompare[i];
+      // change checked img
+      const checkedImg = document.querySelector(`img[number='${number}']`);
+      if (checkedImg) checkedImg.setAttribute('src', '/static/imgs/unchecked.png');
+      // Remove li
+      const li = document.querySelector(`li[number='${number}']`);
+      li.remove();
+    }
+    sessionStorage.removeItem('compare');
+  }
+});
+
 window.onload = [headerSearch(), memberLogo(), checkCompare()];
 
 // toTop-arrow
@@ -536,6 +555,7 @@ function pairAlert() {
     cancelButtonColor: '#d33',
     confirmButtonText: '接受配對',
     cancelButtonText: '拒絕配對',
+    allowOutsideClick: false,
   }).then((result) => {
     if (result.value) {
       Swal.fire({
@@ -543,6 +563,7 @@ function pairAlert() {
         title: '你壞壞！',
         confirmButtonColor: '#28a745',
         confirmButtonText: '我就壞',
+        allowOutsideClick: false,
       });
     } else {
       Swal.fire({
@@ -550,6 +571,7 @@ function pairAlert() {
         title: '你不喜歡人家嗎...',
         confirmButtonColor: '#28a745',
         confirmButtonText: '沒錯',
+        allowOutsideClick: false,
       });
     }
   });
@@ -557,6 +579,7 @@ function pairAlert() {
 socket.on('connect', () => {
   if (window.location.pathname != '/dashboard') {
     socket.emit('in', window.location.pathname);
+    socket.emit('in2', '1');
     window.onbeforeunload = () => {
       socket.emit('out');
     };

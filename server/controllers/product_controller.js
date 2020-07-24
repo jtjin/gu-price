@@ -23,7 +23,7 @@ const getProducts = async (req, res) => {
     switch (category) {
       case 'men': case 'women': case 'kids':
         const { type } = req.query;
-        return await Product.getProducts(4, paging, { category, type });
+        return await Product.getProducts(pageSize, paging, { category, type });
       case 'search': {
         const { keyword } = req.query;
         if (keyword) {
