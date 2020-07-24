@@ -44,16 +44,25 @@ main > .ctn > .search_main {
 }
 
 main > .ctn > .search_main > .search_select_main {
-  max-width: 100px;
+  height: 45px;
+}
+
+main > .ctn > .search_main > .search_select_main > select {
+  width: 90px;
+  height: 100%;
   flex: 1 100%;
   line-height: 1.25em;
   border: 1px solid #e9e9e9;
-  padding: 1em 0.5em;
+  padding: 1em 0.8em;
   border-radius: 0.3rem 0 0 0.3rem;
   color: #646464;
-  background: #fff;
+  background: #fff url('/static/imgs/select_arrow.png') no-repeat 66px;
+  background-size: 30px 10px;
   border-color: #e9e9e9;
   margin: 0 0 0 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 main > .ctn > .search_main > .search_main_div {
@@ -74,6 +83,7 @@ main > .ctn > .search_main > .search_main_div > .search_input_main {
   background: #fff;
   border-color: #e9e9e9;
   margin: 0 10px 0 0;
+  -webkit-appearance: none;
 }
 
 main > .ctn > .search_main > .search_main_div > img {

@@ -16,9 +16,10 @@ block content
         img(src='/static/imgs/logo.png')
         |GU 搜尋
       .search_main
-        select#select_main.search_select_main
-          option 關鍵字
-          option 商品編號
+        .search_select_main
+          select#select_main
+            option 關鍵字
+            option 商品編號
         .search_main_div
           input#search_main.search_input_main(type='text' placeholder=' 輸入商品關鍵字或編號...')
           img#image_search_icon(src='/static/imgs/photo.png')

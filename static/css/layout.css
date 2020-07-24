@@ -63,15 +63,22 @@ summary:hover {
   height: 35px;
   padding: 0.5em;
   font-size: 0.6rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .main_header > .container > .box > .search_btn {
   background: transparent;
   border: 1px solid #e9e9e9;
   border-radius: 0 0.3rem 0.3rem 0;
+  height: 35px;
   width: 35px;
   cursor: pointer;
   font-weight: 900;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .main_header > .container > .box > .search_btn:hover {
@@ -415,7 +422,7 @@ summary:hover {
   border-top: 2px solid #e6e6e6;
   width: 100%;
   height: 110px;
-  z-index: 2;
+  z-index: 4;
   bottom: 0;
   display: none;
 }
@@ -513,7 +520,15 @@ summary:hover {
   margin: 5px 0 0 0;
 }
 
-.comparison_bg > .comparison > .go_to_compare {
+.comparison_bg > .comparison > .comparsion_btn {
+  display: flex;
+  flex-direction: column;
+  margin: 0 5px 0 0;
+  align-items: center;
+  justify-items: space-around;
+}
+
+.comparison_bg > .comparison > .comparsion_btn > .go_to_compare {
   width: 70px;
   border-radius: 4px;
   cursor: pointer;
@@ -525,10 +540,22 @@ summary:hover {
   text-align: center;
   min-height: 30px;
   height: auto;
-  margin: auto 15px auto 10px;
+  margin: auto 15px 15px 10px;
 }
 
-.comparison_bg > .comparison > .go_to_compare:hover {
+.comparison_bg > .comparison > .comparsion_btn > .clear_compare {
+  cursor: pointer;
+  border-bottom: 0.8px solid #5a5a5a;
+  padding: 0 2px 2px;
+  color: #5a5a5a;
+  font-size: 8px;
+  font-weight: 550;
+  text-align: center;
+  height: auto;
+  margin: 0 15px auto 10px;
+}
+
+.comparison_bg > .comparison > .comparsion_btn > a:hover {
   opacity: 0.7;
 }
 
@@ -736,10 +763,19 @@ summary:hover {
     height: 150px;
   }
 
-  .comparison_bg > .comparison > .go_to_compare {
+  .comparison_bg > .comparison > .comparsion_btn {
+    margin-right: 10px;
+  }
+
+  .comparison_bg > .comparison > .comparsion_btn > .go_to_compare {
     width: 100px;
     padding: 7px 20px;
     font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .comparison_bg > .comparison > .comparsion_btn > .clear_compare {
+    font-size: 10px;
   }
 
   .comparison_bg > .comparsion_close > p {
