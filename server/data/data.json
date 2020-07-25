@@ -24,7 +24,7 @@
          "boxers": "內褲",
          "roomwear": "家居系列(家居服・家居鞋)",
          "socks": "襪子",
-         "shoes": "鞋子",
+         "shoes": "鞋子/襪子",
          "belt": "皮帶・腰帶",
          "bag": "包包・後背包",
          "hat": "帽子/其他配飾",
@@ -33,7 +33,7 @@
    ],
    "women": [
       {
-         "uvcut": "防曬抗UV外套",
+         "uvcut": "防曬抗UV系列",
          "parka": "連帽外套",
          "cardigan": "開襟外套",
          "jacket": "夾克・外套・背心",
@@ -60,7 +60,7 @@
          "guwarm": "GU WARM・保暖發熱",
          "roomwear": "家居全系列(家居服・鞋・小物)",
          "socks": "襪子・褲襪",
-         "shoes": "鞋子",
+         "shoes": "鞋子/襪子",
          "bag": "包包",
          "pierce": "耳環(針式・夾式)",
          "accessory": "項鍊・手飾・配飾",
@@ -78,7 +78,7 @@
          "boystops": "男童上衣",
          "girlsbottoms": "女童下身",
          "boysbottoms": "男童下身",
-         "roomwear": "家居&内衣",
+         "roomwear": "家居睡衣&内衣",
          "goods": "配件/童鞋/襪子",
          "guwarm": "GU WARM・保暖發熱"
       }
