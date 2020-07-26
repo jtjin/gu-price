@@ -8,7 +8,6 @@ html
         block css
             link(rel='stylesheet' href='/static/css/layout.css')
         script(async='' defer='' crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1031835573900181&autoLogAppEvents=1')
-        script(async='' defer='' src="https://apis.google.com/js/platform.js?onload=GoogleSigninInit")
         script.
             function GoogleSigninInit() {
                 gapi.load('auth2', () => {
@@ -17,6 +16,7 @@ html
                     });
                 });
             }
+        script(async='' defer='' src="https://apis.google.com/js/platform.js?onload=GoogleSigninInit")
         script(async src="https://www.googletagmanager.com/gtag/js?id=UA-172748058-1")
         script.
             window.dataLayer = window.dataLayer || [];
