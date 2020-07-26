@@ -70,7 +70,7 @@ function drawDatePrice(data) {
       fixedrange: true,
     },
     height: 200,
-    width: 350,
+    width: 320,
     title: {
       text: '歷史價格折線圖',
       font: {
