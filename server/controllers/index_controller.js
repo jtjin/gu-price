@@ -16,13 +16,17 @@ const getProducts = async (req, res) => {
     switch (category) {
       case 'men': case 'women': case 'kids': case 'products': case 'search':
         return await Index.getProducts({ category, type });
-      default:
-        res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
     }
     return Promise.resolve({});
   }
-  const { product } = await findProduct(category, type);
-  if (product != 0) {
+  const { productCount } = await findProduct(category, type);
+  if (!productCount && productCount != 0) {
+    res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
+    return;
+  }
+  if (productCount == 0) {
+    res.status(200).render('search', { msg: `我們無法找到符合 " ${type} " 的任何項目。` });
+  } else {
     switch (category) {
       case 'products':
         res.status(200).render('product');
@@ -35,10 +39,8 @@ const getProducts = async (req, res) => {
           res.status(200).render('type');
           return;
         }
-        res.status(200).render('category', { product });
+        res.status(200).render('category', { product: productCount });
     }
-  } else {
-    res.status(200).render('search', { msg: `我們無法找到符合 " ${type} " 的任何項目。` });
   }
 };
 

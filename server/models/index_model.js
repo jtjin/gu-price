@@ -2,7 +2,7 @@ const { query } = require('../../util/mysqlcon');
 
 const getProducts = async (requirement = {}) => {
   const condition = { sql: '', binding: [] };
-  let productsQuery;
+  let productCountQuery;
 
   if (requirement.type) {
     if (requirement.category == 'products') {
@@ -15,22 +15,22 @@ const getProducts = async (requirement = {}) => {
       condition.sql = 'WHERE category = ? AND type = ?';
       condition.binding = [requirement.category, requirement.type];
     }
-    productsQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql}`;
+    productCountQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql}`;
   } else {
     condition.sql = 'WHERE category = ? ORDER BY type';
     condition.binding = [requirement.category];
-    productsQuery = `SELECT DISTINCT(type) FROM product ${condition.sql}`;
+    productCountQuery = `SELECT DISTINCT(type) FROM product ${condition.sql}`;
   }
 
-  const productsBindings = condition.binding;
-  const products = await query(productsQuery, productsBindings);
+  const productCountBindings = condition.binding;
+  const productCounts = await query(productCountQuery, productCountBindings);
 
   if (requirement.type) {
-    const product = products[0].count;
-    return { product };
+    const productCount = productCounts[0].count;
+    return { productCount };
   }
-  const product = products.flatMap((p) => [p.type]);
-  return { product };
+  const productCount = productCounts.flatMap((p) => [p.type]);
+  return { productCount };
 };
 
 const updateUser = async (email) => {
