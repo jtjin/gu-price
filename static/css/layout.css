@@ -267,7 +267,7 @@ summary:hover {
 }
 
 .member_modal > .modal_content > .modal_container > .nav {
-  width: 90px;
+  width: 50%;
   background: white;
   color: #555;
   float: left;
@@ -708,7 +708,6 @@ summary:hover {
     height: 40px;
     line-height: 40px;
     font-size: 0.8rem;
-    width: 115px;
   }
 
   .member_modal > .modal_content > .modal_container > .form > .input {
@@ -829,7 +828,6 @@ summary:hover {
     height: 45px;
     line-height: 45px;
     font-size: 1rem;
-    width: 135px;
   }
 
   .member_modal > .modal_content > .modal_container > .form > .input {
