@@ -17,7 +17,7 @@ function mainSearchBtn() {
         title: '請勿輸入特殊符號！',
         text: '不接受空格、@、!、$、^、&...等特殊符號',
         confirmButtonColor: '#3085d6',
-        confirmButtonText:　'我知道了',
+        confirmButtonText: '我知道了',
       });
       return;
     }
@@ -53,7 +53,7 @@ imageSearchFile.addEventListener('change', () => {
       title: '請上傳正確圖片格式！',
       text: '只接受 JPG/JPEG/PNG 圖檔',
       confirmButtonColor: '#3085d6',
-      confirmButtonText:　'我知道了',
+      confirmButtonText: '我知道了',
     });
   } else {
     imageSearchSubmit.click();

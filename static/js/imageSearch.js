@@ -11,7 +11,7 @@ async function getAllProducts() {
       icon: 'warning',
       text: document.getElementById('msg').innerHTML,
       confirmButtonColor: '#3085d6',
-      confirmButtonText:　'確定',
+      confirmButtonText: '確定',
     });
     window.location.href = '/';
     return;
@@ -35,7 +35,7 @@ async function getAllProducts() {
         title: '我們無法找到符合此圖片的任何項目。',
         text: '(資料庫商品分類不夠多...)',
         confirmButtonColor: '#3085d6',
-        confirmButtonText:　'確定',
+        confirmButtonText: '確定',
       });
       window.location.href = '/';
       return;
@@ -45,7 +45,7 @@ async function getAllProducts() {
       icon: 'warning',
       text: '圖片上傳失敗，請再嘗試一次。',
       confirmButtonColor: '#3085d6',
-      confirmButtonText:　'確定',
+      confirmButtonText: '確定',
     });
     window.location.href = '/';
     return;

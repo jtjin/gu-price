@@ -17,9 +17,9 @@ const getProducts = async (requirement = {}) => {
     }
     productsQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql}`;
   } else {
-    condition.sql = 'WHERE category = ?';
+    condition.sql = 'WHERE category = ? ORDER BY type';
     condition.binding = [requirement.category];
-    productsQuery = `SELECT DISTINCT (type) FROM product ${condition.sql}`;
+    productsQuery = `SELECT DISTINCT(type) FROM product ${condition.sql}`;
   }
 
   const productsBindings = condition.binding;

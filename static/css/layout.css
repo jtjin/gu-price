@@ -13,6 +13,9 @@ input,
 select,
 summary {
   outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 summary:hover {

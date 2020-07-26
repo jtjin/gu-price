@@ -312,6 +312,7 @@ main {
   width: calc(50% - 10px);
   margin: 5px;
   border-radius: 0.3rem;
+  height: 100%;
 }
 
 @media (min-width: 750px) {

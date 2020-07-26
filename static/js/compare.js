@@ -79,9 +79,17 @@ async function drawDatePrice(data) {
     type: 'scatter',
     fill: 'tozeroy',
   };
+  const oneDay = 24 * 60 * 60 * 1000;
+  const firtstDay = new Date(data.date[0]).getTime() - oneDay;
+  const lastDay = new Date(data.date[data.date.length - 1]).getTime();
   const layout = {
     xaxis: {
       type: 'date',
+      range: [firtstDay, lastDay],
+      fixedrange: true,
+    },
+    yaxis: {
+      fixedrange: true,
     },
     height: 180,
     width: 220,
@@ -99,7 +107,7 @@ async function drawDatePrice(data) {
       t: 30,
     },
   };
-  Plotly.newPlot(`${data.number}`, [datePrice], layout, { scrollZoom: true, displayModeBar: false });
+  Plotly.newPlot(`${data.number}`, [datePrice], layout, { scrollZoom: false, displayModeBar: false });
 }
 
 document.getElementById('back').addEventListener('click', () => {

@@ -6,7 +6,7 @@ async function getProfile() {
       title: '存取無效！',
       text: '請註冊帳號或登入會員',
       confirmButtonColor: '#3085d6',
-      confirmButtonText:　'確定',
+      confirmButtonText: '確定',
     });
     window.location.href = '/';
   } else {
@@ -22,7 +22,7 @@ async function getProfile() {
         icon: 'warning',
         text: result.error,
         confirmButtonColor: '#3085d6',
-        confirmButtonText:　'確定',
+        confirmButtonText: '確定',
       });
       localStorage.clear();
       window.location.href = '/';
@@ -36,7 +36,7 @@ async function getProfile() {
         icon: 'warning',
         text: '您的存取權杖已過期，請重新登入',
         confirmButtonColor: '#3085d6',
-        confirmButtonText:　'確定',
+        confirmButtonText: '確定',
       });
       localStorage.clear();
       window.location.href = '/';

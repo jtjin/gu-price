@@ -57,9 +57,17 @@ function drawDatePrice(data) {
     type: 'scatter',
     fill: 'tozeroy',
   };
+  const oneDay = 24 * 60 * 60 * 1000;
+  const firtstDay = new Date(data.date[0]).getTime() - oneDay;
+  const lastDay = new Date(data.date[data.date.length - 1]).getTime();
   const layout = {
     xaxis: {
       type: 'date',
+      range: [firtstDay, lastDay],
+      fixedrange: true,
+    },
+    yaxis: {
+      fixedrange: true,
     },
     height: 200,
     width: 350,
@@ -77,7 +85,7 @@ function drawDatePrice(data) {
       t: 30,
     },
   };
-  Plotly.newPlot('date_price', [datePrice], layout, { scrollZoom: true, displayModeBar: false });
+  Plotly.newPlot('date_price', [datePrice], layout, { scrollZoom: false, displayModeBar: false });
 }
 
 const favorite = document.getElementById('favorite');
@@ -94,6 +102,7 @@ function checkFavorite(number) {
     favoriteText.style.color = 'black';
   }
 }
+
 favorite.addEventListener('click', async () => {
   if (!localStorage.getItem('token')) {
     Swal.fire({
@@ -201,7 +210,7 @@ trackBtn.addEventListener('click', () => {
       icon: 'warning',
       text: `價格必須介於 0 至 ${currentPrice}`,
       confirmButtonColor: '#3085d6',
-      confirmButtonText:　'我知道了',
+      confirmButtonText: '我知道了',
     });
     return;
   }

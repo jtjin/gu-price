@@ -49,7 +49,7 @@ function headerSearchBtn() {
         title: '請勿輸入特殊符號！',
         text: '不接受空格、@、!、$、^、&...等特殊符號',
         confirmButtonColor: '#3085d6',
-        confirmButtonText:　'我知道了',
+        confirmButtonText: '我知道了',
       });
       return;
     }
@@ -133,7 +133,7 @@ function signupRender(obj) {
       title: '註冊成功！',
       text: '系統已發送「認證信」至您的電子信箱',
       confirmButtonColor: '#3085d6',
-      confirmButtonText:　'確定',
+      confirmButtonText: '確定',
     });
     document.getElementById('member_modal').style.display = 'none';
   } else {
@@ -398,7 +398,7 @@ function updateCompare() {
           icon: 'warning',
           title: '比較列表已滿！',
           text: '請移除 1 項不須比較的商品',
-          confirmButtonText:　'確定',
+          confirmButtonText: '確定',
         });
         return;
       }
@@ -540,62 +540,4 @@ window.onscroll = () => scrollFunction();
 // When the user clicks on the button, scroll to the top of the document
 backTop.addEventListener('click', () => {
   document.documentElement.scrollTop = 0;
-});
-
-// socket
-const socket = io();
-function pairAlert() {
-  Swal.fire({
-    imageUrl: '/static/imgs/match.gif',
-    title: 'Match！',
-    text: '如果你喜歡的人也同時喜歡你...',
-    showCancelButton: true,
-    reverseButtons: true,
-    confirmButtonColor: '#28a745',
-    cancelButtonColor: '#d33',
-    confirmButtonText: '接受配對',
-    cancelButtonText: '拒絕配對',
-    allowOutsideClick: false,
-  }).then((result) => {
-    if (result.value) {
-      Swal.fire({
-        imageUrl: '/static/imgs/ubadbad.gif',
-        title: '你壞壞！',
-        confirmButtonColor: '#28a745',
-        confirmButtonText: '我就壞',
-        allowOutsideClick: false,
-      });
-    } else {
-      Swal.fire({
-        imageUrl: '/static/imgs/cry.gif',
-        title: '你不喜歡人家嗎...',
-        confirmButtonColor: '#28a745',
-        confirmButtonText: '沒錯',
-        allowOutsideClick: false,
-      });
-    }
-  });
-}
-socket.on('connect', () => {
-  if (window.location.pathname != '/dashboard') {
-    socket.emit('in', window.location.pathname);
-    socket.emit('in2', '1');
-    window.onbeforeunload = () => {
-      socket.emit('out');
-    };
-  }
-  if (window.location.pathname.split('/')[1] == 'products') {
-    socket.emit('waitPairs', { id: socket.id, number: window.location.pathname.split('/')[2] });
-    socket.on('someoneMatch', (msg) => {
-      if (msg.id == socket.id && msg.number == window.location.pathname.split('/')[2]) {
-        pairAlert();
-      }
-    });
-    socket.on('match', (msg) => {
-      if (msg.id != socket.id && msg.number == window.location.pathname.split('/')[2]) {
-        socket.emit('matchId', { id: msg.id, number: window.location.pathname.split('/')[2] });
-        pairAlert();
-      }
-    });
-  }
 });
