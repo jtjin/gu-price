@@ -6,8 +6,6 @@ const bodyparser = require('body-parser');
 const path = require('path');
 
 const app = express();
-const httpServer = require('http').createServer(app);
-const http_io = require('socket.io')(httpServer);
 
 app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
@@ -40,36 +38,4 @@ app.use((err, req, res, next) => {
   res.status(500).render('error', { title: '伺服器錯誤 | GU 搜尋 | GU 比價', status: '500', message: '伺服器錯誤' });
 });
 
-httpServer.listen(PORT, () => { console.log(`Listening on port: ${PORT}`); });
-
-// Socket
-http_io.on('connection', (socket) => {
-  ip = socket.handshake.headers['x-real-ip'] ? socket.handshake.headers['x-real-ip'] : socket.handshake.address;
-  socket.on('in', (msg) => {
-    url = msg;
-    http_io.emit('pageviewConnect', {
-      id: socket.id,
-      ip,
-      url,
-      connections: Object.keys(http_io.sockets.connected).length - 1,
-    });
-  });
-  socket.on('out', () => {
-    http_io.emit('pageviewDisconnect', {
-      id: socket.id,
-      connections: Object.keys(http_io.sockets.connected).length - 1,
-    });
-  });
-  socket.on('disconnect', () => {
-    http_io.emit('pageviewDisconnect', {
-      id: socket.id,
-      connections: Object.keys(http_io.sockets.connected).length - 1,
-    });
-  });
-  socket.on('waitPairs', (msg) => {
-    http_io.emit('match', { id: msg.id, number: msg.number });
-  });
-  socket.on('matchId', (msg) => {
-    http_io.emit('someoneMatch', { id: msg.id, number: msg.number });
-  });
-});
+app.listen(PORT, () => { console.log(`Listening on port: ${PORT}`); });

@@ -28,14 +28,6 @@ router.get('/compare', (req, res, next) => {
   }
 });
 
-router.get('/dashboard', (req, res, next) => {
-  try {
-    res.status(200).render('dashboard');
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.route('/confirmation/:token')
   .get(wrapAsync(confirmEmail));
 
