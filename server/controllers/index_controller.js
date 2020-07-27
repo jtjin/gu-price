@@ -61,6 +61,7 @@ const imageSearch = async (req, res) => {
       res.status(200).render('imageSearch', { imageUrl: `/static/pictures/${req.file.filename}`, object });
     }
   } else {
+    // Wrong file upload
     fs.unlinkSync(fileName); // Delete picture
     res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });
   }
