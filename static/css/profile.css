@@ -54,14 +54,16 @@ main > .view_2_background > .view_2 {
 }
 
 main > .view_2_background > .view_2 > .profile_box,
-main > .view_2_background > .view_2 > .favorite_box {
+main > .view_2_background > .view_2 > .favorite_box,
+main > .view_2_background > .view_2 > .track_box {
   display: flex;
   flex-wrap: wrap;
   margin: 0 20px 10px;
 }
 
 main > .view_2_background > .view_2 > .profile_box > h2,
-main > .view_2_background > .view_2 > .favorite_box > h2 {
+main > .view_2_background > .view_2 > .favorite_box > h2,
+main > .view_2_background > .view_2 > .track_box > h2 {
   flex: 1 100%;
   margin: 10px;
   padding-bottom: 6px;
@@ -72,21 +74,24 @@ main > .view_2_background > .view_2 > .favorite_box > h2 {
 }
 
 main > .view_2_background > .view_2 > .profile_box > div,
-main > .view_2_background > .view_2 > .favorite_box > .msg {
+main > .view_2_background > .view_2 > .favorite_box > .msg,
+main > .view_2_background > .view_2 > .track_box > .msg {
   flex: 1 100%;
   font-size: 1rem;
   line-height: 1.5rem;
   margin: 10px;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products {
+main > .view_2_background > .view_2 > .favorite_box > .products,
+main > .view_2_background > .view_2 > .track_box > .products {
   display: flex;
   flex-wrap: wrap;
   margin: 0 0 10px;
   flex: 1 100%;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product,
+main > .view_2_background > .view_2 > .track_box > .products > .product {
   display: flex;
   flex-direction: column;
   width: calc(50% - 20px);
@@ -99,15 +104,18 @@ main > .view_2_background > .view_2 > .favorite_box > .products > .product {
   text-decoration: none;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product:hover {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product:hover,
+main > .view_2_background > .view_2 > .track_box > .products > .product:hover {
   box-shadow: 0 0 1em #a19f9f;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product:hover .delete {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product:hover .delete,
+main > .view_2_background > .view_2 > .track_box > .products > .product:hover .delete {
   display: block;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete,
+main > .view_2_background > .view_2 > .track_box > .products > .product > .delete {
   text-align: right;
   z-index: 1;
   margin: 0 5px 0 auto;
@@ -115,31 +123,37 @@ main > .view_2_background > .view_2 > .favorite_box > .products > .product > .de
   display: none;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete > img {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete > img,
+main > .view_2_background > .view_2 > .track_box > .products > .product > .delete > img {
   margin-top: 5px;
   width: 20px;
   height: 20px;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete:hover {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete:hover,
+main > .view_2_background > .view_2 > .track_box > .products > .product > .delete:hover {
   opacity: 0.7;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > img {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > img,
+main > .view_2_background > .view_2 > .track_box > .products > .product > img {
   width: 100%;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > .name {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .name,
+main > .view_2_background > .view_2 > .track_box > .products > .product > .name {
   padding: 10px 10px 5px;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > .number {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .number,
+main > .view_2_background > .view_2 > .track_box > .products > .product > .number {
   padding: 0 10px 15px;
   font-size: 0.8rem;
   color: #919191;
 }
 
-main > .view_2_background > .view_2 > .favorite_box > .products > .product > .price {
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .price,
+main > .view_2_background > .view_2 > .track_box > .products > .product > .price {
   margin-top: auto;
   height: 50px;
   width: 100%;
@@ -149,7 +163,8 @@ main > .view_2_background > .view_2 > .favorite_box > .products > .product > .pr
 }
 
 @media (min-width: 600px) {
-  main > .view_2_background > .view_2 > .favorite_box > .products > .product {
+  main > .view_2_background > .view_2 > .favorite_box > .products > .product,
+  main > .view_2_background > .view_2 > .track_box > .products > .product {
     width: calc(25% - 20px);
   }
 }

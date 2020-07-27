@@ -186,11 +186,21 @@ const trackBtn = document.getElementById('track_btn');
 function getTrackEmail() {
   if (localStorage.getItem('email')) {
     document.getElementById('track_email').value = localStorage.getItem('email');
+    document.getElementById('track_email').setAttribute('readonly', 'true');
   }
 }
 
 trackBtn.addEventListener('click', () => {
   event.preventDefault();
+  if (!localStorage.getItem('token')) {
+    Swal.fire({
+      icon: 'warning',
+      text: '請先登入再追蹤商品',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    return;
+  }
   const { number } = product.data;
   const { name } = product.data;
   const currentPrice = product.data.current_price;
@@ -205,7 +215,7 @@ trackBtn.addEventListener('click', () => {
     });
     return;
   }
-  if (price < 0 || price > currentPrice) {
+  if (price < 0 || price >= currentPrice) {
     Swal.fire({
       icon: 'warning',
       text: `價格必須介於 0 至 ${currentPrice}`,
@@ -234,8 +244,9 @@ trackBtn.addEventListener('click', () => {
     });
     return;
   }
+  const userId = localStorage.getItem('id');
   const data = {
-    name, number, mainImage, currentPrice, price, email,
+    name, number, mainImage, currentPrice, price, email, userId,
   };
   Swal.fire({
     imageUrl: '/static/imgs/spinner.gif',
@@ -258,7 +269,9 @@ trackBtn.addEventListener('click', () => {
         timer: 1500,
       });
       document.getElementById('track_price').value = '';
-      document.getElementById('track_email').value = '';
+      if (!localStorage.getItem('email')) {
+        document.getElementById('track_email').value = '';
+      }
     })
     .catch((err) => {
       Swal.fire({

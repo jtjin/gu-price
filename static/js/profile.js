@@ -61,6 +61,19 @@ async function createProfile(data) {
     const result = await createFavorite(data.favorite);
     if (result == 0) {
       document.getElementById('msg').innerHTML = '尚無收藏任何商品';
+    } else {
+      document.getElementById('msg').remove();
+    }
+  }
+  // Create track
+  if (Object.keys(data.tracks).length === 0) {
+    document.getElementById('track_msg').innerHTML = '尚無追蹤任何商品';
+  } else {
+    const result = await createTrack(data.tracks);
+    if (result == 0) {
+      document.getElementById('track_msg').innerHTML = '尚無追蹤任何商品';
+    } else {
+      document.getElementById('track_msg').remove();
     }
   }
 }
@@ -71,14 +84,14 @@ async function createFavorite(favorite) {
   for (let i = 0; i < favorite.length; i += 1) {
     const data = await fetch(`/api/1.0/products/details?number=${favorite[i]}`).then((res) => res.json());
     if (data.data) {
-      createProducts(data.data);
+      createFavoriteProducts(data.data);
       result += 1;
     }
   }
   return result;
 }
 
-function createProducts(data) {
+function createFavoriteProducts(data) {
   const products = document.getElementById('products');
   // Create <a class='prdocut'>
   const a = document.createElement('a');
@@ -157,6 +170,103 @@ async function deleteFavorite() {
         await Swal.fire({
           icon: 'success',
           title: '收藏移除成功',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        location.reload();
+      }
+    }
+  });
+}
+
+async function createTrack(tracks) {
+  const trackList = Object.keys(tracks);
+  let result = 0;
+  for (let i = 0; i < trackList.length; i += 1) {
+    const data = await fetch(`/api/1.0/products/details?number=${trackList[i]}`).then((res) => res.json());
+    if (data.data) {
+      createTrackProducts(data.data, tracks[trackList[i]]);
+      result += 1;
+    }
+  }
+  return result;
+}
+
+function createTrackProducts(data, trackPrice) {
+  const products = document.getElementById('track_products');
+  // Create <a class='prdocut'>
+  const a = document.createElement('a');
+  a.setAttribute('class', 'product');
+  a.setAttribute('href', `/products/${data.number}`);
+  // Create <div class='delete'>
+  const divDelete = document.createElement('div');
+  const imgDelete = document.createElement('img');
+  divDelete.setAttribute('class', 'delete');
+  imgDelete.setAttribute('src', '/static/imgs/remove.png');
+  imgDelete.setAttribute('onclick', 'deleteTrack()');
+  divDelete.appendChild(imgDelete);
+  a.appendChild(divDelete);
+  // Create <img>, <div clsas='colors'>
+  const img = document.createElement('img');
+  img.setAttribute('src', data.main_image);
+  a.appendChild(img);
+  // Create <div clsas='name'>
+  const divName = document.createElement('div');
+  divName.setAttribute('class', 'name');
+  divName.innerHTML = data.name;
+  a.appendChild(divName);
+  // Create <div clsas='number'>
+  const divNumber = document.createElement('div');
+  divNumber.setAttribute('class', 'number');
+  divNumber.innerHTML = data.number;
+  a.appendChild(divNumber);
+  // Create <div clsas='price'>
+  const divPrice = document.createElement('div');
+  divPrice.setAttribute('class', 'price');
+  divPrice.innerHTML = `追蹤價格 $${trackPrice}`;
+  a.appendChild(divPrice);
+  products.appendChild(a);
+}
+
+async function deleteTrack() {
+  event.preventDefault();
+  const product = event.target.parentElement.parentElement;
+  Swal.fire({
+    title: '確定要取消追蹤嗎？',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#28a745',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '確定',
+    cancelButtonText: '取消',
+  }).then(async (result) => {
+    if (result.value) {
+      let number = product.getElementsByClassName('number');
+      number = number[0].innerHTML;
+      // Send delete info to server
+      const deleteTrack = {
+        number,
+        user_id: localStorage.getItem('id'),
+      };
+      const result = await fetch('/api/1.0/user/track', {
+        body: JSON.stringify(deleteTrack),
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: 'DELETE',
+      }).then((res) => res.json());
+
+      if (result.error) {
+        await Swal.fire({
+          icon: 'error',
+          title: '取消追蹤失敗',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        await Swal.fire({
+          icon: 'success',
+          title: '取消追蹤成功',
           showConfirmButton: false,
           timer: 1500,
         });

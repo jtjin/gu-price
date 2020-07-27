@@ -122,10 +122,10 @@ function signupRender(obj) {
   document.getElementById('signup_password').value = '';
   if (obj.error) {
     Swal.fire({
-      icon: 'warning',
-      text: obj.error,
-      showConfirmButton: false,
-      timer: 1500,
+      icon: 'error',
+      text: JSON.stringify(obj.error),
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '確定',
     });
   } else if (obj.data.access_token) {
     Swal.fire({
@@ -157,7 +157,7 @@ async function loginRender(obj) {
     });
   } else if (obj.data.access_token) {
     localStorage.setItem('token', obj.data.access_token);
-    // localStorage.setItem('id', obj.data.user.id);
+    localStorage.setItem('id', obj.data.user.id);
     localStorage.setItem('photo', obj.data.user.picture);
     localStorage.setItem('name', obj.data.user.name);
     localStorage.setItem('email', obj.data.user.email);

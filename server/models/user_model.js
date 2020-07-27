@@ -165,6 +165,13 @@ const getUserProfile = async (accessToken) => {
   if (results.length === 0) {
     return { error: '無效的存取權杖' };
   }
+  const tracks = await query('SELECT number, price FROM track WHERE user_id = ? AND confirmed = 0', [results[0].id]);
+  const trackHashMap = {};
+  if (tracks.length !== 0) {
+    for (let i = 0; i < tracks.length; i += 1) {
+      trackHashMap[tracks[i].number] = tracks[i].price;
+    }
+  }
   return {
     data: {
       id: results[0].id,
@@ -175,6 +182,7 @@ const getUserProfile = async (accessToken) => {
       access_expired: results[0].access_expired,
       login_at: results[0].login_at,
       favorite: results[0].favorite,
+      tracks: trackHashMap,
     },
   };
 };
@@ -206,9 +214,33 @@ const getGoogleProfile = async (accessToken) => {
 const createTrack = async (track) => {
   try {
     await query('START TRANSACTION');
-    const result = await query('INSERT INTO track SET ?', track);
+
+    const duplicatedTrack = await query('SELECT id FROM track WHERE number = ? AND user_id = ? AND confirmed = 0 FOR UPDATE', [track.number, track.user_id]);
+    let trackId;
+    if (duplicatedTrack.length === 0) { // Insert new track
+      const queryStr = 'INSERT INTO track SET ?';
+      const result = await query(queryStr, track);
+      trackId = result.insertId;
+    } else { // Update existed track
+      trackId = duplicatedTrack[0].id;
+      const queryStr = 'UPDATE track SET price = ? WHERE id = ?';
+      await query(queryStr, [track.price, trackId]);
+    }
+
     await query('COMMIT');
-    return result.insertId;
+    return trackId;
+  } catch (error) {
+    await query('ROLLBACK');
+    return { error };
+  }
+};
+
+const deleteTrack = async (number, user_id) => {
+  try {
+    await query('START TRANSACTION');
+    const result = await query('DELETE FROM track WHERE number = ? AND user_id = ?', [number, user_id]);
+    await query('COMMIT');
+    return result.affectedRows;
   } catch (error) {
     await query('ROLLBACK');
     return { error };
@@ -224,4 +256,5 @@ module.exports = {
   getFacebookProfile,
   getGoogleProfile,
   createTrack,
+  deleteTrack,
 };

@@ -198,6 +198,7 @@ const createTrack = async (req, res) => {
     price: body.price,
     email: body.email,
     confirmed: false,
+    user_id: body.userId,
   };
   const trackId = await User.createTrack(track);
   if (!trackId) {
@@ -230,9 +231,19 @@ const sendTrackEmail = async (name, mainImage, currentPrice, price, email) => {
   return result;
 };
 
+const deleteTrack = async (req, res) => {
+  const result = await User.deleteTrack(req.body.number, req.body.user_id);
+  if (!result) {
+    res.status(500).send({ error: '資料讀取失敗' });
+    return;
+  }
+  res.status(200).send({ result });
+};
+
 module.exports = {
   signUp,
   signIn,
   getUserProfile,
   createTrack,
+  deleteTrack,
 };
