@@ -7,7 +7,7 @@ const {
 } = process.env;
 
 const dbConfig = {
-  connectionLimit: 10,
+  connectionLimit: 40,
   host: MYSQL_HOST,
   user: MYSQL_USERNAME,
   password: MYSQL_PASSWORD,
