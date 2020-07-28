@@ -506,6 +506,8 @@ summary:hover {
 }
 
 .comparison_bg > .comparison > .comparison_items > .comparison_ul > .item > .compare_product_info > .delete_compare > img {
+  background-color: white;
+  border-radius: 50%;
   position: relative;
   height: 15px;
   width: 15px;

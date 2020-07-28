@@ -106,6 +106,9 @@ function createProducts(data, imageUrl) {
   const divPrice = document.createElement('div');
   divPrice.setAttribute('class', 'price');
   divPrice.innerHTML = `$${data.highest_price} ⇢ $${data.current_price}`;
+  if (data.current_price < data.highest_price) {
+    divPrice.innerHTML += '<br><span style="color: red"><b>※特價商品</b></span>';
+  }
   a.appendChild(divPrice);
   products.appendChild(a);
 }

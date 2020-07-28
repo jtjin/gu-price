@@ -125,6 +125,8 @@ main > .view_2_background > .view_2 > .track_box > .products > .product > .delet
 
 main > .view_2_background > .view_2 > .favorite_box > .products > .product > .delete > img,
 main > .view_2_background > .view_2 > .track_box > .products > .product > .delete > img {
+  background-color: white;
+  border-radius: 50%;
   margin-top: 5px;
   width: 20px;
   height: 20px;
@@ -155,11 +157,16 @@ main > .view_2_background > .view_2 > .track_box > .products > .product > .numbe
 main > .view_2_background > .view_2 > .favorite_box > .products > .product > .price,
 main > .view_2_background > .view_2 > .track_box > .products > .product > .price {
   margin-top: auto;
-  height: 50px;
+  min-height: 50px;
   width: 100%;
   padding: 15px 10px;
   text-align: center;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+main > .view_2_background > .view_2 > .favorite_box > .products > .product > .price > span {
+  margin-top: 5px;
+  display: inline-block;
 }
 
 @media (min-width: 600px) {

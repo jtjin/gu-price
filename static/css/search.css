@@ -102,11 +102,16 @@ main > .view > .products > .product > .number {
 
 main > .view > .products > .product > .price {
   margin-top: auto;
-  height: 50px;
+  min-height: 50px;
   width: 100%;
   padding: 15px;
   text-align: center;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+main > .view > .products > .product > .price > span {
+  margin-top: 5px;
+  display: inline-block;
 }
 
 @media (min-width: 750px) {

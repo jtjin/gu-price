@@ -54,6 +54,9 @@ function createProducts(result) {
     const divPrice = document.createElement('div');
     divPrice.setAttribute('class', 'price');
     divPrice.innerHTML = `$${result.data[i].highest_price} ⇢ $${result.data[i].current_price}`;
+    if (result.data[i].current_price < result.data[i].highest_price) {
+      divPrice.innerHTML += '<br><span style="color: red"><b>※特價商品</b></span>';
+    }
     a.appendChild(divPrice);
     products.appendChild(a);
   }
