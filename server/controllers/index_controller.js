@@ -25,7 +25,11 @@ const getProducts = async (req, res) => {
     return;
   }
   if (productCount == 0) {
-    res.status(200).render('search', { msg: `我們無法找到符合 " ${type} " 的任何項目。` });
+    if (category === 'search') {
+      res.status(200).render('search', { msg: `我們無法找到符合 " ${type} " 的任何項目。` });
+    } else {
+      res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
+    }
   } else {
     switch (category) {
       case 'products':
