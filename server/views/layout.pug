@@ -56,9 +56,7 @@ body
                 a(href="/profile")
                     p 個人資料
                 a(href="/profile")
-                    p 收藏清單
-                a(href="/profile")
-                    p 追蹤清單
+                    p 收藏、追蹤清單
                 .logout
                 p#logoutBtn 登出
 
@@ -71,18 +69,18 @@ body
                 #nav_login.nav.login 會員登入
                 //- Signup Form
                 form#signup_form.form.signup-form
-                    input#signup_name.input(type='text' name='name' placeholder='用戶名稱')
+                    input#signup_name.input(type='text' name='name' placeholder='用戶名稱' maxlength="50")
                     br
-                    input#signup_email.input(type='email' name='email' placeholder='Email 信箱')
+                    input#signup_email.input(type='email' name='email' placeholder='Email 信箱' maxlength="100")
                     br
-                    input#signup_password.input(type='password' name='password' placeholder='密碼')
+                    input#signup_password.input(type='password' name='password' placeholder='密碼' maxlength="100")
                     br
                     button#signupBtn.btn 註冊
                 //- Login Form
                 form#login_form.form.login-form
-                    input#login_email.input(type='email' name='email' placeholder='Email 信箱')
+                    input#login_email.input(type='email' name='email' placeholder='Email 信箱' maxlength="100")
                     br
-                    input#login_password.input(type='password' name='password' placeholder='密碼')
+                    input#login_password.input(type='password' name='password' placeholder='密碼' maxlength="100")
                     br
                     button#loginBtn.btn 登入
                 button.google_btn(onclick="GoogleLogin()")

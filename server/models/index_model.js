@@ -35,28 +35,22 @@ const getProducts = async (requirement = {}) => {
 
 const updateUser = async (email) => {
   try {
-    await query('START TRANSACTION');
-
     const users = await query('SELECT * FROM user WHERE email = ? AND provider = ?', [email, 'native']);
     const user = users[0];
 
     if (!user) {
-      await query('COMMIT');
       return { error: '帳號不存在，請註冊' };
     }
 
     if (user.confirmed) {
-      await query('COMMIT');
       return { error: '帳號已啟用，請登入' };
     }
 
     const queryStr = 'UPDATE user SET confirmed = ? WHERE id = ?';
     await query(queryStr, [true, user.id]);
-    await query('COMMIT');
 
     return { user };
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };

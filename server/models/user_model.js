@@ -8,11 +8,8 @@ const salt = parseInt(process.env.BCRYPT_SALT);
 
 const signUp = async (name, email, password, provider, expire) => {
   try {
-    await query('START TRANSACTION');
-
-    const emails = await query('SELECT email FROM user WHERE email = ? AND provider = ? FOR UPDATE', [email, provider]);
+    const emails = await query('SELECT email FROM user WHERE email = ? AND provider = ?', [email, provider]);
     if (emails.length > 0) {
-      await query('COMMIT');
       return { error: 'Email 已被註冊' };
     }
 
@@ -37,33 +34,26 @@ const signUp = async (name, email, password, provider, expire) => {
     const result = await query(queryStr, user);
     user.id = result.insertId;
 
-    await query('COMMIT');
     return { accessToken, loginAt, user };
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };
 
 const nativeSignIn = async (email, password, provider, expire) => {
   try {
-    await query('START TRANSACTION');
-
     const users = await query('SELECT * FROM user WHERE email = ? AND provider = ?', [email, provider]);
     const user = users[0];
 
     if (!user) {
-      await query('COMMIT');
       return { error: 'Email 不存在，請註冊帳號' };
     }
 
     if (!user.confirmed) {
-      await query('COMMIT');
       return { error: '請先完成 Email 認證' };
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
-      await query('COMMIT');
       return { error: '密碼錯誤' };
     }
 
@@ -75,19 +65,14 @@ const nativeSignIn = async (email, password, provider, expire) => {
     const queryStr = 'UPDATE user SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?';
     await query(queryStr, [accessToken, expire, loginAt, user.id]);
 
-    await query('COMMIT');
-
     return { accessToken, loginAt, user };
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };
 
 const facebookSignIn = async (id, name, email, accessToken, expire) => {
   try {
-    await query('START TRANSACTION');
-
     const loginAt = new Date();
     const user = {
       provider: 'facebook',
@@ -100,7 +85,7 @@ const facebookSignIn = async (id, name, email, accessToken, expire) => {
       confirmed: true,
     };
 
-    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE', [email]);
+    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\'', [email]);
     let userId;
     if (users.length === 0) { // Insert new user
       const queryStr = 'INSERT INTO user SET ?';
@@ -113,19 +98,14 @@ const facebookSignIn = async (id, name, email, accessToken, expire) => {
     }
     user.id = userId;
 
-    await query('COMMIT');
-
     return { accessToken, loginAt, user };
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };
 
 const googleSignIn = async (name, email, picture, accessToken, expire) => {
   try {
-    await query('START TRANSACTION');
-
     const loginAt = new Date();
     const user = {
       provider: 'google',
@@ -138,7 +118,7 @@ const googleSignIn = async (name, email, picture, accessToken, expire) => {
       confirmed: true,
     };
 
-    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'google\' FOR UPDATE', [email]);
+    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'google\'', [email]);
     let userId;
     if (users.length === 0) { // Insert new user
       const queryStr = 'INSERT INTO user SET ?';
@@ -151,11 +131,8 @@ const googleSignIn = async (name, email, picture, accessToken, expire) => {
     }
     user.id = userId;
 
-    await query('COMMIT');
-
     return { accessToken, loginAt, user };
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };
@@ -165,7 +142,7 @@ const getUserProfile = async (accessToken) => {
   if (results.length === 0) {
     return { error: '無效的存取權杖' };
   }
-  const tracks = await query('SELECT number, price FROM track WHERE user_id = ? AND confirmed = 0', [results[0].id]);
+  const tracks = await query('SELECT number, price FROM track WHERE user_id = ? AND confirmed = ?', [results[0].id, 0]);
   const trackHashMap = {};
   if (tracks.length !== 0) {
     for (let i = 0; i < tracks.length; i += 1) {
@@ -213,9 +190,7 @@ const getGoogleProfile = async (accessToken) => {
 
 const createTrack = async (track) => {
   try {
-    await query('START TRANSACTION');
-
-    const duplicatedTrack = await query('SELECT id FROM track WHERE number = ? AND user_id = ? AND confirmed = 0 FOR UPDATE', [track.number, track.user_id]);
+    const duplicatedTrack = await query('SELECT id FROM track WHERE number = ? AND user_id = ? AND confirmed = ?', [track.number, track.user_id, 0]);
     let trackId;
     if (duplicatedTrack.length === 0) { // Insert new track
       const queryStr = 'INSERT INTO track SET ?';
@@ -226,23 +201,17 @@ const createTrack = async (track) => {
       const queryStr = 'UPDATE track SET price = ? WHERE id = ?';
       await query(queryStr, [track.price, trackId]);
     }
-
-    await query('COMMIT');
     return trackId;
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };
 
 const deleteTrack = async (number, user_id) => {
   try {
-    await query('START TRANSACTION');
     const result = await query('DELETE FROM track WHERE number = ? AND user_id = ?', [number, user_id]);
-    await query('COMMIT');
     return result.affectedRows;
   } catch (error) {
-    await query('ROLLBACK');
     return { error };
   }
 };

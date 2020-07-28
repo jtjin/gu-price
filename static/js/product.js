@@ -116,7 +116,7 @@ favorite.addEventListener('click', async () => {
   if (favoriteText.innerHTML == '已收藏') {
     Swal.fire({
       icon: 'warning',
-      text: '此商品已在您的商藏清單',
+      text: '此商品已在您的收藏清單',
       showConfirmButton: false,
       timer: 1500,
     });
@@ -159,7 +159,7 @@ favorite.addEventListener('click', async () => {
       favoriteText.style.color = 'black';
       Swal.fire({
         icon: 'success',
-        title: '商品商藏成功！',
+        title: '商品收藏成功！',
         showConfirmButton: false,
         timer: 1500,
       });
