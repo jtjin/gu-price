@@ -23,7 +23,7 @@ const signUp = async (name, email, password, provider, expire) => {
       email,
       password: bcrypt.hashSync(password, salt),
       name,
-      picture: 'https://jtjin-gu-price.s3.us-east-2.amazonaws.com/user.png',
+      picture: 'https://gu-price.s3.ap-east-1.amazonaws.com/user.png',
       access_token: accessToken,
       access_expired: expire,
       login_at: loginAt,
