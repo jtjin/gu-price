@@ -273,13 +273,10 @@ const trackEmail = async (name, number, mainImage, currentPrice, email) => {
 
 const updateTrackStatus = async (id) => {
   try {
-    await mysql.query('START TRANSACTION');
     const queryStr = 'UPDATE track SET confirmed = ? WHERE id = ?';
     await mysql.query(queryStr, [true, id]);
-    await mysql.query('COMMIT');
     return;
   } catch (error) {
-    await mysql.query('ROLLBACK');
     return { error };
   }
 };
