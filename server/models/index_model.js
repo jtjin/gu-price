@@ -2,35 +2,30 @@ const { query } = require('../../util/mysqlcon');
 
 const getProducts = async (requirement = {}) => {
   const condition = { sql: '', binding: [] };
-  let productCountQuery;
 
-  if (requirement.type) {
-    if (requirement.category == 'products') {
-      condition.sql = 'WHERE number = ?';
-      condition.binding = [requirement.type];
-    } else if (requirement.category == 'search') {
-      condition.sql = 'WHERE name LIKE ?';
-      condition.binding = [`%${requirement.type}%`];
-    } else {
-      condition.sql = 'WHERE category = ? AND type = ?';
-      condition.binding = [requirement.category, requirement.type];
-    }
-    productCountQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql}`;
-  } else {
-    condition.sql = 'WHERE category = ? ORDER BY type';
-    condition.binding = [requirement.category];
-    productCountQuery = `SELECT DISTINCT(type) FROM product ${condition.sql}`;
+  if (requirement.category && requirement.type) {
+    condition.sql = 'WHERE category = ? AND type = ?';
+    condition.binding = [requirement.category, requirement.type];
+  } else if (requirement.keyword != null) {
+    condition.sql = 'WHERE name LIKE ?';
+    condition.binding = [`%${requirement.keyword}%`];
+  } else if (requirement.number != null) {
+    condition.sql = 'WHERE number = ?';
+    condition.binding = [requirement.number];
   }
 
+  const productCountQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql}`;
   const productCountBindings = condition.binding;
   const productCounts = await query(productCountQuery, productCountBindings);
+  const productCount = productCounts[0].count;
 
-  if (requirement.type) {
-    const productCount = productCounts[0].count;
-    return { productCount };
-  }
-  const productCount = productCounts.flatMap((p) => [p.type]);
   return { productCount };
+};
+
+const getTypes = async (category) => {
+  const types = await query('SELECT DISTINCT(type) FROM product WHERE category = ?', [category]);
+  const type = types.flatMap((p) => [p.type]);
+  return { type };
 };
 
 const updateUser = async (email) => {
@@ -57,5 +52,6 @@ const updateUser = async (email) => {
 
 module.exports = {
   getProducts,
+  getTypes,
   updateUser,
 };

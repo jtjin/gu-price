@@ -11,7 +11,7 @@ function createProducts(result) {
   viewTitle.innerHTML = result.data[0].type;
   const products = document.getElementById('products');
   for (let i = 0; i < result.data.length; i += 1) {
-    // Create <a class='prdocut'>
+    // Create <a class='product'>
     const a = document.createElement('a');
     a.setAttribute('class', 'product');
     a.setAttribute('href', `/products/${result.data[i].number}`);

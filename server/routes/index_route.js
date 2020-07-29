@@ -1,6 +1,12 @@
 const router = require('express').Router();
 const { wrapAsync, upload } = require('../../util/util');
-const { getProducts, imageSearch, confirmEmail } = require('../controllers/index_controller');
+
+const {
+  getProducts,
+  getTypes,
+  imageSearch,
+  confirmEmail,
+} = require('../controllers/index_controller');
 
 const uploadImageSearch = upload.single('imageSearch');
 
@@ -32,7 +38,7 @@ router.route('/confirmation/:token')
   .get(wrapAsync(confirmEmail));
 
 router.route('/:category')
-  .get(wrapAsync(getProducts));
+  .get(wrapAsync(getTypes));
 
 router.route('/:category/:type')
   .get(wrapAsync(getProducts));

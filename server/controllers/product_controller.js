@@ -78,9 +78,10 @@ const getProductsWithDetail = async (products) => {
   const pricesMap = _.groupBy(prices, (p) => p.product_id);
 
   return products.map((p) => {
-    p.type = data[p.category][0][p.type] ? data[p.category][0][p.type] : p.type;
-    const productPrices = pricesMap[p.id];
+    // Translation (English => Chinese)
+    p.type = data[p.category][0][p.type] ? data[p.category][0][p.type][0] : p.type;
 
+    const productPrices = pricesMap[p.id];
     if (!productPrices) { return p; }
 
     p.date = productPrices.flatMap((p) => [p.date]);

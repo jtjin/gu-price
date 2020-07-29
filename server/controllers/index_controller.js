@@ -4,6 +4,7 @@ const vision = require('@google-cloud/vision');
 const fs = require('fs');
 const path = require('path');
 const Index = require('../models/index_model');
+const data = require('../data/data.json');
 
 const client = new vision.ImageAnnotatorClient({
   keyFilename: './mykey.json',
@@ -14,37 +15,57 @@ const getProducts = async (req, res) => {
 
   async function findProduct(category, type) {
     switch (category) {
-      case 'men': case 'women': case 'kids': case 'products': case 'search':
+      case 'men': case 'women': case 'kids':
         return await Index.getProducts({ category, type });
+      case 'products':
+        const number = type;
+        return await Index.getProducts({ number });
+      case 'search':
+        const keyword = type;
+        return await Index.getProducts({ keyword });
     }
     return Promise.resolve({});
   }
   const { productCount } = await findProduct(category, type);
-  if (!productCount && productCount != 0) {
+  if (productCount === 0) {
+    res.status(200).render('search', { msg: `我們無法找到符合 " ${type} " 的任何項目。` });
+  } else if (!productCount) {
     res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
-    return;
-  }
-  if (productCount == 0) {
-    if (category === 'search') {
-      res.status(200).render('search', { msg: `我們無法找到符合 " ${type} " 的任何項目。` });
-    } else {
-      res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
-    }
   } else {
     switch (category) {
+      case 'men': case 'women': case 'kids':
+        res.status(200).render('type');
+        break;
       case 'products':
         res.status(200).render('product');
         break;
       case 'search':
         res.status(200).render('search');
         break;
-      default:
-        if (type) {
-          res.status(200).render('type');
-          return;
-        }
-        res.status(200).render('category', { product: productCount });
     }
+  }
+};
+
+const getTypes = async (req, res) => {
+  const { category } = req.params;
+  const { type } = await Index.getTypes(category);
+  if (type.length === 0) {
+    res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
+  } else {
+    const listMap = {}; // ex: {'外套・大衣': [ [ '開襟外套', 'cardigan' ], ... ], ...}
+    let { lists } = data[category][0];
+    for (let i = 0; i < type.length; i += 1) {
+      chineseType = data[category][0][type[i]][0];
+      list = data[category][0][type[i]][1];
+      if (listMap[list]) {
+        listMap[list].push([chineseType, type[i]]);
+      } else {
+        listMap[list] = [[chineseType, type[i]]];
+      }
+    }
+    // Sort the list
+    lists = lists.filter((list) => new Set(Object.keys(listMap)).has(list));
+    res.status(200).render('category', { lists, listMap: JSON.stringify(listMap) });
   }
 };
 
@@ -92,6 +113,7 @@ const confirmEmail = async (req, res) => {
 
 module.exports = {
   getProducts,
+  getTypes,
   imageSearch,
   confirmEmail,
 };

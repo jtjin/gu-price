@@ -85,7 +85,7 @@ const facebookSignIn = async (id, name, email, accessToken, expire) => {
       confirmed: true,
     };
 
-    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\'', [email]);
+    const users = await query('SELECT id FROM user WHERE email = ? AND provider = ?', [email, 'facebook']);
     let userId;
     if (users.length === 0) { // Insert new user
       const queryStr = 'INSERT INTO user SET ?';
@@ -118,7 +118,7 @@ const googleSignIn = async (name, email, picture, accessToken, expire) => {
       confirmed: true,
     };
 
-    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'google\'', [email]);
+    const users = await query('SELECT id FROM user WHERE email = ? AND provider = ?', [email, 'google']);
     let userId;
     if (users.length === 0) { // Insert new user
       const queryStr = 'INSERT INTO user SET ?';
@@ -142,7 +142,7 @@ const getUserProfile = async (accessToken) => {
   if (results.length === 0) {
     return { error: '無效的存取權杖' };
   }
-  const tracks = await query('SELECT number, price FROM track WHERE user_id = ? AND confirmed = ?', [results[0].id, 0]);
+  const tracks = await query('SELECT number, price FROM track WHERE user_id = ? AND confirmed = ?', [results[0].id, false]);
   const trackHashMap = {};
   if (tracks.length !== 0) {
     for (let i = 0; i < tracks.length; i += 1) {
@@ -190,7 +190,7 @@ const getGoogleProfile = async (accessToken) => {
 
 const createTrack = async (track) => {
   try {
-    const duplicatedTrack = await query('SELECT id FROM track WHERE number = ? AND user_id = ? AND confirmed = ?', [track.number, track.user_id, 0]);
+    const duplicatedTrack = await query('SELECT id FROM track WHERE number = ? AND user_id = ? AND confirmed = ?', [track.number, track.user_id, false]);
     let trackId;
     if (duplicatedTrack.length === 0) { // Insert new track
       const queryStr = 'INSERT INTO track SET ?';

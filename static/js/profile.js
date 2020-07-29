@@ -48,6 +48,7 @@ async function createProfile(data) {
   // Create photo
   document.getElementById('photo').src = data.picture ? data.picture : '/static/imgs/user.png';
   // Create name
+  if (data.name.length > 20) data.name = data.name.substr(0, 20);
   document.getElementById('name').innerHTML = data.name;
   // Create email
   document.getElementById('email').innerHTML = `電子信箱：${data.email}`;
@@ -93,7 +94,7 @@ async function createFavorite(favorite) {
 
 function createFavoriteProducts(data) {
   const products = document.getElementById('products');
-  // Create <a class='prdocut'>
+  // Create <a class='product'>
   const a = document.createElement('a');
   a.setAttribute('class', 'product');
   a.setAttribute('href', `/products/${data.number}`);
@@ -197,7 +198,7 @@ async function createTrack(tracks) {
 
 function createTrackProducts(data, trackPrice) {
   const products = document.getElementById('track_products');
-  // Create <a class='prdocut'>
+  // Create <a class='product'>
   const a = document.createElement('a');
   a.setAttribute('class', 'product');
   a.setAttribute('href', `/products/${data.number}`);

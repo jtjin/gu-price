@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const { wrapAsync } = require('../../util/util');
+
 const {
-  getProducts, updateFavorite, imageSearch,
+  getProducts,
+  updateFavorite,
+  imageSearch,
 } = require('../controllers/product_controller');
 
 router.route('/products/:category')

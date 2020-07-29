@@ -60,7 +60,7 @@ async function getAllProducts() {
 }
 
 function createProducts(data, imageUrl) {
-  // Create <a class='prdocut'>
+  // Create <a class='product'>
   const a = document.createElement('a');
   a.setAttribute('class', 'product');
   a.setAttribute('href', `/products/${data.number}`);
