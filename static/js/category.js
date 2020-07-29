@@ -36,12 +36,15 @@ function createTypes(list, category) {
   view.appendChild(viewBox);
   view.appendChild(types);
   for (let i = 0; i < listMap[list].length; i += 1) {
-    // Create <a class='type'>
+    // Create <div class='type'>
+    const div = document.createElement('div');
+    div.setAttribute('class', 'type');
+    // Create <a> inside <div class='type'>
     const a = document.createElement('a');
-    a.innerHTML = `<span>${listMap[list][i][0]}</span>`;
-    a.setAttribute('class', 'type');
+    a.innerHTML = `${listMap[list][i][0]}`;
     a.setAttribute('href', `/${category}/${listMap[list][i][1]}`);
-    types.appendChild(a);
+    div.appendChild(a);
+    types.appendChild(div);
   }
 }
 

@@ -52,21 +52,19 @@ main > .view > .types > .type {
   flex-direction: column;
   width: calc(50% - 20px);
   margin: 10px;
-  color: #5a5a5a;
-  background: #fff;
-  border-color: #e9e9e9;
-  text-decoration: none;
   padding: 5px 10px;
 }
 
-main > .view > .types > .type > span {
+main > .view > .types > .type > a {
   display: inline-block;
+  text-decoration: none;
+  color: #5a5a5a;
   margin-right: auto;
   border-bottom: 1px solid transparent;
   padding-bottom: 2px;
 }
 
-main > .view > .types > .type > span:hover {
+main > .view > .types > .type > a:hover {
   border-bottom-color:#999999;
 }
 

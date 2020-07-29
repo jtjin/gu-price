@@ -65,6 +65,7 @@ function headerSearch() {
 // Member Modal
 const memberModal = document.getElementById('member_modal');
 const memberBtn = document.getElementById('member_btn');
+const memberLogo = document.getElementById('member_logo');
 const modalClose = document.getElementById('modal_close');
 const profileModal = document.getElementById('profile_modal');
 const profileClose = document.getElementById('profile_close');
@@ -80,7 +81,9 @@ memberBtn.onclick = function () {
         profileModal.style.display = 'none';
         break;
       default:
-        document.getElementById('profile_name').innerHTML = localStorage.getItem('name');
+        let name = localStorage.getItem('name');
+        if (name.length > 10) name = name.substr(0, 10);
+        document.getElementById('profile_name').innerHTML = name;
         profileModal.style.display = 'flex';
     }
   }
@@ -98,10 +101,13 @@ window.onclick = function (event) {
   if (event.target == memberModal) {
     memberModal.style.display = 'none';
   }
+  if (event.target !== memberBtn && event.target !== memberLogo && event.target !== modalClose && profileModal.style.display === 'flex') {
+    profileModal.style.display = 'none';
+  }
 };
 
-function memberLogo() {
-  document.getElementById('member_logo').src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
+function getMemberLogo() {
+  memberLogo.src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
 }
 
 function postData(url, data, cb) {
@@ -522,7 +528,7 @@ document.getElementById('clear_compare').addEventListener('click', () => {
   }
 });
 
-window.onload = [headerSearch(), memberLogo(), checkCompare()];
+window.onload = [headerSearch(), getMemberLogo(), checkCompare()];
 
 // toTop-arrow
 backTop = document.getElementById('backTop');
