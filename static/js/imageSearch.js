@@ -51,12 +51,25 @@ async function getAllProducts() {
     return;
   }
 
+  let count = 0;
   for (let i = 0; i < similarProducts.length; i += 1) {
     // get product detail with number
     const data = await fetch(`/api/1.0/products/details?number=${similarProducts[i].number}`).then((res) => res.json());
-    createProducts(data.data, similarProducts[i].imageUrl);
+    if (data.data) {
+      createProducts(data.data, similarProducts[i].imageUrl);
+      count++;
+    }
   }
   loadingGif.style.display = 'none';
+  if (count === 0) {
+    await Swal.fire({
+      icon: 'warning',
+      title: '我們無法找到符合此圖片的任何項目。',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '確定',
+    });
+    window.location.href = '/';
+  }
 }
 
 function createProducts(data, imageUrl) {
