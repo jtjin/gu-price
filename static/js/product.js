@@ -58,18 +58,30 @@ function drawDatePrice(data) {
     fill: 'tozeroy',
   };
   const oneDay = 24 * 60 * 60 * 1000;
-  const firtstDay = new Date(data.date[0]).getTime() - oneDay;
-  const lastDay = new Date(data.date[data.date.length - 1]).getTime();
+  const firtstDay = new Date(data.date[0]).getTime() - 1.5 * oneDay;
+  const lastDay = new Date(data.date[data.date.length - 1]).getTime() + 0.5 * oneDay;
   const layout = {
     xaxis: {
-      type: 'date',
+      tickmode: 'linear',
+      tickformat: '%m/%d',
+      tickangle: -50,
+      nticks: 10,
+      tickfont: {
+        family: 'Microsoft JhengHei',
+        size: 10,
+      },
+      dtick: (lastDay - firtstDay) / 8,
       range: [firtstDay, lastDay],
       fixedrange: true,
     },
     yaxis: {
       fixedrange: true,
+      tickfont: {
+        family: 'Microsoft JhengHei',
+        size: 12,
+      },
     },
-    height: 200,
+    height: 210,
     width: 320,
     title: {
       text: '歷史價格折線圖',
@@ -81,7 +93,7 @@ function drawDatePrice(data) {
     margin: {
       l: 30,
       r: 30,
-      b: 30,
+      b: 35,
       t: 30,
     },
   };

@@ -65,7 +65,7 @@ main > .view > .types > .type > a {
 }
 
 main > .view > .types > .type > a:hover {
-  border-bottom-color:#999999;
+  border-bottom-color: #999;
 }
 
 @media (min-width: 750px) {
