@@ -14,7 +14,7 @@ const getProducts = async (requirement = {}) => {
     condition.binding = [requirement.number];
   }
 
-  const productCountQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql} AND update_at >= current_date()`;
+  const productCountQuery = `SELECT COUNT(*) AS count FROM product ${condition.sql} AND update_at >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)`;
   const productCountBindings = condition.binding;
   const productCounts = await query(productCountQuery, productCountBindings);
   const productCount = productCounts[0].count;
@@ -23,7 +23,7 @@ const getProducts = async (requirement = {}) => {
 };
 
 const getTypes = async (category) => {
-  const types = await query('SELECT DISTINCT(type) FROM product WHERE category = ? AND update_at >= current_date()', [category]);
+  const types = await query('SELECT DISTINCT(type) FROM product WHERE category = ? AND update_at >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)', [category]);
   const type = types.flatMap((p) => [p.type]);
   return { type };
 };

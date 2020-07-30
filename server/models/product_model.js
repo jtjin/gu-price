@@ -21,11 +21,11 @@ const getProducts = async (pageSize, paging = 0, requirement = {}) => {
     binding: [pageSize * paging, pageSize],
   };
 
-  const productQuery = `SELECT * FROM product ${condition.sql} AND update_at >= current_date() ORDER BY id DESC ${limit.sql}`;
+  const productQuery = `SELECT * FROM product ${condition.sql} AND update_at >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) ORDER BY id DESC ${limit.sql}`;
   const productBindings = condition.binding.concat(limit.binding);
   const products = await query(productQuery, productBindings);
 
-  const productCountQuery = `SELECT COUNT(*) as count FROM product ${condition.sql} AND update_at >= current_date()`;
+  const productCountQuery = `SELECT COUNT(*) as count FROM product ${condition.sql} AND update_at >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)`;
   const productCountBindings = condition.binding;
 
   const productCounts = await query(productCountQuery, productCountBindings);
