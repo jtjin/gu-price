@@ -135,12 +135,12 @@ async function getProductDetails(productUrl, productCategory, productType) {
     }
   }
   images = [...new Set(images)]; // Remove duplicated image
-  const date = getTodayDate();
+  const update_at = getTodayDate();
   const category = productCategory;
   const type = productType;
   await browser.close();
   return {
-    date, category, type, name, number, price, about, texture, mainImage, images,
+    category, type, name, number, price, about, texture, mainImage, images, update_at,
   };
 }
 
@@ -181,13 +181,14 @@ async function createProduct(data) {
     texture: data.texture,
     main_image: data.mainImage,
     images: JSON.stringify(data.images),
+    update_at: data.update_at,
   };
   const duplicated = await mysql.query('SELECT * FROM product WHERE number = ?', [data.number]);
   if (duplicated.length != 0) {
     return;
   }
   const result = await mysql.query('INSERT INTO product SET ?', newData);
-  await createDatePrice(data.date, result.insertId, parseInt(data.price.replace(',', '')));
+  await createDatePrice(data.update_at, result.insertId, parseInt(data.price.replace(',', '')));
 }
 
 async function createDatePrice(date, productId, price) {
@@ -215,8 +216,9 @@ async function main(category) {
       number = number[number.length - 1];
       try {
         if (allProductsHashMap[number]) {
-          // Product already exists, insert date_price table only
+          // Product already exists, insert date_price table & Update update_at column at product table
           const productDetails = await getProductPrice(productUrls[j]);
+          await mysql.query('UPDATE product SET update_at = ? WHERE id = ?', [productDetails.date, allProductsHashMap[number]]);
           await createDatePrice(productDetails.date, allProductsHashMap[number], parseInt(productDetails.price.replace(',', '')));
         } else {
           const productDetails = await getProductDetails(productUrls[j], productUrlsResult.productCategory, productUrlsResult.productType);
