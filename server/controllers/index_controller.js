@@ -76,8 +76,8 @@ const imageSearch = async (req, res) => {
       image: { content: fs.readFileSync(fileName) },
     };
     let object = await localizeObjects(request);
-    // Catch "Top","Outerwear","Shorts","Pants","Skirt" object only
-    object = ['Top', 'Outerwear', 'Shorts', 'Pants', 'Skirt'].filter((obj) => new Set(object).has(obj));
+    // Catch "Top","Outerwear","Shorts","Pants","Skirt", "Dress", "Clothing" object only
+    object = ['Top', 'Outerwear', 'Shorts', 'Pants', 'Skirt', 'Dress', 'Clothing'].filter((obj) => new Set(object).has(obj));
     if (object.length == 0) {
       // no object found
       fs.unlinkSync(fileName); // Delete picture

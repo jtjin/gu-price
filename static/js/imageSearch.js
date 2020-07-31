@@ -33,7 +33,6 @@ async function getAllProducts() {
       await Swal.fire({
         icon: 'warning',
         title: '我們無法找到符合此圖片的任何項目。',
-        text: '(資料庫商品分類不夠多...)',
         confirmButtonColor: '#3085d6',
         confirmButtonText: '確定',
       });
