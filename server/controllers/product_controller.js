@@ -137,7 +137,6 @@ const getSimilarProducts = async (filePath, object) => {
     productSetId,
   );
   const request = {
-    // image: { source: { imageUri: filePath } },
     image: { content },
     features: [{ type: 'PRODUCT_SEARCH', maxResults: '10' }],
     imageContext: {

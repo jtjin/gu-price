@@ -21,7 +21,8 @@ app.set('view engine', 'pug');
 // API routes
 app.use(`/api/${API_VERSION}`,
   [
-    require('./server/routes/product_route'), require('./server/routes/user_route'),
+    require('./server/routes/product_route'),
+    require('./server/routes/user_route'),
   ]);
 
 // Page routes

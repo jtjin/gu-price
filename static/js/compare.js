@@ -92,7 +92,7 @@ async function drawDatePrice(data) {
         family: 'Microsoft JhengHei',
         size: 10,
       },
-      dtick: (lastDay - firtstDay) / 8,
+      dtick: (lastDay - firtstDay) / 10,
       range: [firtstDay, lastDay],
       fixedrange: true,
     },

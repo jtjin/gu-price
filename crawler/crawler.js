@@ -313,7 +313,6 @@ async function start() {
   await sendTrack();
   await sendCrawlerReport();
   console.log('Everything has done!');
-  mysql.pool.end();
 }
 
 // Running at 11 a.m. everyday
