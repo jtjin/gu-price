@@ -19,6 +19,8 @@ async function getAllTypes() {
   for (let i = 0; i < lists.length; i += 1) {
     createTypes(lists[i], category);
   }
+  document.getElementById('lists').remove();
+  document.getElementById('listMap').remove();
 }
 
 function createTypes(list, category) {

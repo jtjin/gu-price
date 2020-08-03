@@ -1,12 +1,10 @@
-const product = {};
-// Get Product Number from sessionStorage
-async function getProductNumber() {
+async function getAllProducts() {
   let userCompare = sessionStorage.getItem('compare');
   if (userCompare) {
     userCompare = userCompare.split(',');
     for (let i = 0; i < userCompare.length; i += 1) {
       const result = await fetch(`/api/1.0/products/details?number=${userCompare[i]}`).then((res) => res.json());
-      await showProduct(result);
+      await createProduct(result);
       await drawDatePrice(result.data);
     }
     document.getElementById('loading_gif').remove();
@@ -17,8 +15,8 @@ async function getProductNumber() {
     document.getElementById('msg').innerHTML = '比較表空空的耶';
   }
 }
-// Render page
-async function showProduct(result) {
+
+async function createProduct(result) {
   const productsUl = document.getElementById('products_ul');
   // create <li class='product'>
   const li = document.createElement('li');
@@ -82,17 +80,17 @@ async function drawDatePrice(data) {
   const oneDay = 24 * 60 * 60 * 1000;
   const firtstDay = new Date(data.date[0]).getTime() - 1.5 * oneDay;
   const lastDay = new Date(data.date[data.date.length - 1]).getTime() + 0.5 * oneDay;
+  const tickNum = 8;
   const layout = {
     xaxis: {
       tickmode: 'linear',
       tickformat: '%m/%d',
       tickangle: -50,
-      nticks: 10,
       tickfont: {
         family: 'Microsoft JhengHei',
         size: 10,
       },
-      dtick: (lastDay - firtstDay) / 10,
+      dtick: (lastDay - firtstDay) / tickNum,
       range: [firtstDay, lastDay],
       fixedrange: true,
     },
@@ -126,4 +124,4 @@ document.getElementById('back').addEventListener('click', () => {
   history.back();
 });
 
-window.onload = getProductNumber();
+window.onload = getAllProducts();

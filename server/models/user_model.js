@@ -207,9 +207,9 @@ const createTrack = async (track) => {
   }
 };
 
-const deleteTrack = async (number, user_id) => {
+const deleteTrack = async (number, userId) => {
   try {
-    const result = await query('DELETE FROM track WHERE number = ? AND user_id = ?', [number, user_id]);
+    const result = await query('DELETE FROM track WHERE number = ? AND user_id = ?', [number, userId]);
     return result.affectedRows;
   } catch (error) {
     return { error };

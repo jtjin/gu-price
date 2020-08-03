@@ -232,7 +232,7 @@ const sendTrackEmail = async (name, mainImage, currentPrice, price, email) => {
 };
 
 const deleteTrack = async (req, res) => {
-  const result = await User.deleteTrack(req.body.number, req.body.user_id);
+  const result = await User.deleteTrack(req.body.number, req.body.userId);
   if (!result) {
     res.status(500).send({ error: '資料讀取失敗' });
     return;

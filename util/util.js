@@ -1,7 +1,5 @@
 require('dotenv').config('../');
-const AWS = require('aws-sdk');
 const multer = require('multer');
-const multerS3 = require('multer-s3');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -20,15 +18,9 @@ const send = async (mail) => {
     const info = await transporter.sendMail(mail);
     return { info, status: 'mail sent' };
   } catch (error) {
-    console.log(error);
-    throw (`Unable to send email: ${error}`);
+    return { error };
   }
 };
-
-const s3Config = new AWS.S3({
-  accessKeyId: process.env.S3_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.S3_AWS_SECRET_ACCESS_KEY,
-});
 
 const fileFilter = (req, file, cb) => {
   const filetypes = /jpeg|jpg|png/;
@@ -37,29 +29,8 @@ const fileFilter = (req, file, cb) => {
   if (mimetype && extname) {
     return cb(null, true);
   }
-  cb('Error: Allow images only of extensions jpeg|jpg|png !');
+  return cb('Error: Allow images only of extensions jpeg|jpg|png !');
 };
-
-const multerS3Config = multerS3({
-  s3: s3Config,
-  acl: 'public-read',
-  bucket: process.env.S3_Bucket,
-  metadata(req, file, cb) {
-    cb(null, { fieldName: file.fieldname });
-  },
-  key(req, file, cb) {
-    const fullPath = `test/${file.originalname}`;
-    cb(null, fullPath);
-  },
-});
-
-const uploadS3 = multer({
-  storage: multerS3Config,
-  fileFilter,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-});
 
 const multerConfig = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -84,13 +55,12 @@ const upload = multer({
   },
 });
 
-const wrapAsync = (fn) => function (req, res, next) {
+const wrapAsync = (fn) => (req, res, next) => {
   fn(req, res, next).catch(next);
 };
 
 module.exports = {
   send,
   upload,
-  uploadS3,
   wrapAsync,
 };

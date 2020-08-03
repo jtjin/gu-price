@@ -78,7 +78,7 @@ const getProductsWithDetail = async (products) => {
   const pricesMap = _.groupBy(prices, (p) => p.product_id);
 
   return products.map((p) => {
-    // Translation (English => Chinese)
+    // Translate type (English => Chinese)
     p.type = data[p.category][0][p.type] ? data[p.category][0][p.type][0] : p.type;
 
     const productPrices = pricesMap[p.id];
@@ -96,10 +96,9 @@ const getProductsWithDetail = async (products) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { favorite } = req.body;
-  const { access_token } = req.body;
+  const { favorite, accessToken } = req.body;
 
-  const result = await Product.updateFavorite(favorite, access_token);
+  const result = await Product.updateFavorite(favorite, accessToken);
   if (result.error || result.changedRows == 0) {
     res.status(500).send({ error: '資料讀取失敗' });
   } else {
@@ -114,13 +113,13 @@ const imageSearch = async (req, res) => {
   for (let i = 0; i < object.length; i += 1) {
     similarProducts = await getSimilarProducts(filePath, object[i].toLowerCase());
     if (similarProducts.error) {
-      fs.unlinkSync(filePath); // Delete picture
+      fs.unlinkSync(filePath);
       res.status(400).send({ error: similarProducts.error });
       return;
     }
     result = [...result, ...similarProducts];
   }
-  fs.unlinkSync(filePath); // Delete picture
+  fs.unlinkSync(filePath);
   res.status(200).json(result);
 };
 

@@ -1,6 +1,5 @@
 async function getProfile() {
   if (!localStorage.getItem('token')) {
-    // Check if token is available
     await Swal.fire({
       icon: 'error',
       title: '存取無效！',
@@ -16,7 +15,7 @@ async function getProfile() {
         Authorization: bearer,
       },
     }).then((res) => res.json());
-    // Check if token correct
+
     if (result.error) {
       await Swal.fire({
         icon: 'warning',
@@ -27,7 +26,7 @@ async function getProfile() {
       localStorage.clear();
       window.location.href = '/';
     }
-    // Check if token expired
+
     const time = (new Date() - new Date(result.data.login_at)) / 1000;
     if (time <= result.data.access_expired) {
       createProfile(result.data);
@@ -45,33 +44,27 @@ async function getProfile() {
 }
 
 async function createProfile(data) {
-  // Create photo
   document.getElementById('photo').src = data.picture ? data.picture : '/static/imgs/user.png';
-  // Create name
   if (data.name.length > 20) data.name = data.name.substr(0, 20);
   document.getElementById('name').innerHTML = data.name;
-  // Create email
   document.getElementById('email').innerHTML = `電子信箱：${data.email}`;
-  // Create loginAt
   document.getElementById('loginAt').innerHTML = `上次登入時間：${new Date(data.login_at)}`;
-  // Create favorite
   localStorage.setItem('favorite', data.favorite);
   if (!data.favorite) {
     document.getElementById('msg').innerHTML = '尚無收藏任何商品';
   } else {
-    const result = await createFavorite(data.favorite);
-    if (result == 0) {
+    const count = await getFavorite(data.favorite);
+    if (count === 0) {
       document.getElementById('msg').innerHTML = '尚無收藏任何商品';
     } else {
       document.getElementById('msg').remove();
     }
   }
-  // Create track
   if (Object.keys(data.tracks).length === 0) {
     document.getElementById('track_msg').innerHTML = '尚無追蹤任何商品';
   } else {
-    const result = await createTrack(data.tracks);
-    if (result == 0) {
+    const count = await getTrack(data.tracks);
+    if (count === 0) {
       document.getElementById('track_msg').innerHTML = '尚無追蹤任何商品';
     } else {
       document.getElementById('track_msg').remove();
@@ -79,20 +72,20 @@ async function createProfile(data) {
   }
 }
 
-async function createFavorite(favorite) {
+async function getFavorite(favorite) {
   favorite = favorite.split(',');
-  let result = 0;
+  let count = 0;
   for (let i = 0; i < favorite.length; i += 1) {
-    const data = await fetch(`/api/1.0/products/details?number=${favorite[i]}`).then((res) => res.json());
-    if (data.data) {
-      createFavoriteProducts(data.data);
-      result += 1;
+    const result = await fetch(`/api/1.0/products/details?number=${favorite[i]}`).then((res) => res.json());
+    if (result.data) {
+      createFavorite(result.data);
+      count += 1;
     }
   }
-  return result;
+  return count;
 }
 
-function createFavoriteProducts(data) {
+function createFavorite(data) {
   const products = document.getElementById('products');
   // Create <a class='product'>
   const a = document.createElement('a');
@@ -153,7 +146,7 @@ async function deleteFavorite() {
       userFavorite = userFavorite.join(',');
       const updateFavorite = {
         favorite: userFavorite,
-        access_token: localStorage.getItem('token'),
+        accessToken: localStorage.getItem('token'),
       };
       const result = await fetch('/api/1.0/favorite', {
         body: JSON.stringify(updateFavorite),
@@ -183,20 +176,20 @@ async function deleteFavorite() {
   });
 }
 
-async function createTrack(tracks) {
+async function getTrack(tracks) {
   const trackList = Object.keys(tracks);
-  let result = 0;
+  let count = 0;
   for (let i = 0; i < trackList.length; i += 1) {
-    const data = await fetch(`/api/1.0/products/details?number=${trackList[i]}`).then((res) => res.json());
-    if (data.data) {
-      createTrackProducts(data.data, tracks[trackList[i]]);
-      result += 1;
+    const result = await fetch(`/api/1.0/products/details?number=${trackList[i]}`).then((res) => res.json());
+    if (result.data) {
+      createTrack(result.data, tracks[trackList[i]]);
+      count += 1;
     }
   }
-  return result;
+  return count;
 }
 
-function createTrackProducts(data, trackPrice) {
+function createTrack(data, trackPrice) {
   const products = document.getElementById('track_products');
   // Create <a class='product'>
   const a = document.createElement('a');
@@ -250,7 +243,7 @@ async function deleteTrack() {
       // Send delete info to server
       const deleteTrack = {
         number,
-        user_id: localStorage.getItem('id'),
+        userId: localStorage.getItem('id'),
       };
       const result = await fetch('/api/1.0/user/track', {
         body: JSON.stringify(deleteTrack),

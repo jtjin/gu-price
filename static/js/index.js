@@ -5,10 +5,6 @@ const imageSearchFile = document.getElementById('image_search_file');
 const imageSearchSubmit = document.getElementById('image_search_submit');
 const imageSearchText = document.getElementById('image_search_text');
 
-function isValid(str) {
-  return !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?\ ]/g.test(str);
-}
-
 function mainSearchBtn() {
   if (searchMain.value) {
     if (!isValid(searchMain.value)) {
@@ -30,22 +26,23 @@ function mainSearchBtn() {
     }
   }
 }
-function mainSearch() {
-  searchMain.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') mainSearchBtn();
-  });
-}
-window.onload = mainSearch();
+
+searchMain.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') mainSearchBtn();
+});
 
 imageSearchIcon.addEventListener('mouseover', () => {
   imageSearchText.style.display = 'inline-block';
 });
+
 imageSearchIcon.addEventListener('mouseout', () => {
   imageSearchText.style.display = 'none';
 });
+
 imageSearchIcon.addEventListener('click', () => {
   imageSearchFile.click();
 });
+
 imageSearchFile.addEventListener('change', () => {
   if (/\.(jpe?g|png)$/i.test(imageSearchFile.files[0].name) === false) {
     Swal.fire({

@@ -52,7 +52,7 @@ const getTypes = async (req, res) => {
   if (type.length === 0) {
     res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
   } else {
-    const listMap = {}; // ex: {'外套・大衣': [ [ '開襟外套', 'cardigan' ], ... ], ...}
+    const listMap = {}; // ex: {'外套・大衣': [ [ '開襟外套', 'cardigan' ], ['夾克・外套・背心', 'jacket'], ... ], ...}
     let { lists } = data[category][0];
     for (let i = 0; i < type.length; i += 1) {
       chineseType = data[category][0][type[i]][0];
@@ -80,14 +80,13 @@ const imageSearch = async (req, res) => {
     object = ['Top', 'Outerwear', 'Shorts', 'Pants', 'Skirt', 'Dress', 'Clothing'].filter((obj) => new Set(object).has(obj));
     if (object.length == 0) {
       // no object found
-      fs.unlinkSync(fileName); // Delete picture
+      fs.unlinkSync(fileName);
       res.status(200).render('imageSearch', { msg: '找不到圖片中包含的商品種類，請再嘗試一次。' });
     } else {
       res.status(200).render('imageSearch', { imageUrl: `/static/pictures/${req.file.filename}`, object });
     }
   } else {
     // Wrong file upload
-    fs.unlinkSync(fileName); // Delete picture
     res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });
   }
 };

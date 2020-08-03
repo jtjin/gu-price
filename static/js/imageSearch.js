@@ -1,7 +1,6 @@
 const url = document.getElementById('image_url').getAttribute('src');
 const object = document.getElementById('object').innerHTML;
 const loadingGif = document.getElementById('loading_gif');
-const products = document.getElementById('products');
 
 async function getAllProducts() {
   if (document.getElementById('msg').innerHTML) {
@@ -16,6 +15,7 @@ async function getAllProducts() {
     window.location.href = '/';
     return;
   }
+
   document.getElementById('image_url').style.display = 'inline-block';
   const uploadImage = { url, object };
   const similarProducts = await fetch('/api/1.0/imageSearch', {
@@ -53,10 +53,10 @@ async function getAllProducts() {
   let count = 0;
   for (let i = 0; i < similarProducts.length; i += 1) {
     // get product detail with number
-    const data = await fetch(`/api/1.0/products/details?number=${similarProducts[i].number}`).then((res) => res.json());
-    if (data.data) {
-      createProducts(data.data, similarProducts[i].imageUrl);
-      count++;
+    const result = await fetch(`/api/1.0/products/details?number=${similarProducts[i].number}`).then((res) => res.json());
+    if (result.data) {
+      createProduct(result, similarProducts[i].imageUrl);
+      count += 1;
     }
   }
   loadingGif.style.display = 'none';
@@ -71,11 +71,12 @@ async function getAllProducts() {
   }
 }
 
-function createProducts(data, imageUrl) {
+function createProduct(result, imageUrl) {
+  const products = document.getElementById('products');
   // Create <a class='product'>
   const a = document.createElement('a');
   a.setAttribute('class', 'product');
-  a.setAttribute('href', `/products/${data.number}`);
+  a.setAttribute('href', `/products/${result.data.number}`);
   // Create <img>, <div clsas='colors'>
   const img = document.createElement('img');
   img.setAttribute('src', imageUrl);
@@ -86,14 +87,14 @@ function createProducts(data, imageUrl) {
   const pCompare = document.createElement('p');
   divCompare.setAttribute('class', 'compare');
   divCompare.setAttribute('onclick', 'updateCompare()');
-  imgCompare.setAttribute('number', data.number);
+  imgCompare.setAttribute('number', result.data.number);
   // check if item in userCompare
   let userCompare = sessionStorage.getItem('compare');
   if (userCompare == 'undefined' || userCompare == 'null' || userCompare == '' || !userCompare) {
     imgCompare.setAttribute('src', '/static/imgs/unchecked.png');
   } else {
     userCompare = userCompare.split(',');
-    const duplicateCompare = userCompare.find((p) => p == data.number);
+    const duplicateCompare = userCompare.find((p) => p == result.data.number);
     if (duplicateCompare) {
       imgCompare.setAttribute('src', '/static/imgs/checked.png');
     } else {
@@ -107,18 +108,18 @@ function createProducts(data, imageUrl) {
   // Create <div clsas='name'>
   const divName = document.createElement('div');
   divName.setAttribute('class', 'name');
-  divName.innerHTML = data.name;
+  divName.innerHTML = result.data.name;
   a.appendChild(divName);
   // Create <div clsas='number'>
   const divNumber = document.createElement('div');
   divNumber.setAttribute('class', 'number');
-  divNumber.innerHTML = data.number;
+  divNumber.innerHTML = result.data.number;
   a.appendChild(divNumber);
   // Create <div clsas='price'>
   const divPrice = document.createElement('div');
   divPrice.setAttribute('class', 'price');
-  divPrice.innerHTML = `$${data.highest_price} ⇢ $${data.current_price}`;
-  if (data.current_price < data.highest_price) {
+  divPrice.innerHTML = `$${result.data.highest_price} ⇢ $${result.data.current_price}`;
+  if (result.data.current_price < result.data.highest_price) {
     divPrice.innerHTML += '<br><span style="color: red"><b>※特價商品</b></span>';
   }
   a.appendChild(divPrice);

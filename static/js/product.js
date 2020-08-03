@@ -1,54 +1,35 @@
-let product = {};
-// Get Product Number from url
-async function getProductNumber() {
+let fetchData = {};
+
+async function getProduct() {
   const number = window.location.pathname.substr(10);
   const result = await fetch(`/api/1.0/products/details?number=${number}`).then((res) => res.json());
   document.title = `${result.data.name} | GU 比價 | GU 搜尋`;
-  product = result;
-  showProduct(result);
+  createProduct(result);
 }
+
 // Render page
-function showProduct(result) {
-  // main_image
-  const mainImage = document.getElementById('main_image');
-  mainImage.setAttribute('src', result.data.main_image);
-  // name
-  const name = document.getElementById('name');
-  name.innerHTML = result.data.name;
-  // number
-  const number = document.getElementById('number');
-  number.innerHTML = `商品編號 ${result.data.number}`;
-  // highest_price
-  const highestPrice = document.getElementById('highest_price');
-  highestPrice.innerHTML = `${result.data.highest_price} 歷史高價`;
-  // lowest_price
-  const lowestPrice = document.getElementById('lowest_price');
-  lowestPrice.innerHTML = `${result.data.lowest_price} 歷史低價`;
-  // current_price
-  const currentPrice = document.getElementById('current_price');
-  currentPrice.innerHTML = `${result.data.current_price} </br> 現在售價`;
+function createProduct(result) {
+  document.getElementById('main_image').setAttribute('src', result.data.main_image);
+  document.getElementById('name').innerHTML = result.data.name;
+  document.getElementById('number').innerHTML = `商品編號 ${result.data.number}`;
+  document.getElementById('highest_price').innerHTML = `${result.data.highest_price} 歷史高價`;
+  document.getElementById('lowest_price').innerHTML = `${result.data.lowest_price} 歷史低價`;
+  document.getElementById('current_price').innerHTML = `${result.data.current_price} </br> 現在售價`;
   document.getElementById('track_price').setAttribute('max', result.data.current_price);
-  // price_curve
   drawDatePrice(result.data);
-  // about
-  const about = document.getElementById('about');
-  about.innerHTML = result.data.about;
-  // texture
-  const texture = document.getElementById('texture');
-  texture.innerHTML = result.data.texture;
-  // website
-  const website = document.getElementById('website');
-  website.setAttribute('href', `https://www.gu-global.com/tw/store/goods/${result.data.number}`);
-  // images
+  document.getElementById('about').innerHTML = result.data.about;
+  document.getElementById('texture').innerHTML = result.data.texture;
+  document.getElementById('website').setAttribute('href', `https://www.gu-global.com/tw/store/goods/${result.data.number}`);
   for (let i = 0; i < result.data.images.length; i += 1) {
     const img = document.createElement('img');
     img.setAttribute('class', 'images');
     img.setAttribute('src', result.data.images[i]);
     document.getElementById('images_box').appendChild(img);
   }
-  // favorite
   if (localStorage.getItem('favorite')) checkFavorite(result.data.number);
+  fetchData = result;
 }
+
 function drawDatePrice(data) {
   const datePrice = {
     x: data.date,
@@ -60,17 +41,17 @@ function drawDatePrice(data) {
   const oneDay = 24 * 60 * 60 * 1000;
   const firtstDay = new Date(data.date[0]).getTime() - 1.5 * oneDay;
   const lastDay = new Date(data.date[data.date.length - 1]).getTime() + 0.5 * oneDay;
+  const tickNum = 8;
   const layout = {
     xaxis: {
       tickmode: 'linear',
       tickformat: '%m/%d',
       tickangle: -50,
-      nticks: 10,
       tickfont: {
         family: 'Microsoft JhengHei',
         size: 10,
       },
-      dtick: (lastDay - firtstDay) / 10,
+      dtick: (lastDay - firtstDay) / tickNum,
       range: [firtstDay, lastDay],
       fixedrange: true,
     },
@@ -100,12 +81,12 @@ function drawDatePrice(data) {
   Plotly.newPlot('date_price', [datePrice], layout, { scrollZoom: false, displayModeBar: false });
 }
 
+// Favorite
 const favorite = document.getElementById('favorite');
 const favoriteIcon = document.getElementById('favoriteIcon');
 const favoriteText = document.getElementById('favoriteText');
 
 function checkFavorite(number) {
-  // check if item in userFavorite
   const userFavorite = localStorage.getItem('favorite').split(',');
   const duplicateFavorite = userFavorite.find((p) => p == number);
   if (duplicateFavorite) {
@@ -136,14 +117,13 @@ favorite.addEventListener('click', async () => {
     const userFavorite = localStorage.getItem('favorite');
     let addFavorite;
     if (userFavorite == 'undefined' || userFavorite == 'null' || !userFavorite) {
-      addFavorite = product.data.number;
+      addFavorite = fetchData.data.number;
     } else {
-      addFavorite = `${userFavorite},${product.data.number}`;
+      addFavorite = `${userFavorite},${fetchData.data.number}`;
     }
-    // Post the updateFavorite to server
     const updateFavorite = {
       favorite: addFavorite,
-      access_token: localStorage.getItem('token'),
+      accessToken: localStorage.getItem('token'),
     };
     const result = await fetch('/api/1.0/favorite', {
       body: JSON.stringify(updateFavorite),
@@ -162,9 +142,9 @@ favorite.addEventListener('click', async () => {
       });
     } else {
       if (userFavorite == 'undefined' || userFavorite == 'null' || !userFavorite) {
-        localStorage.setItem('favorite', product.data.number);
+        localStorage.setItem('favorite', fetchData.data.number);
       } else {
-        localStorage.setItem('favorite', `${userFavorite},${product.data.number}`);
+        localStorage.setItem('favorite', `${userFavorite},${fetchData.data.number}`);
       }
       favoriteIcon.src = '/static/imgs/fullStar.png';
       favoriteText.innerHTML = '已收藏';
@@ -178,19 +158,6 @@ favorite.addEventListener('click', async () => {
     }
   }
 });
-
-function postData(url, data, cb) {
-  return fetch(url, {
-    body: JSON.stringify(data),
-    headers: {
-      'content-type': 'application/json',
-    },
-    method: 'POST',
-  })
-    .then((res) => res.json())
-    .then((result) => cb(result))
-    .catch((err) => console.log(err));
-}
 
 // Track
 const trackBtn = document.getElementById('track_btn');
@@ -213,10 +180,10 @@ trackBtn.addEventListener('click', () => {
     });
     return;
   }
-  const { number } = product.data;
-  const { name } = product.data;
-  const currentPrice = product.data.current_price;
-  const mainImage = product.data.main_image;
+  const { number } = fetchData.data;
+  const { name } = fetchData.data;
+  const currentPrice = fetchData.data.current_price;
+  const mainImage = fetchData.data.main_image;
   const price = document.getElementById('track_price').value;
   if (!price) {
     Swal.fire({
@@ -296,4 +263,4 @@ trackBtn.addEventListener('click', () => {
     });
 });
 
-window.onload = [getProductNumber(), getTrackEmail()];
+window.onload = [getProduct(), getTrackEmail()];

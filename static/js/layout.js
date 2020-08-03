@@ -1,7 +1,7 @@
 const searchHeader = document.getElementById('search_header');
 const menuImg = document.getElementById('menu_img');
 const menuList = document.getElementById('menu_list');
-const main = document.getElementsByTagName('main');
+const main = document.getElementsByTagName('main')[0];
 const navLogin = document.getElementById('nav_login');
 const navSignup = document.getElementById('nav_signup');
 const loginForm = document.getElementById('login_form');
@@ -31,7 +31,8 @@ menuImg.addEventListener('click', () => {
     menuList.classList.add('show');
   }
 });
-main[0].addEventListener('click', () => {
+
+main.addEventListener('click', () => {
   if (menuList.className == 'show') {
     menuList.classList.remove('show');
   }
@@ -56,11 +57,10 @@ function headerSearchBtn() {
     window.location.href = `/search/${searchHeader.value}`;
   }
 }
-function headerSearch() {
-  searchHeader.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') headerSearchBtn();
-  });
-}
+
+searchHeader.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') headerSearchBtn();
+});
 
 // Member Modal
 const memberModal = document.getElementById('member_modal');
@@ -71,9 +71,8 @@ const profileModal = document.getElementById('profile_modal');
 const profileClose = document.getElementById('profile_close');
 
 // When the user clicks the button, open the modal
-memberBtn.onclick = function () {
+memberBtn.onclick = () => {
   if (!localStorage.getItem('token')) {
-    // Check if token is available
     memberModal.style.display = 'flex';
   } else {
     switch (profileModal.style.display) {
@@ -90,14 +89,15 @@ memberBtn.onclick = function () {
 };
 
 // When the user clicks the close button, close the modal
-modalClose.onclick = function () {
+modalClose.onclick = () => {
   memberModal.style.display = 'none';
 };
-profileClose.onclick = function () {
+profileClose.onclick = () => {
   profileModal.style.display = 'none';
 };
+
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
+window.onclick = (event) => {
   if (event.target == memberModal) {
     memberModal.style.display = 'none';
   }
@@ -105,10 +105,6 @@ window.onclick = function (event) {
     profileModal.style.display = 'none';
   }
 };
-
-function getMemberLogo() {
-  memberLogo.src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
-}
 
 function postData(url, data, cb) {
   return fetch(url, {
@@ -122,67 +118,7 @@ function postData(url, data, cb) {
     .then((result) => cb(result))
     .catch((err) => console.log(err));
 }
-function signupRender(obj) {
-  document.getElementById('signup_name').value = '';
-  document.getElementById('signup_email').value = '';
-  document.getElementById('signup_password').value = '';
-  if (obj.error) {
-    Swal.fire({
-      icon: 'error',
-      text: JSON.stringify(obj.error),
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: '確定',
-    });
-  } else if (obj.data.access_token) {
-    Swal.fire({
-      icon: 'success',
-      title: '註冊成功！',
-      text: '系統已發送「認證信」至您的電子信箱',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: '確定',
-    });
-    document.getElementById('member_modal').style.display = 'none';
-  } else {
-    Swal.fire({
-      icon: 'warning',
-      text: '請再嘗試一次',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  }
-}
-async function loginRender(obj) {
-  document.getElementById('login_email').value = '';
-  document.getElementById('login_password').value = '';
-  if (obj.error) {
-    Swal.fire({
-      icon: 'warning',
-      text: obj.error,
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  } else if (obj.data.access_token) {
-    localStorage.setItem('token', obj.data.access_token);
-    localStorage.setItem('id', obj.data.user.id);
-    localStorage.setItem('photo', obj.data.user.picture);
-    localStorage.setItem('name', obj.data.user.name);
-    localStorage.setItem('email', obj.data.user.email);
-    await Swal.fire({
-      icon: 'success',
-      title: '登入成功',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    window.location.href = '/profile';
-  } else {
-    Swal.fire({
-      icon: 'warning',
-      text: '請再嘗試一次',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  }
-}
+
 // Native Signup Function
 signupBtn.addEventListener('click', () => {
   event.preventDefault();
@@ -227,7 +163,7 @@ signupBtn.addEventListener('click', () => {
     return;
   }
   const provider = 'native';
-  const result = {
+  const data = {
     name, email, password, provider,
   };
   Swal.fire({
@@ -235,8 +171,39 @@ signupBtn.addEventListener('click', () => {
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  postData('/api/1.0/user/signup', result, signupRender);
+  postData('/api/1.0/user/signup', data, signupRender);
 });
+
+function signupRender(result) {
+  document.getElementById('signup_name').value = '';
+  document.getElementById('signup_email').value = '';
+  document.getElementById('signup_password').value = '';
+  if (result.error) {
+    Swal.fire({
+      icon: 'error',
+      text: JSON.stringify(result.error),
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '確定',
+    });
+  } else if (result.data.access_token) {
+    Swal.fire({
+      icon: 'success',
+      title: '註冊成功！',
+      text: '系統已發送「認證信」至您的電子信箱',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '確定',
+    });
+    document.getElementById('member_modal').style.display = 'none';
+  } else {
+    Swal.fire({
+      icon: 'warning',
+      text: '請再嘗試一次',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+}
+
 // Login function
 loginBtn.addEventListener('click', () => {
   event.preventDefault();
@@ -271,13 +238,46 @@ loginBtn.addEventListener('click', () => {
     return;
   }
   const provider = 'native';
-  const result = { email, password, provider };
-  postData('/api/1.0/user/signin', result, loginRender);
+  const data = { email, password, provider };
+  postData('/api/1.0/user/signin', data, loginRender);
 });
+
+async function loginRender(result) {
+  document.getElementById('login_email').value = '';
+  document.getElementById('login_password').value = '';
+  if (result.error) {
+    Swal.fire({
+      icon: 'warning',
+      text: result.error,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } else if (result.data.access_token) {
+    localStorage.setItem('token', result.data.access_token);
+    localStorage.setItem('id', result.data.user.id);
+    localStorage.setItem('photo', result.data.user.picture);
+    localStorage.setItem('name', result.data.user.name);
+    localStorage.setItem('email', result.data.user.email);
+    await Swal.fire({
+      icon: 'success',
+      title: '登入成功',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    window.location.href = '/profile';
+  } else {
+    Swal.fire({
+      icon: 'warning',
+      text: '請再嘗試一次',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+}
 
 /* Integrate Facebook Login */
 // Initialization
-window.fbAsyncInit = function () {
+window.fbAsyncInit = () => {
   FB.init({
     appId: '1031835573900181',
     cookie: true,
@@ -289,11 +289,13 @@ window.fbAsyncInit = function () {
 };
 // Load the Facebook Javascript SDK asynchronously
 (function (d, s, id) {
-  let js; const fjs = d.getElementsByTagName(s)[0];
+  let js;
+  const fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {
     return;
   }
-  js = d.createElement(s); js.id = id;
+  js = d.createElement(s);
+  js.id = id;
   js.src = 'https://connect.facebook.net/en_US/sdk.js';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
@@ -369,8 +371,7 @@ logoutBtn.addEventListener('click', () => {
   });
 });
 
-// Compare products
-
+// Compare
 function updateCompare() {
   event.preventDefault();
   document.getElementById('comparison_bg').style.display = 'block';
@@ -460,6 +461,7 @@ function addCompare(mainImage, name, number) {
   div.appendChild(h4);
   comparisonUl.appendChild(li);
 }
+
 function removeCompare(number) {
   const deleteItem = document.querySelector(`li[number='${number}']`);
   if (deleteItem) deleteItem.remove();
@@ -491,22 +493,6 @@ document.getElementById('comparison_arrow').addEventListener('click', () => {
   document.getElementById('comparison_bg').style.display = 'block';
 });
 
-async function checkCompare() {
-  if (sessionStorage.getItem('compare')) {
-    if (window.location.pathname == '/compare') {
-      document.getElementById('comparison_arrow').style.display = 'none';
-    } else {
-      let userCompare = sessionStorage.getItem('compare');
-      userCompare = userCompare.split(',');
-      for (let i = 0; i < userCompare.length; i += 1) {
-        const result = await fetch(`/api/1.0/products/details?number=${userCompare[i]}`).then((res) => res.json());
-        addCompare(result.data.main_image, result.data.name, result.data.number);
-      }
-      document.getElementById('comparison_arrow').style.display = 'flex';
-    }
-  }
-}
-
 document.getElementById('go_to_compare').addEventListener('click', () => {
   if (sessionStorage.getItem('compare')) window.location.href = '/compare';
 });
@@ -528,7 +514,27 @@ document.getElementById('clear_compare').addEventListener('click', () => {
   }
 });
 
-window.onload = [headerSearch(), getMemberLogo(), checkCompare()];
+async function checkCompare() {
+  if (sessionStorage.getItem('compare')) {
+    if (window.location.pathname == '/compare') {
+      document.getElementById('comparison_arrow').style.display = 'none';
+    } else {
+      let userCompare = sessionStorage.getItem('compare');
+      userCompare = userCompare.split(',');
+      for (let i = 0; i < userCompare.length; i += 1) {
+        const result = await fetch(`/api/1.0/products/details?number=${userCompare[i]}`).then((res) => res.json());
+        addCompare(result.data.main_image, result.data.name, result.data.number);
+      }
+      document.getElementById('comparison_arrow').style.display = 'flex';
+    }
+  }
+}
+
+function getMemberLogo() {
+  memberLogo.src = localStorage.getItem('photo') ? localStorage.getItem('photo') : '/static/imgs/member.png';
+}
+
+window.onload = [getMemberLogo(), checkCompare()];
 
 // toTop-arrow
 backTop = document.getElementById('backTop');

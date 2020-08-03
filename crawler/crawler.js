@@ -121,8 +121,8 @@ async function getProductDetails(productUrl, productCategory, productType) {
       fail[number] = error;
     }
   }
-  const list_images = $('#prodThumbImgs').find('li');
-  for (let i = 1; i <= list_images.length; i += 1) {
+  const listImages = $('#prodThumbImgs').find('li');
+  for (let i = 1; i <= listImages.length; i += 1) {
     try {
       await page.waitForSelector(`#prodThumbImgs > li:nth-child(${i}) > a`, { timeout: 10000 });
       await page.click(`#prodThumbImgs > li:nth-child(${i}) > a`);
@@ -135,12 +135,12 @@ async function getProductDetails(productUrl, productCategory, productType) {
     }
   }
   images = [...new Set(images)]; // Remove duplicated image
-  const update_at = getTodayDate();
+  const updateAt = getTodayDate();
   const category = productCategory;
   const type = productType;
   await browser.close();
   return {
-    category, type, name, number, price, about, texture, mainImage, images, update_at,
+    category, type, name, number, price, about, texture, mainImage, images, update_at: updateAt,
   };
 }
 
