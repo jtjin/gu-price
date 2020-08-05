@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { wrapAsync } = require('../../util/util');
+const { asyncHandler } = require('../../util/util');
 
 const {
   signUp,
@@ -10,18 +10,18 @@ const {
 } = require('../controllers/user_controller');
 
 router.route('/user/signup')
-  .post(wrapAsync(signUp));
+  .post(asyncHandler(signUp));
 
 router.route('/user/signin')
-  .post(wrapAsync(signIn));
+  .post(asyncHandler(signIn));
 
 router.route('/user/profile')
-  .get(wrapAsync(getUserProfile));
+  .get(asyncHandler(getUserProfile));
 
 router.route('/user/track')
-  .post(wrapAsync(createTrack));
+  .post(asyncHandler(createTrack));
 
 router.route('/user/track')
-  .delete(wrapAsync(deleteTrack));
+  .delete(asyncHandler(deleteTrack));
 
 module.exports = router;

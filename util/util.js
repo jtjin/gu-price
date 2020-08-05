@@ -55,12 +55,12 @@ const upload = multer({
   },
 });
 
-const wrapAsync = (fn) => (req, res, next) => {
+const asyncHandler = (fn) => (req, res, next) => {
   fn(req, res, next).catch(next);
 };
 
 module.exports = {
   send,
   upload,
-  wrapAsync,
+  asyncHandler,
 };

@@ -4,12 +4,12 @@ async function getAllProducts() {
   const category = window.location.pathname.split('/')[1];
   const type = window.location.pathname.split('/')[2];
   const results = await fetch(`/api/1.0/products/${category}?type=${type}&paging=0`).then((res) => res.json());
-  document.title = `${results.data[0].type} | GU 比價 | GU 搜尋`;
+  document.title = `${results.data[0].chinese_type} | GU 比價 | GU 搜尋`;
   createProduct(results);
 }
 
 function createProduct(results) {
-  document.getElementById('view_title').innerHTML = results.data[0].type;
+  document.getElementById('view_title').innerHTML = results.data[0].chinese_type;
   const products = document.getElementById('products');
   for (let i = 0; i < results.data.length; i += 1) {
     // Create <a class='product'>

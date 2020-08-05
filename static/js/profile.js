@@ -146,12 +146,13 @@ async function deleteFavorite() {
       userFavorite = userFavorite.join(',');
       const updateFavorite = {
         favorite: userFavorite,
-        accessToken: localStorage.getItem('token'),
       };
+      const bearer = `Bearer ${localStorage.getItem('token')}`;
       const result = await fetch('/api/1.0/favorite', {
         body: JSON.stringify(updateFavorite),
         headers: {
           'content-type': 'application/json',
+          Authorization: bearer,
         },
         method: 'POST',
       }).then((res) => res.json());

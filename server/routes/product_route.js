@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { wrapAsync } = require('../../util/util');
+const { asyncHandler } = require('../../util/util');
 
 const {
   getProducts,
@@ -8,12 +8,12 @@ const {
 } = require('../controllers/product_controller');
 
 router.route('/products/:category')
-  .get(wrapAsync(getProducts));
+  .get(asyncHandler(getProducts));
 
 router.route('/favorite')
-  .post(wrapAsync(updateFavorite));
+  .post(asyncHandler(updateFavorite));
 
 router.route('/imageSearch')
-  .post(wrapAsync(imageSearch));
+  .post(asyncHandler(imageSearch));
 
 module.exports = router;

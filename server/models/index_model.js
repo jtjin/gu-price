@@ -22,11 +22,7 @@ const getProducts = async (requirement = {}) => {
   return { productCount };
 };
 
-const getTypes = async (category) => {
-  const types = await query('SELECT DISTINCT(type) FROM product WHERE category = ? AND update_at >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)', [category]);
-  const type = types.flatMap((p) => [p.type]);
-  return { type };
-};
+const getTypes = async (category) => await query('SELECT type, chinese_type, chinese_list FROM product WHERE category = ? AND update_at >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) GROUP BY type', [category]);
 
 const updateUser = async (email) => {
   try {

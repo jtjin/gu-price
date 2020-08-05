@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { wrapAsync, upload } = require('../../util/util');
+const { asyncHandler, upload } = require('../../util/util');
 
 const {
   getProducts,
@@ -35,15 +35,15 @@ router.get('/compare', (req, res, next) => {
 });
 
 router.route('/confirmation/:token')
-  .get(wrapAsync(confirmEmail));
+  .get(asyncHandler(confirmEmail));
 
 router.route('/:category')
-  .get(wrapAsync(getTypes));
+  .get(asyncHandler(getTypes));
 
 router.route('/:category/:type')
-  .get(wrapAsync(getProducts));
+  .get(asyncHandler(getProducts));
 
 router.route('/imageSearch')
-  .post(uploadImageSearch, wrapAsync(imageSearch));
+  .post(uploadImageSearch, asyncHandler(imageSearch));
 
 module.exports = router;

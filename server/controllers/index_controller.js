@@ -1,10 +1,10 @@
 require('dotenv').config();
 const crypto = require('crypto');
+const _ = require('lodash');
 const vision = require('@google-cloud/vision');
 const fs = require('fs');
 const path = require('path');
 const Index = require('../models/index_model');
-const data = require('../data/data.json');
 
 const client = new vision.ImageAnnotatorClient({
   keyFilename: './mykey.json',
@@ -48,24 +48,13 @@ const getProducts = async (req, res) => {
 
 const getTypes = async (req, res) => {
   const { category } = req.params;
-  const { type } = await Index.getTypes(category);
-  if (type.length === 0) {
+  const types = await Index.getTypes(category);
+  if (types.length === 0) {
     res.status(404).render('error', { title: '找不到頁面 | GU 搜尋 | GU 比價', status: '404', message: '找不到頁面' });
   } else {
-    const listMap = {}; // ex: {'外套・大衣': [ [ '開襟外套', 'cardigan' ], ['夾克・外套・背心', 'jacket'], ... ], ...}
-    let { lists } = data[category][0];
-    for (let i = 0; i < type.length; i += 1) {
-      chineseType = data[category][0][type[i]][0];
-      list = data[category][0][type[i]][1];
-      if (listMap[list]) {
-        listMap[list].push([chineseType, type[i]]);
-      } else {
-        listMap[list] = [[chineseType, type[i]]];
-      }
-    }
-    // Sort the list
-    lists = lists.filter((list) => new Set(Object.keys(listMap)).has(list));
-    res.status(200).render('category', { lists, listMap: JSON.stringify(listMap) });
+    const typesMap = _.groupBy(types, (type) => type.chinese_list);
+    const lists = Object.keys(typesMap).sort();
+    res.status(200).render('category', { lists, typesMap: JSON.stringify(typesMap) });
   }
 };
 

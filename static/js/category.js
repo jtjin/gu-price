@@ -1,7 +1,7 @@
 let lists = document.getElementById('lists').innerHTML;
-let listMap = document.getElementById('listMap').innerHTML;
+let typesMap = document.getElementById('typesMap').innerHTML;
 lists = lists.split(',');
-listMap = JSON.parse(listMap);
+typesMap = JSON.parse(typesMap);
 
 async function getAllTypes() {
   const category = window.location.pathname.substr(1);
@@ -20,7 +20,7 @@ async function getAllTypes() {
     createTypes(lists[i], category);
   }
   document.getElementById('lists').remove();
-  document.getElementById('listMap').remove();
+  document.getElementById('typesMap').remove();
 }
 
 function createTypes(list, category) {
@@ -37,14 +37,14 @@ function createTypes(list, category) {
   types.setAttribute('class', 'types');
   view.appendChild(viewBox);
   view.appendChild(types);
-  for (let i = 0; i < listMap[list].length; i += 1) {
+  for (let i = 0; i < typesMap[list].length; i += 1) {
     // Create <div class='type'>
     const div = document.createElement('div');
     div.setAttribute('class', 'type');
     // Create <a> inside <div class='type'>
     const a = document.createElement('a');
-    a.innerHTML = `${listMap[list][i][0]}`;
-    a.setAttribute('href', `/${category}/${listMap[list][i][1]}`);
+    a.innerHTML = `${typesMap[list][i].chinese_type}`;
+    a.setAttribute('href', `/${category}/${typesMap[list][i].type}`);
     div.appendChild(a);
     types.appendChild(div);
   }

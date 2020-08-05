@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const vision = require('@google-cloud/vision');
 const Product = require('../models/product_model');
-const data = require('../data/data.json');
 
 const productSearchClient = new vision.ProductSearchClient({
   keyFilename: './mykey.json',
@@ -78,9 +77,6 @@ const getProductsWithDetail = async (products) => {
   const pricesMap = _.groupBy(prices, (p) => p.product_id);
 
   return products.map((p) => {
-    // Translate type (English => Chinese)
-    p.type = data[p.category][0][p.type] ? data[p.category][0][p.type][0] : p.type;
-
     const productPrices = pricesMap[p.id];
     if (!productPrices) { return p; }
 
@@ -96,8 +92,14 @@ const getProductsWithDetail = async (products) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { favorite, accessToken } = req.body;
-
+  let accessToken = req.get('Authorization');
+  if (accessToken) {
+    accessToken = accessToken.replace('Bearer ', '');
+  } else {
+    res.status(400).send({ error: '授權失敗' });
+    return;
+  }
+  const { favorite } = req.body;
   const result = await Product.updateFavorite(favorite, accessToken);
   if (result.error || result.changedRows == 0) {
     res.status(500).send({ error: '資料讀取失敗' });
