@@ -86,20 +86,20 @@ async function getProductUrls(typeUrls) {
 const fail = {};
 
 function reviseAbout(about) {
-  about = about.replace('※為使顧客方便理解商品，網路商店商品名稱可能與實際吊牌略有不同，建議您前往實體店鋪購買時請用商品編號核對，造成您的不便敬請見諒。', '')
-  about = about.replace('※各店鋪商品販賣狀況及庫存數量以店鋪實際狀況為準，商品販賣對象店鋪亦有調整之可能，詳細販售及庫存狀況請與鄰近店鋪洽詢。', '')
-  about = about.replace('※請注意：特殊商品或特別尺碼，如：網路商店獨家販售、特殊尺碼(XS、XXL)，或其他特殊活動品項，僅提供網路商店退貨服務，恕無法於實體店鋪退換貨，不便之處敬請見諒。', '')
-  about = about.replace('<a href="https://faq-tw.gu-global.com/pkb_Home_GU_TW?id=kA37F000000D4P8SAK&l=zh_TW&fs=Search&pn=1">網路商店退貨須知>></a>', '')
-  about = about.replace('<font color="red"><b>※網路商店及大型店限定販售商品。</b></font>', '')
-  about = about.replace('<font size="4"><a href="http://www.gu-global.com/tw/store/feature/gu/shop/"><b>店舖資訊一覧>></b></a></font>', '')
-  about = about.replace('<font color="red"><b>※依照消保法，本產品屬個人衛生用品，拆封無7天猶豫期，如欲退貨請勿拆封。</b></font>', '')
-  about = about.replace('<font color="red"><b>※網路商店及特定店鋪限定販售商品。</b></font>', '')
-  about = about.replace('<font color="blue"><b>※此商品僅限網路商店、ATT4FUN店、新竹遠東巨城購物中心店、台中大遠百店  、統一時代百貨高雄店販售。</b></font>', '')
-  about = about.replace('<font color="red">本商品為限購商品，每筆訂單最多購買1件，敬請見諒。提醒您，放入購物車不代表搶購成功，請盡速完成結帳才能確保您的購買權益，不便之處請請見諒。</font>', '')
-  about = about.replace('<font color="red"><b>※衣背另有印花設計。</b></font>', '')
-  about = about.replace('<font color="red"><b>※肩膀到袖口的帶型設計</b></font>', '')
-  about = about.replace(/<br>/g, '')
-  return about
+  about = about.replace('※為使顧客方便理解商品，網路商店商品名稱可能與實際吊牌略有不同，建議您前往實體店鋪購買時請用商品編號核對，造成您的不便敬請見諒。', '');
+  about = about.replace('※各店鋪商品販賣狀況及庫存數量以店鋪實際狀況為準，商品販賣對象店鋪亦有調整之可能，詳細販售及庫存狀況請與鄰近店鋪洽詢。', '');
+  about = about.replace('※請注意：特殊商品或特別尺碼，如：網路商店獨家販售、特殊尺碼(XS、XXL)，或其他特殊活動品項，僅提供網路商店退貨服務，恕無法於實體店鋪退換貨，不便之處敬請見諒。', '');
+  about = about.replace('<a href="https://faq-tw.gu-global.com/pkb_Home_GU_TW?id=kA37F000000D4P8SAK&l=zh_TW&fs=Search&pn=1">網路商店退貨須知>></a>', '');
+  about = about.replace('<font color="red"><b>※網路商店及大型店限定販售商品。</b></font>', '');
+  about = about.replace('<font size="4"><a href="http://www.gu-global.com/tw/store/feature/gu/shop/"><b>店舖資訊一覧>></b></a></font>', '');
+  about = about.replace('<font color="red"><b>※依照消保法，本產品屬個人衛生用品，拆封無7天猶豫期，如欲退貨請勿拆封。</b></font>', '');
+  about = about.replace('<font color="red"><b>※網路商店及特定店鋪限定販售商品。</b></font>', '');
+  about = about.replace('<font color="blue"><b>※此商品僅限網路商店、ATT4FUN店、新竹遠東巨城購物中心店、台中大遠百店  、統一時代百貨高雄店販售。</b></font>', '');
+  about = about.replace('<font color="red">本商品為限購商品，每筆訂單最多購買1件，敬請見諒。提醒您，放入購物車不代表搶購成功，請盡速完成結帳才能確保您的購買權益，不便之處請請見諒。</font>', '');
+  about = about.replace('<font color="red"><b>※衣背另有印花設計。</b></font>', '');
+  about = about.replace('<font color="red"><b>※肩膀到袖口的帶型設計</b></font>', '');
+  about = about.replace(/<br>/g, '');
+  return about;
 }
 
 // Get all details for new products (Use Puppeteer)
@@ -343,4 +343,4 @@ cron.schedule('0 0 11 * * *', () => {
   start();
 });
 
-start()
+start();
