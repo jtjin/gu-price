@@ -40,21 +40,7 @@ const getProductsPrices = async (productIds) => {
   return await query(queryStr, bindings);
 };
 
-const updateFavorite = async (favorite, accessToken) => {
-  try {
-    const users = await query('SELECT id FROM user WHERE access_token = ?', [accessToken]);
-    if (users.length === 0) {
-      return { error: '存取權杖無效' };
-    }
-    const result = await query('UPDATE user SET favorite = ? WHERE id = ?', [favorite, users[0].id]);
-    return { changedRows: result.changedRows };
-  } catch (error) {
-    return { error };
-  }
-};
-
 module.exports = {
   getProducts,
   getProductsPrices,
-  updateFavorite,
 };

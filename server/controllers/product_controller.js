@@ -91,23 +91,6 @@ const getProductsWithDetail = async (products) => {
   });
 };
 
-const updateFavorite = async (req, res) => {
-  let accessToken = req.get('Authorization');
-  if (accessToken) {
-    accessToken = accessToken.replace('Bearer ', '');
-  } else {
-    res.status(400).send({ error: '授權失敗' });
-    return;
-  }
-  const { favorite } = req.body;
-  const result = await Product.updateFavorite(favorite, accessToken);
-  if (result.error || result.changedRows == 0) {
-    res.status(500).send({ error: '資料讀取失敗' });
-  } else {
-    res.status(200).send({ changedRows: result.changedRows });
-  }
-};
-
 const imageSearch = async (req, res) => {
   const object = req.body.object.split(',');
   const filePath = path.join(__dirname, `../..${req.body.url}`);
@@ -177,6 +160,5 @@ const getSimilarProducts = async (filePath, object) => {
 
 module.exports = {
   getProducts,
-  updateFavorite,
   imageSearch,
 };

@@ -68,14 +68,12 @@ const imageSearch = async (req, res) => {
     // Catch "Top","Outerwear","Shorts","Pants","Skirt", "Dress", "Clothing" object only
     object = ['Top', 'Outerwear', 'Shorts', 'Pants', 'Skirt', 'Dress', 'Clothing'].filter((obj) => new Set(object).has(obj));
     if (object.length == 0) {
-      // no object found
       fs.unlinkSync(fileName);
       res.status(200).render('imageSearch', { msg: '找不到圖片中包含的商品種類，請再嘗試一次。' });
     } else {
       res.status(200).render('imageSearch', { imageUrl: `/static/pictures/${req.file.filename}`, object });
     }
   } else {
-    // Wrong file upload
     res.status(200).render('imageSearch', { msg: '請確認您上傳的檔案格式。' });
   }
 };

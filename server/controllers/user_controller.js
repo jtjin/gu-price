@@ -191,6 +191,23 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const updateFavorite = async (req, res) => {
+  let accessToken = req.get('Authorization');
+  if (accessToken) {
+    accessToken = accessToken.replace('Bearer ', '');
+  } else {
+    res.status(400).send({ error: '授權失敗' });
+    return;
+  }
+  const { favorite } = req.body;
+  const result = await User.updateFavorite(favorite, accessToken);
+  if (result.error || result.changedRows == 0) {
+    res.status(500).send({ error: '資料讀取失敗' });
+  } else {
+    res.status(200).send({ changedRows: result.changedRows });
+  }
+};
+
 const createTrack = async (req, res) => {
   const { body } = req;
   const track = {
@@ -244,6 +261,7 @@ module.exports = {
   signUp,
   signIn,
   getUserProfile,
+  updateFavorite,
   createTrack,
   deleteTrack,
 };

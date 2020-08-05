@@ -5,9 +5,13 @@ const {
   signUp,
   signIn,
   getUserProfile,
+  updateFavorite,
   createTrack,
   deleteTrack,
 } = require('../controllers/user_controller');
+
+router.route('/user/profile')
+  .get(asyncHandler(getUserProfile));
 
 router.route('/user/signup')
   .post(asyncHandler(signUp));
@@ -15,8 +19,8 @@ router.route('/user/signup')
 router.route('/user/signin')
   .post(asyncHandler(signIn));
 
-router.route('/user/profile')
-  .get(asyncHandler(getUserProfile));
+router.route('/user/favorite')
+  .post(asyncHandler(updateFavorite));
 
 router.route('/user/track')
   .post(asyncHandler(createTrack));

@@ -125,7 +125,7 @@ favorite.addEventListener('click', async () => {
       favorite: addFavorite,
     };
     const bearer = `Bearer ${localStorage.getItem('token')}`;
-    const result = await fetch('/api/1.0/favorite', {
+    const result = await fetch('/api/1.0/user/favorite', {
       body: JSON.stringify(updateFavorite),
       headers: {
         'content-type': 'application/json',
