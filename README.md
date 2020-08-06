@@ -83,24 +83,23 @@ Website URL: https://www.gu-price.com/
 
 - Search products by keyword
 
-![image](https://i.imgur.com/nIxJPwS.gif)
+![image](https://i.imgur.com/daGEVOy.gif)
 
 - Search products by image
 
-![image](https://i.imgur.com/aN6NWce.gif)
+![image](https://i.imgur.com/l45wmby.gif)
 
 ### Product page
 
 - Display historical price and details of product
 
-![image](https://i.imgur.com/0r6wUq0.gif)
+![image](https://i.imgur.com/oNl3tvC.gif)
 
 ### Profile page
 
 - List the favorite and tracking products
 
-![image](https://i.imgur.com/XDswCmr.gif)
-
+![image](https://i.imgur.com/D1rRh9n.gif)
 
 ## Contact
 
