@@ -342,5 +342,3 @@ async function start() {
 cron.schedule('0 0 11 * * *', () => {
   start();
 });
-
-start();
