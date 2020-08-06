@@ -1,5 +1,5 @@
 {
-  "name": "guprice",
+  "name": "gu-price",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jtjin/GUprice.git"
+    "url": "git+https://github.com/jtjin/gu-price.git"
   },
-  "author": "",
+  "author": "jtjin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jtjin/GUprice/issues"
+    "url": "https://github.com/jtjin/gu-price/issues"
   },
-  "homepage": "https://github.com/jtjin/GUprice#readme",
+  "homepage": "https://github.com/jtjin/gu-price#readme",
   "dependencies": {
     "@google-cloud/vision": "^2.1.1",
     "bcrypt": "^5.0.0",
