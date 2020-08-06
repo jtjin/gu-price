@@ -12,13 +12,8 @@ Website URL: https://www.gu-price.com/
 - [Technologies](#Technologies)
 - [Architecture](#Architecture)
 - [Database Schema](#Database-Schema)
-- [Data Pipeline](#Data-Pipeline)
-- [Main Features](#Main-Features)
+- [Features](#Features)
 - [Demonstration](#Demonstration)
-    - [Home page](#Home-page)
-    - [News page](#News-page)
-    - [Compare page](#Compare-page)
-    - [Hots page](#Hots-page)
 - [Contact](#Contact)
 
 ## Technologies
@@ -67,7 +62,7 @@ Website URL: https://www.gu-price.com/
 
 ## Database Schema
 
-![](https://i.imgur.com/V6jfhX0.png)
+![](https://i.imgur.com/joOv5d0.png)
 
 ## Features
 
