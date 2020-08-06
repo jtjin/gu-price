@@ -58,7 +58,7 @@ Website URL: https://www.gu-price.com/
 
 ## Architecture
 
-![image](https://i.imgur.com/uhq0Yrk.png)
+![](https://i.imgur.com/uhq0Yrk.png)
 - Redirect 443 port requests by **NGINX** after receiving request from clients
 - Scrape product contents through **Web Crawler**
 - Create and manage the product sets via **Google Cloud Vision**
@@ -66,7 +66,7 @@ Website URL: https://www.gu-price.com/
 
 ## Database Schema
 
-![image](https://i.imgur.com/joOv5d0.png)
+![](https://i.imgur.com/joOv5d0.png)
 
 ## Features
 
@@ -83,23 +83,23 @@ Website URL: https://www.gu-price.com/
 
 - Search products by keyword
 
-![imgur](https://i.imgur.com/t93dRI2.gif)
+![](https://i.imgur.com/t93dRI2.gif)
 
 - Search products by image
 
-![imgur](https://i.imgur.com/aPfUq2E.gif)
+![](https://i.imgur.com/aPfUq2E.gif)
 
 ### Product page
 
 - Display historical price and details of product
 
-![imgur](https://i.imgur.com/pxyBwTS.gif)
+![](https://i.imgur.com/pxyBwTS.gif)
 
 ### Profile page
 
 - List the favorite and tracking products
 
-![imgur](https://i.imgur.com/Z4S4tYz.gif)
+![](https://i.imgur.com/Z4S4tYz.gif)
 
 
 ## Contact
