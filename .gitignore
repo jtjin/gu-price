@@ -4,6 +4,9 @@ node_modules/
 # package-lock
 package-lock.json
 
+# vscode
+.vscode
+
 # dotenv environment variables file
 .env
 
