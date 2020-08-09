@@ -2,7 +2,7 @@ require('dotenv').config();
 const validator = require('validator');
 const crypto = require('crypto');
 const User = require('../models/user_model');
-const { send } = require('../../util/util.js');
+const Util = require('../../util/util');
 
 const port = process.env.PORT;
 const expire = process.env.TOKEN_EXPIRE;
@@ -75,7 +75,7 @@ const sendConfirmEmail = async (protocol, hostname, email) => {
     html: `請點擊以下連結確認您的 Email : <a href="${url}">${url}</a>`,
   };
 
-  const result = await send(mail);
+  const result = await Util.send(mail);
   return result;
 };
 
@@ -244,7 +244,7 @@ const sendTrackEmail = async (name, mainImage, currentPrice, price, email) => {
           `,
   };
 
-  const result = await send(mail);
+  const result = await Util.send(mail);
   return result;
 };
 

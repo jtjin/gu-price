@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "NODE_ENV=test nyc mocha --exit",
-    "test_windows": "set NODE_ENV=test&&nyc --reporter=html mocha --exit",
+    "test": "NODE_ENV=test nyc mocha --timeout 10000 --exit",
+    "test_windows": "set NODE_ENV=test&&nyc --reporter=html mocha --timeout 10000 --exit",
     "eslint": "eslint **/*.js",
     "stylelint": "stylelint **/*.css"
   },
@@ -42,6 +42,7 @@
     "puppeteer": "^2.0.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
+    "sinon": "^9.0.2",
     "validator": "^13.1.1"
   },
   "devDependencies": {

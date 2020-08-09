@@ -44,6 +44,17 @@ describe('products', async () => {
     assert.equal(data4[0].category, 'kids');
   });
 
+  it('select products with category & type', async () => {
+    const res = await requester
+      .get('/api/1.0/products/men?type=shirts');
+
+    const { data } = res.body;
+
+    assert.equal(data.length, 4);
+    assert.equal(data[0].category, 'men');
+    assert.equal(data[0].type, 'shirts');
+  });
+
   it('select products with search key', async () => {
     const res = await requester
       .get('/api/1.0/products/search?keyword=searchkey');
@@ -55,13 +66,23 @@ describe('products', async () => {
     assert.equal(data[0].name, 'test searchkey product10');
   });
 
-  it('select products with search key which have no data', async () => {
+  it('select products with search key which can not find data', async () => {
     const res = await requester
       .get('/api/1.0/products/search?keyword=nodatakey');
 
     const { data } = res.body;
 
     assert.equal(data.length, 0);
+  });
+
+  it('select products with search key whick have no keyword', async () => {
+    const res = await requester
+      .get('/api/1.0/products/search');
+
+    assert.equal(res.status, 400);
+
+    const { error } = res.body;
+    assert.equal(error, '錯誤的要求');
   });
 
   it('select product detail', async () => {
@@ -74,7 +95,7 @@ describe('products', async () => {
       id: 1,
       category: 'men',
       chinese_list: '上衣',
-      type: 'tp1',
+      type: 'shirts',
       chinese_type: '襯衫',
       name: 'product1',
       number: 1111,
@@ -129,6 +150,8 @@ describe('products', async () => {
       .get('/api/1.0/products/wrong_parameter');
 
     assert.equal(res.status, 400);
-    assert.deepEqual(JSON.parse(res.text), { error: '錯誤的要求' });
+
+    const { error } = res.body;
+    assert.equal(error, '錯誤的要求');
   });
 });

@@ -18,16 +18,20 @@ const users = [
     access_token: 'test1accesstoken',
     access_expired: (60 * 60), // 1hr by second
     login_at: new Date('2020-01-01'),
+    confirmed: 1,
+    favorite: '1111,2222',
   },
   {
-    provider: 'facebook',
+    provider: 'native',
     email: 'test2@gmail.com',
-    password: null,
+    password: 'test2password',
     name: 'test2',
-    picture: 'https://graph.facebook.com/1/picture?type=large',
+    picture: null,
     access_token: 'test2accesstoken',
     access_expired: (60 * 60), // 1hr by second
     login_at: new Date('2020-01-01'),
+    confirmed: 0,
+    favorite: null,
   },
   {
     provider: 'native',
@@ -38,6 +42,63 @@ const users = [
     access_token: 'test3accesstoken',
     access_expired: 0,
     login_at: new Date('2020-01-01'),
+    confirmed: 1,
+    favorite: '3333',
+  },
+  {
+    provider: 'facebook',
+    email: 'test4@gmail.com',
+    password: null,
+    name: 'test4',
+    picture: 'https://graph.facebook.com/4/picture?type=large',
+    access_token: 'test4accesstoken',
+    access_expired: (60 * 60), // 1hr by second
+    login_at: new Date('2020-01-01'),
+    confirmed: 1,
+    favorite: '4444',
+  },
+  {
+    provider: 'google',
+    email: 'test5@gmail.com',
+    password: null,
+    name: 'test5',
+    picture: 'https://lh5.googleusercontent.com/test5/photo.jpg',
+    access_token: 'test5accesstoken',
+    access_expired: (60 * 60), // 1hr by second
+    login_at: new Date('2020-01-01'),
+    confirmed: 1,
+    favorite: '5555',
+  },
+];
+
+const tracks = [
+  {
+    number: 2222,
+    price: 200,
+    email: 'test4@gmail.com',
+    confirmed: false,
+    user_id: 4,
+  },
+  {
+    number: 1111,
+    price: 500,
+    email: 'test4@gmail.com',
+    confirmed: false,
+    user_id: 4,
+  },
+  {
+    number: 1111,
+    price: 700,
+    email: 'test5@gmail.com',
+    confirmed: false,
+    user_id: 5,
+  },
+  {
+    number: 2222,
+    price: 100,
+    email: 'test1@gmail.com',
+    confirmed: false,
+    user_id: 1,
   },
 ];
 
@@ -45,7 +106,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '上衣',
-    type: 'tp1',
+    type: 'shirts',
     chinese_type: '襯衫',
     name: 'product1',
     number: 1111,
@@ -58,7 +119,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '下身',
-    type: 'tp2',
+    type: 'pants',
     chinese_type: '褲子',
     name: 'product2',
     number: 2222,
@@ -71,7 +132,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '外套',
-    type: 'tp3',
+    type: 'coat',
     chinese_type: '風衣',
     name: 'product3',
     number: 3333,
@@ -84,7 +145,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '上衣',
-    type: 'tp4',
+    type: 'shirts',
     chinese_type: '襯衫',
     name: 'product4',
     number: 4444,
@@ -97,7 +158,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '下身',
-    type: 'tp5',
+    type: 'pants',
     chinese_type: '褲子',
     name: 'product5',
     number: 5555,
@@ -110,7 +171,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '外套',
-    type: 'tp6',
+    type: 'coat',
     chinese_type: '風衣',
     name: 'test searchkey product6',
     number: 6666,
@@ -123,7 +184,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '上衣',
-    type: 'tp7',
+    type: 'shirts',
     chinese_type: '襯衫',
     name: 'test searchkey product7',
     number: 7777,
@@ -136,7 +197,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '下身',
-    type: 'tp8',
+    type: 'pants',
     chinese_type: '褲子',
     name: 'test searchkey product8',
     number: 8888,
@@ -149,7 +210,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '外套',
-    type: 'tp9',
+    type: 'coat',
     chinese_type: '風衣',
     name: 'test searchkey product9',
     number: 9999,
@@ -162,7 +223,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '上衣',
-    type: 'tp10',
+    type: 'shirts',
     chinese_type: '襯衫',
     name: 'test searchkey product10',
     number: 10101010,
@@ -175,7 +236,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '下身',
-    type: 'tp11',
+    type: 'pants',
     chinese_type: '褲子',
     name: 'product11',
     number: 11111111,
@@ -188,7 +249,7 @@ const products = [
   {
     category: 'men',
     chinese_list: '外套',
-    type: 'tp12',
+    type: 'coat',
     chinese_type: '風衣',
     name: 'product12',
     number: 12121212,
@@ -201,7 +262,7 @@ const products = [
   {
     category: 'women',
     chinese_list: '上衣',
-    type: 'tp13',
+    type: 'shirts',
     chinese_type: '襯衫',
     name: 'product13',
     number: 13131313,
@@ -214,7 +275,7 @@ const products = [
   {
     category: 'women',
     chinese_list: '下身',
-    type: 'tp14',
+    type: 'pants',
     chinese_type: '褲子',
     name: 'product14',
     number: 14141414,
@@ -227,7 +288,7 @@ const products = [
   {
     category: 'kids',
     chinese_list: '上衣',
-    type: 'tp15',
+    type: 'shirts',
     chinese_type: '襯衫',
     name: 'product15',
     number: 15151515,
@@ -240,7 +301,7 @@ const products = [
   {
     category: 'kids',
     chinese_list: '下身',
-    type: 'tp16',
+    type: 'pants',
     chinese_type: '褲子',
     name: 'product16',
     number: 16161616,
@@ -253,7 +314,7 @@ const products = [
   {
     category: 'kids',
     chinese_list: '外套',
-    type: 'tp17',
+    type: 'coat',
     chinese_type: '風衣',
     name: 'product17',
     number: 17171717,
@@ -295,6 +356,7 @@ const date_prices = [
 
 module.exports = {
   users,
+  tracks,
   products,
   date_prices,
 };
