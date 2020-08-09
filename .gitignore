@@ -12,3 +12,7 @@ package-lock.json
 
 # key
 mykey.json
+
+#test
+coverage/
+.nyc_output/
