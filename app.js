@@ -1,6 +1,11 @@
 require('dotenv').config();
 
-const { PORT, API_VERSION } = process.env;
+const {
+  PORT_TEST, PORT, NODE_ENV, API_VERSION,
+} = process.env;
+const port = NODE_ENV == 'test' ? PORT_TEST : PORT;
+
+// Express Initialization
 const express = require('express');
 const bodyparser = require('body-parser');
 const path = require('path');
@@ -39,4 +44,6 @@ app.use((err, req, res, next) => {
   res.status(500).render('error', { title: '伺服器錯誤 | GU 搜尋 | GU 比價', status: '500', message: '伺服器錯誤' });
 });
 
-app.listen(PORT, () => { console.log(`Listening on port: ${PORT}`); });
+app.listen(port, () => { console.log(`Listening on port: ${port}`); });
+
+module.exports = app;
