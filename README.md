@@ -49,14 +49,15 @@ Website URL: https://www.gu-price.com/
 
 ### Tools
 - Version Control: Git, GitHub
-- CI / CD: Jenkins
+- CI / CD: Jenkins, Docker
 - Test: Mocha, Chai
 - Agile: Trello (Scrum)
 
 ### Others
 - Design Pattern: MVC
-- Web Crawler: puppeteer, cheerio
+- Web Crawler: Puppeteer, Cheerio
 - Reverse Image Search: Google Cloud Vision
+- Third Party Login: Facebook, Google
 
 ## Architecture
 
