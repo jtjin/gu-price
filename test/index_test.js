@@ -35,7 +35,7 @@ describe('index', async () => {
 
   it('category page with wrong category', async () => {
     const res = await requester
-      .get('/man');
+      .get('/mmm');
 
     assert.equal(res.status, 404);
     assert.include(res.text, '找不到頁面');
@@ -63,7 +63,7 @@ describe('index', async () => {
 
   it('type page with wrong category', async () => {
     const res = await requester
-      .get('/wn/shirts');
+      .get('/mmm/shirts');
 
     assert.equal(res.status, 404);
     assert.include(res.text, '找不到頁面');
@@ -71,7 +71,7 @@ describe('index', async () => {
 
   it('type page with wrong type', async () => {
     const res = await requester
-      .get('/women/shi');
+      .get('/women/sss');
 
     assert.equal(res.status, 200);
     assert.include(res.text, '我們無法找到符合');

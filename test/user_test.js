@@ -74,7 +74,7 @@ describe('user', () => {
   it('sign up', async () => {
     const user = {
       name: 'jtjin',
-      email: 'wade4515x@gmail.com',
+      email: 'jtjin@gmail.com',
       password: 'password',
       provider: 'native',
     };
@@ -86,7 +86,7 @@ describe('user', () => {
     const { data } = res.body;
 
     const userExpect = {
-      id: data.user.id, // need id from returned data
+      id: data.user.id,
       provider: 'native',
       name: user.name,
       email: user.email,
@@ -96,7 +96,7 @@ describe('user', () => {
     assert.deepEqual(data.user, userExpect);
     assert.equal(data.access_token.length, 64);
     assert.equal(data.access_expired, expectedExpireTime);
-    assert.closeTo(new Date(data.login_at).getTime(), Date.now(), 5000);
+    assert.closeTo(new Date(data.login_at).getTime(), Date.now(), 1000);
   });
 
   it('sign up without name or email or password', async () => {
@@ -185,7 +185,7 @@ describe('user', () => {
 
     const { data } = res.body;
     const userExpect = {
-      id: data.user.id, // need id from returned data
+      id: data.user.id,
       provider: user1.provider,
       name: user1.name,
       email: user1.email,
