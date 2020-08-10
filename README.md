@@ -49,6 +49,7 @@ Website URL: https://www.gu-price.com/
 
 ### Tools
 - Version Control: Git, GitHub
+- CI / CD: Jenkins
 - Test: Mocha, Chai
 - Agile: Trello (Scrum)
 
