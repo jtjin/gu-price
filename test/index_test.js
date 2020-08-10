@@ -1,4 +1,4 @@
-const { assert, expect, requester } = require('./set_up');
+const { assert, requester } = require('./set_up');
 
 describe('index', async () => {
   it('home page', async () => {

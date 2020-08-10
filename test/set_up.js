@@ -9,7 +9,7 @@ const { truncateFakeData, createFakeData } = require('./fake_data_generator');
 
 chai.use(chaiHttp);
 
-const { assert, expect } = chai;
+const { assert } = chai;
 const requester = chai.request(app).keepOpen();
 
 before(async () => {
@@ -22,6 +22,5 @@ before(async () => {
 
 module.exports = {
   assert,
-  expect,
   requester,
 };
