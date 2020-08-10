@@ -1,4 +1,6 @@
 require('dotenv').config();
+
+const { API_VERSION } = process.env;
 const sinon = require('sinon');
 const { assert, requester } = require('./set_up');
 const { products, users } = require('./fake_data');
@@ -78,7 +80,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signup')
+      .post(`/api/${API_VERSION}/user/signup`)
       .send(user);
 
     const { data } = res.body;
@@ -105,7 +107,7 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signup')
+      .post(`/api/${API_VERSION}/user/signup`)
       .send(user1);
 
     assert.equal(res1.statusCode, 400);
@@ -117,7 +119,7 @@ describe('user', () => {
     };
 
     const res2 = await requester
-      .post('/api/1.0/user/signup')
+      .post(`/api/${API_VERSION}/user/signup`)
       .send(user2);
 
     assert.equal(res2.statusCode, 400);
@@ -129,7 +131,7 @@ describe('user', () => {
     };
 
     const res3 = await requester
-      .post('/api/1.0/user/signup')
+      .post(`/api/${API_VERSION}/user/signup`)
       .send(user3);
 
     assert.equal(res3.statusCode, 400);
@@ -144,7 +146,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signup')
+      .post(`/api/${API_VERSION}/user/signup`)
       .send(user);
 
     assert.equal(res.body.error, 'Email 已被註冊');
@@ -159,7 +161,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signup')
+      .post(`/api/${API_VERSION}/user/signup`)
       .send(user);
 
     assert.equal(res.body.error, '請輸入正確的 Email 格式');
@@ -178,7 +180,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { data } = res.body;
@@ -212,7 +214,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.body.error, '錯誤的要求');
@@ -226,7 +228,7 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(userNoEmail);
 
     assert.equal(res1.status, 400);
@@ -238,7 +240,7 @@ describe('user', () => {
     };
 
     const res2 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(userNoPassword);
 
     assert.equal(res2.status, 400);
@@ -254,7 +256,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.status, 403);
@@ -270,7 +272,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.status, 403);
@@ -286,7 +288,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.status, 403);
@@ -302,7 +304,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.status, 403);
@@ -320,7 +322,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { data } = res.body;
@@ -347,7 +349,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { data } = res.body;
@@ -381,7 +383,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.status, 400);
@@ -395,7 +397,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.body.error.error.code, 190);
@@ -412,7 +414,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { data } = res.body;
@@ -439,7 +441,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { data } = res.body;
@@ -473,7 +475,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.status, 400);
@@ -487,7 +489,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     assert.equal(res.body.error.error.code, 190);
@@ -506,7 +508,7 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const accessToken = res1.body.data.access_token;
@@ -514,7 +516,7 @@ describe('user', () => {
       favorite: products[0].number,
     };
     const res2 = await requester
-      .post('/api/1.0/user/favorite')
+      .post(`/api/${API_VERSION}/user/favorite`)
       .send(updateFavorite)
       .set('Authorization', `Bearer ${accessToken}`);
 
@@ -527,7 +529,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/favorite')
+      .post(`/api/${API_VERSION}/user/favorite`)
       .send(updateFavorite);
 
     assert.equal(res.status, 400);
@@ -541,7 +543,7 @@ describe('user', () => {
     };
 
     const res = await requester
-      .post('/api/1.0/user/favorite')
+      .post(`/api/${API_VERSION}/user/favorite`)
       .send(updateFavorite)
       .set('Authorization', `Bearer ${accessToken}`);
 
@@ -560,13 +562,13 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { number } = products[0];
 
     const res2 = await requester
-      .get(`/api/1.0/products/details?number=${number}`);
+      .get(`/api/${API_VERSION}/products/details?number=${number}`);
 
     const createTrack = {
       name: res2.body.data.name,
@@ -579,7 +581,7 @@ describe('user', () => {
     };
 
     const res3 = await requester
-      .post('/api/1.0/user/track')
+      .post(`/api/${API_VERSION}/user/track`)
       .send(createTrack);
 
     assert.equal(res3.status, 200);
@@ -592,13 +594,13 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const { number } = products[0];
 
     const res2 = await requester
-      .get(`/api/1.0/products/details?number=${number}`);
+      .get(`/api/${API_VERSION}/products/details?number=${number}`);
 
     const createTrack = {
       name: res2.body.data.name,
@@ -611,7 +613,7 @@ describe('user', () => {
     };
 
     const res3 = await requester
-      .post('/api/1.0/user/track')
+      .post(`/api/${API_VERSION}/user/track`)
       .send(createTrack);
 
     assert.equal(res3.status, 200);
@@ -626,7 +628,7 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const deleteTrack = {
@@ -635,7 +637,7 @@ describe('user', () => {
     };
 
     const res2 = await requester
-      .delete('/api/1.0/user/track')
+      .delete(`/api/${API_VERSION}/user/track`)
       .send(deleteTrack);
 
     assert.equal(res2.status, 200);
@@ -651,7 +653,7 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const user1 = res1.body.data.user;
@@ -659,7 +661,7 @@ describe('user', () => {
     const accessToken = res1.body.data.access_token;
 
     const res2 = await requester
-      .get('/api/1.0/user/profile')
+      .get(`/api/${API_VERSION}/user/profile`)
       .set('Authorization', `Bearer ${accessToken}`);
 
     const user2 = res2.body.data;
@@ -685,7 +687,7 @@ describe('user', () => {
     };
 
     const res1 = await requester
-      .post('/api/1.0/user/signin')
+      .post(`/api/${API_VERSION}/user/signin`)
       .send(user);
 
     const user1 = res1.body.data.user;
@@ -693,7 +695,7 @@ describe('user', () => {
     const accessToken = res1.body.data.access_token;
 
     const res2 = await requester
-      .get('/api/1.0/user/profile')
+      .get(`/api/${API_VERSION}/user/profile`)
       .set('Authorization', `Bearer ${accessToken}`);
 
     const user2 = res2.body.data;
@@ -717,7 +719,7 @@ describe('user', () => {
 
   it('get profile without access_token', async () => {
     const res = await requester
-      .get('/api/1.0/user/profile');
+      .get(`/api/${API_VERSION}/user/profile`);
 
     assert.equal(res.status, 400);
     assert.equal(res.body.error, '授權失敗');
@@ -725,7 +727,7 @@ describe('user', () => {
 
   it('get profile with invalid access_token', async () => {
     const res = await requester
-      .get('/api/1.0/user/profile')
+      .get(`/api/${API_VERSION}/user/profile`)
       .set('Authorization', 'Bearer wrong_token');
 
     assert.equal(res.status, 403);

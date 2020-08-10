@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "NODE_ENV=test nyc mocha --timeout 10000 --exit",
-    "test_windows": "set NODE_ENV=test&&nyc --reporter=html mocha --timeout 10000 --exit",
+    "test": "NODE_ENV=test nyc mocha --exit",
+    "test_windows": "set NODE_ENV=test&&nyc --reporter=html mocha --exit",
     "eslint": "eslint **/*.js",
     "stylelint": "stylelint **/*.css"
   },
@@ -21,7 +21,6 @@
   "homepage": "https://github.com/jtjin/gu-price#readme",
   "dependencies": {
     "@google-cloud/vision": "^2.1.1",
-    "assert": "^2.0.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",

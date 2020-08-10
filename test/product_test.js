@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+const { API_VERSION } = process.env;
 const { assert, requester } = require('./set_up');
 
 function getTodayDate() {
@@ -13,7 +16,7 @@ describe('products', async () => {
   it('select products with category', async () => {
     // men
     const res1 = await requester
-      .get('/api/1.0/products/men');
+      .get(`/api/${API_VERSION}/products/men`);
 
     const data1 = res1.body.data;
     assert.equal(data1.length, 8);
@@ -21,7 +24,7 @@ describe('products', async () => {
 
     // men page 1
     const res2 = await requester
-      .get('/api/1.0/products/men?paging=1');
+      .get(`/api/${API_VERSION}/products/men?paging=1`);
 
     const data2 = res2.body.data;
     assert.equal(data2.length, 4);
@@ -29,7 +32,7 @@ describe('products', async () => {
 
     // women
     const res3 = await requester
-      .get('/api/1.0/products/women');
+      .get(`/api/${API_VERSION}/products/women`);
 
     const data3 = res3.body.data;
     assert.equal(data3.length, 2);
@@ -37,7 +40,7 @@ describe('products', async () => {
 
     // kids
     const res4 = await requester
-      .get('/api/1.0/products/kids');
+      .get(`/api/${API_VERSION}/products/kids`);
 
     const data4 = res4.body.data;
     assert.equal(data4.length, 3);
@@ -46,7 +49,7 @@ describe('products', async () => {
 
   it('select products with category & type', async () => {
     const res = await requester
-      .get('/api/1.0/products/men?type=shirts');
+      .get(`/api/${API_VERSION}/products/men?type=shirts`);
 
     const { data } = res.body;
 
@@ -57,7 +60,7 @@ describe('products', async () => {
 
   it('select products with search key', async () => {
     const res = await requester
-      .get('/api/1.0/products/search?keyword=searchkey');
+      .get(`/api/${API_VERSION}/products/search?keyword=searchkey`);
 
     const { data } = res.body;
 
@@ -68,7 +71,7 @@ describe('products', async () => {
 
   it('select products with search key which can not find data', async () => {
     const res = await requester
-      .get('/api/1.0/products/search?keyword=nodatakey');
+      .get(`/api/${API_VERSION}/products/search?keyword=nodatakey`);
 
     const { data } = res.body;
 
@@ -77,7 +80,7 @@ describe('products', async () => {
 
   it('select products with search key whick have no keyword', async () => {
     const res = await requester
-      .get('/api/1.0/products/search');
+      .get(`/api/${API_VERSION}/products/search`);
 
     assert.equal(res.status, 400);
 
@@ -87,7 +90,7 @@ describe('products', async () => {
 
   it('select product detail', async () => {
     const res = await requester
-      .get('/api/1.0/products/details?number=1111');
+      .get(`/api/${API_VERSION}/products/details?number=1111`);
 
     const { data } = res.body;
 
@@ -127,7 +130,7 @@ describe('products', async () => {
 
   it('select product detail with number which can not find data', async () => {
     const res = await requester
-      .get('/api/1.0/products/details?number=0');
+      .get(`/api/${API_VERSION}/products/details?number=0`);
 
     assert.equal(res.status, 200);
 
@@ -137,7 +140,7 @@ describe('products', async () => {
 
   it('select product detail with number which is not integer', async () => {
     const res = await requester
-      .get('/api/1.0/products/details?number=aaa');
+      .get(`/api/${API_VERSION}/products/details?number=aaa`);
 
     assert.equal(res.status, 400);
 
@@ -147,7 +150,7 @@ describe('products', async () => {
 
   it('select products with wrong parameter', async () => {
     const res = await requester
-      .get('/api/1.0/products/wrong_parameter');
+      .get(`/api/${API_VERSION}/products/wrong_parameter`);
 
     assert.equal(res.status, 400);
 
