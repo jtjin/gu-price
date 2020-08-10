@@ -1,7 +1,7 @@
 require('dotenv').config('../');
 const mysql = require('mysql');
 const { promisify } = require('util');
-// util from native nodejs library
+
 const env = process.env.NODE_ENV || 'production';
 
 const {
