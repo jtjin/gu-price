@@ -5,7 +5,7 @@
 - Receive notifications through subscriptions when specials are available
 - Search for similar products by image
 
-Website URL: https://www.gu-price.com/
+Website URL: https://www.gu-price.com
 
 ## Table of Contents
 
@@ -13,6 +13,7 @@ Website URL: https://www.gu-price.com/
 - [Architecture](#Architecture)
 - [Database Schema](#Database-Schema)
 - [Features](#Features)
+- [Testing Account](#Testing-Account)
 - [Demonstration](#Demonstration)
     - [Home page](#Home-page)
     - [Product page](#Product-page)
@@ -50,7 +51,7 @@ Website URL: https://www.gu-price.com/
 ### Tools
 - Version Control: Git, GitHub
 - CI / CD: Jenkins, Docker
-- Test: Mocha, Chai
+- Test: Mocha, Chai, Artillery
 - Agile: Trello (Scrum)
 
 ### Others
@@ -79,6 +80,11 @@ Website URL: https://www.gu-price.com/
     - Receive notifications through subscriptions when specials are available
 - Reverse Image Search
     - Search for similar products by image
+
+## Testing Account
+
+- Email: test@test.com
+- Password: test
 
 ## Demonstration
 
