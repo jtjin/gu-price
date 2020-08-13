@@ -50,9 +50,6 @@ const multerConfig = multer.diskStorage({
 const upload = multer({
   storage: multerConfig,
   fileFilter,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
 });
 
 const asyncHandler = (fn) => (req, res, next) => {
