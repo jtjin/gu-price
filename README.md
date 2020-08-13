@@ -113,7 +113,7 @@ Website URL: https://www.gu-price.com
 
 ### Responsive Web Design
 
-- Provide RWD for all sizes of popular device.
+- Provide RWD for all screen sizes
 
 | ![image](https://i.imgur.com/U6J59Vn.png) |
 | ----------------------------------------- |
