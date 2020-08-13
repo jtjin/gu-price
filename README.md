@@ -117,9 +117,10 @@ Website URL: https://www.gu-price.com
 
 ![image](https://i.imgur.com/U6J59Vn.png)
 
-|  | |
-| -------- | -------- |
-|  ![image](https://i.imgur.com/zhlBCoX.png) | ![image](https://i.imgur.com/4AuIq7C.png)|
+
+| ![image](https://i.imgur.com/zhlBCoX.png) | ![image](https://i.imgur.com/4AuIq7C.png)|
+| ----------------------------------------- | ---------------------------------------- |
+
 
 ## Contact
 
