@@ -18,6 +18,7 @@ Website URL: https://www.gu-price.com
     - [Home page](#Home-page)
     - [Product page](#Product-page)
     - [Profile page](#Profile-page)
+    - [Responsive Web Design](#Responsive-Web-Design)
 - [Contact](#Contact)
 
 ## Technologies
@@ -109,6 +110,16 @@ Website URL: https://www.gu-price.com
 - List the favorite and tracking products
 
 ![image](https://i.imgur.com/D1rRh9n.gif)
+
+### Responsive Web Design
+
+- Provide RWD for all sizes of popular device.
+
+![image](https://i.imgur.com/U6J59Vn.png)
+
+|  | |
+| -------- | -------- |
+|  ![image](https://i.imgur.com/zhlBCoX.png) | ![image](https://i.imgur.com/4AuIq7C.png)|
 
 ## Contact
 
