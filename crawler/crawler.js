@@ -136,7 +136,6 @@ async function getProductDetails(productUrl, productCategory, productType) {
       const $ = cheerio.load(html);
       images.push($('#prodImgDefault > img').attr('src'));
     } catch (error) {
-      console.log('Click listChipColor Error', number);
       fail[number] = error;
     }
   }
@@ -149,7 +148,6 @@ async function getProductDetails(productUrl, productCategory, productType) {
       const $ = cheerio.load(html);
       images.push($('#prodImgDefault > img').attr('src'));
     } catch (error) {
-      console.log('Click prodThumbImgs Error', number);
       fail[number] = error;
     }
   }
@@ -228,7 +226,6 @@ async function createDatePrice(date, productId, price) {
 }
 
 async function main(category) {
-  console.log(`Start ${category} data at ${new Date()}`);
   let typeUrls = await getTypeUrls(category);
   typeUrls = typeUrls.flatMap((url) => Object.values(url));
   for (let i = 0; i < typeUrls.length; i += 1) {
@@ -248,18 +245,14 @@ async function main(category) {
           await createProduct(productDetails);
         }
       } catch (error) {
-        console.log(error);
         fail[productUrls[j]] = error;
-        console.log('Other Error', productUrls[j]);
       }
     }
   }
-  console.log(`Finished ${category} data at ${new Date()}`);
 }
 
 // Send e-mail to users who track the product (Use Nodemailer)
 async function sendTrack() {
-  console.log(`Start sending track mail at ${new Date()}`);
   const queryStr = `
               SELECT t.id, t.email, p.name, p.number, p.main_image AS mainImage, t.price AS trackPrice, d.price AS currentPrice FROM product AS p
               INNER JOIN track AS t ON p.number = t.number
@@ -273,12 +266,10 @@ async function sendTrack() {
         await trackEmail(result[i].name, result[i].number, result[i].mainImage, result[i].currentPrice, result[i].email);
         await updateTrackStatus(result[i].id);
       } catch (error) {
-        console.log(result[i]);
-        console.log(error);
+        fail.trackError = error;
       }
     }
   }
-  console.log(`Finished sending track mail at ${new Date()}`);
 }
 
 const trackEmail = async (name, number, mainImage, currentPrice, email) => {
@@ -307,7 +298,6 @@ const updateTrackStatus = async (id) => {
 };
 
 const sendCrawlerReport = async () => {
-  console.log(`Start sending crawler report mail at ${new Date()}`);
   const mail = {
     from: 'GU-Price <gu.price.search@gmail.com>',
     subject: 'Crawler Report',
@@ -318,7 +308,6 @@ const sendCrawlerReport = async () => {
           `,
   };
   await send(mail);
-  console.log(`Finished sending crawler report mail at ${new Date()}`);
 };
 
 const allProductsHashMap = {};
@@ -334,8 +323,7 @@ async function start() {
   await main('women');
   await main('kids');
   await sendTrack();
-  await sendCrawlerReport();
-  console.log('Everything has done!');
+  if (Object.keys(fail).length) await sendCrawlerReport();
 }
 
 // Running at 11 a.m. everyday
