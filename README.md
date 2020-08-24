@@ -9,9 +9,9 @@ Website URL: https://www.gu-price.com
 
 ## Table of Contents
 
-- [Technologies](#Technologies)
 - [Architecture](#Architecture)
 - [Database Schema](#Database-Schema)
+- [Technologies](#Technologies)
 - [Features](#Features)
 - [Testing Account](#Testing-Account)
 - [Demonstration](#Demonstration)
@@ -20,6 +20,18 @@ Website URL: https://www.gu-price.com
     - [Profile page](#Profile-page)
     - [Responsive Web Design](#Responsive-Web-Design)
 - [Contact](#Contact)
+
+## Architecture
+
+![image](https://i.imgur.com/uhq0Yrk.png)
+- Redirect 443 port requests by **NGINX** after receiving request from clients
+- Scrape product contents through **Web Crawler**
+- Create and manage the product sets via **Google Cloud Vision**
+- Store reference images in **Google Cloud Storage**
+
+## Database Schema
+
+![image](https://i.imgur.com/joOv5d0.png)
 
 ## Technologies
 
@@ -60,18 +72,6 @@ Website URL: https://www.gu-price.com
 - Web Crawler: Puppeteer, Cheerio
 - Reverse Image Search: Google Cloud Vision
 - Third Party Login: Facebook, Google
-
-## Architecture
-
-![image](https://i.imgur.com/uhq0Yrk.png)
-- Redirect 443 port requests by **NGINX** after receiving request from clients
-- Scrape product contents through **Web Crawler**
-- Create and manage the product sets via **Google Cloud Vision**
-- Store reference images in **Google Cloud Storage**
-
-## Database Schema
-
-![image](https://i.imgur.com/joOv5d0.png)
 
 ## Features
 
