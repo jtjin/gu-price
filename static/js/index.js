@@ -4,6 +4,7 @@ const imageSearchIcon = document.getElementById('image_search_icon');
 const imageSearchFile = document.getElementById('image_search_file');
 const imageSearchSubmit = document.getElementById('image_search_submit');
 const imageSearchText = document.getElementById('image_search_text');
+const maxImageSize = 1024 * 1024 * 30; // 30 MB
 
 function mainSearchBtn() {
   if (searchMain.value) {
@@ -49,6 +50,13 @@ imageSearchFile.addEventListener('change', () => {
       icon: 'error',
       title: '請上傳正確圖片格式！',
       text: '只接受 JPG/JPEG/PNG 圖檔',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '我知道了',
+    });
+  } else if (imageSearchFile.files[0].size > maxImageSize) {
+    Swal.fire({
+      icon: 'warning',
+      title: '檔案大小上限為 30 MB！',
       confirmButtonColor: '#3085d6',
       confirmButtonText: '我知道了',
     });
