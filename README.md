@@ -23,7 +23,7 @@ Website URL: https://www.gu-price.com
 
 ## Architecture
 
-![image](https://i.imgur.com/uhq0Yrk.png)
+![image](https://i.imgur.com/9otwZ3z.png)
 - Redirect 443 port requests by **NGINX** after receiving request from clients
 - Scrape product contents through **Web Crawler**
 - Create and manage the product sets via **Google Cloud Vision**
