@@ -1,8 +1,7 @@
 const puppeteer = require('puppeteer');
-const rp = require('request-promise');
 const cheerio = require('cheerio');
 const cron = require('node-cron');
-const mysql = require('../util/mysqlcon');
+const { query }  = require('../util/mysqlcon');
 const { send } = require('../util/util.js');
 const types = require('./types.json');
 
@@ -16,74 +15,89 @@ function getTodayDate() {
   return today;
 }
 
-// Get type links in different category (Use Request Promise)
-// (ex: [ {'jacket': "https://..."}, {"shirt": "https://..."}, ... ])
-async function getTypeUrls(category) {
+// Get type links in different category (Use Puppeteer)
+// (ex: [ {'正裝系列_男士正裝系列': "https://..."}, {"運動系列_GA運動系列": "https://..."}, ... ])
+async function getTypeUrls(category, page) {
   let url;
   switch (category) {
     case ('women'):
-      url = 'https://www.gu-global.com/tw/';
+      url = 'https://www.gu-global.com/tw/zh_TW/';
       break;
     case ('men'):
-      url = 'https://www.gu-global.com/tw/men/';
+      url = 'https://www.gu-global.com/tw/zh_TW/L1_men.html';
       break;
     case ('kids'):
-      url = 'https://www.gu-global.com/tw/kids/';
+      url = 'https://www.gu-global.com/tw/zh_TW/L1_kids.html';
       break;
     default:
       return;
   }
-  const options = {
-    uri: url,
-    transform: (body) => cheerio.load(body),
-  };
-  return await rp(options).then(($) => {
-    let result = [];
-    const list = $('#category_pc_list div'); // <div class="list1">
-    for (let i = 0; i < list.length; i += 1) {
-      const dd = list.eq(i).find('dd > a'); // <dd>
-      for (let j = 0; j < dd.length; j += 1) {
-        const title = dd.eq(j).text();
-        let href = dd.eq(j).attr('href');
-        if (href.substr(0, 2) == '//') {
-          href = `https:${href}`;
-        }
-        result.push({ [title]: href });
+  await page.goto(url, { waitUntil: 'networkidle0' });
+  const html = await page.content();
+  const $ = cheerio.load(html, { decodeEntities: false });
+  let result = [];
+  const list = $('#category_pc_list div dl'); // <div class="list1">
+  for (let i = 0; i < list.length; i += 1) {
+    const dd = list.eq(i).find('dd > a'); // <dd>
+    let productCategory = list.eq(i).find('dt').text(); // <dt> productCategory
+    productCategory = productCategory.trim();
+    for (let j = 0; j < dd.length; j += 1) {
+      let title = dd.eq(j).text();
+      title = title.trim();
+      title = `${productCategory}_${title}`;
+      let href = dd.eq(j).attr('href');
+      if (href.substr(0, 2) == '//') {
+        href = `https:${href}`;
       }
-    }
-    result = [...new Set(result.map((item) => JSON.stringify(item)))];
-    result = result.map((item) => JSON.parse(item));
-    return result;
-  })
-    .catch((err) => console.log(err));
-}
-
-// Get product links in different type (Use Request Promise)
-// (ex: [ result: [{'男裝防風輕型外套': "https://..."}, {"男裝及膝短褲": "https://..."}, ... ], productCategory: 'men', prductType: 'sports')
-async function getProductUrls(typeUrls) {
-  const options = {
-    uri: typeUrls,
-    transform: (body) => cheerio.load(body),
-  };
-  return await rp(options).then(($) => {
-    let result = [];
-    const list = $('#blkMainItemList div'); // <div class="unit">
-    for (let i = 0; i < list.length; i += 1) {
-      const href = list.eq(i).find('.thumb > a').attr('href');
-      const title = list.eq(i).find('.thumb > a').attr('title');
       result.push({ [title]: href });
     }
-    result = [...new Set(result.map((item) => JSON.stringify(item)))];
-    result = result.map((item) => JSON.parse(item));
-    const productUrl = typeUrls.split('/');
-    const productCategory = productUrl[productUrl.length - 3];
-    const productType = productUrl[productUrl.length - 2];
-    return { result, productCategory, productType };
-  })
-    .catch((err) => console.log(err));
+  }
+  result = [...new Set(result.map((item) => JSON.stringify(item)))];
+  result = result.map((item) => JSON.parse(item));
+  return result;
 }
 
-const fail = {};
+// Get product links in different type (Use Puppeteer)
+// (ex: [ result: [{'男裝防風輕型外套': "https://..."}, {"男裝及膝短褲": "https://..."}, ... ], productList: 'men', prductType: 'sports')
+async function getProductUrls(typeUrls, page) {
+  let key = Object.keys(typeUrls);
+  key = key[0]; // ex: 正裝系列_男士正裝系列
+  let value = Object.values(typeUrls);
+  value = value[0]; // ex: https://www.gu-global.com/tw/zh_TW/feature_suit_men.html
+
+  value = value.replace('https://www.gu-global.com', '');
+  const url = `https://www.gu-global.com${value}`;
+
+  await page.goto(url, { waitUntil: 'networkidle0' });
+  const html = await page.content();
+  const $ = cheerio.load(html, { decodeEntities: false });
+  let result = [];
+  const list = $('#hmall-container > div > div.page-wrapper > div.HeaderFooterTemplate > div > div > div.h-product-group-gu.C5'); // <div class="h-product-group-gu C5">
+  for (let i = 0; i < list.length; i += 1) {
+    const li = list.eq(i).find('.product-li'); // <li class="product-li">
+    for (let j = 0; j < li.length; j++) {
+      let href = li.eq(j).find('div > a').attr('href');
+      href = href.replace('https://www.gu-global.com', '');
+      href = `https://www.gu-global.com${href}`;
+
+      let title = li.eq(j).find('.font-p-gu').text();
+      const name = title.substring(0, title.lastIndexOf(' '));
+      const number = title.substring(title.lastIndexOf(' ') + 1);
+      title = `${name}_${number}`;
+      result.push({ [title]: href });
+    }
+  }
+
+  result = [...new Set(result.map((item) => JSON.stringify(item)))];
+  result = result.map((item) => JSON.parse(item));
+
+  key = key.split('_');
+  const productList = key[0];
+  const productType = key[1];
+  return { result, productList, productType };
+}
+
+let fail = {};
 
 function reviseAbout(about) {
   about = about.replace('※為使顧客方便理解商品，網路商店商品名稱可能與實際吊牌略有不同，建議您前往實體店鋪購買時請用商品編號核對，造成您的不便敬請見諒。', '');
@@ -99,90 +113,65 @@ function reviseAbout(about) {
   about = about.replace('<font color="red"><b>※衣背另有印花設計。</b></font>', '');
   about = about.replace('<font color="red"><b>※肩膀到袖口的帶型設計</b></font>', '');
   about = about.replace(/<br>/g, '');
-  return about;
+  return about.trim();
 }
 
 // Get all details for new products (Use Puppeteer)
-// ex: { date: '20200701', category: 'men', ...}
-async function getProductDetails(productUrl, productCategory, productType) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    ignoreDefaultArgs: ['--enable-automation'],
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-    ],
-  });
-  const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(300000);
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
-  await page.goto(productUrl);
+// ex: { category: 'men', type: 'jacket', ...}
+async function getProductDetails(productUrl, category, productList, productType, page) {
+  await page.goto(productUrl, { waitUntil: 'networkidle0' });
   const html = await page.content();
   const $ = cheerio.load(html, { decodeEntities: false });
-  const name = $('#goodsNmArea').text();
-  const price = $('#price').text().substr(3);
-  const number = $('#basic > li.number').text().substr(4);
-  let about = $('#prodDetail > div > p').html();
+  const title = $('.gu-product-detail-list-title').text();
+  const name = title.substring(0, title.lastIndexOf(' '));
+  const number = title.substring(title.lastIndexOf(' ') + 1);
+  const price = $('.gu-detail-list-price > div > span').text().substr(3);
+  let about = $('.product-desc').html();
   about = reviseAbout(about);
-  const texture = $('#prodDetail > div > dl > dd:nth-child(2)').text();
-  const mainImage = $('#prodImgDefault > img').attr('src');
+  const texture = $('.desc-content').text();
+  const mainImage = $('.picture-viewer-picture > div > img').attr('src');
   let images = [];
-  const colors = $('#listChipColor').find('.chipCover');
+
+  const colors = $('.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li');
   for (let i = 1; i <= colors.length; i += 1) {
     try {
-      await page.waitForSelector(`#listChipColor > li:nth-child(${i}) > a`, { timeout: 10000 });
-      await page.click(`#listChipColor > li:nth-child(${i}) > a`);
+      await page.click(`.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li:nth-child(${i}) > img`);
       const html = await page.content();
       const $ = cheerio.load(html);
-      images.push($('#prodImgDefault > img').attr('src'));
+      images.push($('.picture-viewer-picture > div > img').attr('src'));
     } catch (error) {
+      console.log('Click listChipColor Error', number);
       fail[number] = error;
     }
   }
-  const listImages = $('#prodThumbImgs').find('li');
-  for (let i = 1; i <= listImages.length; i += 1) {
+  const list_images = $('.picture-viewer-bottom').find('li');
+  for (let i = 1; i <= list_images.length; i += 1) {
     try {
-      await page.waitForSelector(`#prodThumbImgs > li:nth-child(${i}) > a`, { timeout: 10000 });
-      await page.click(`#prodThumbImgs > li:nth-child(${i}) > a`);
+      await page.click(`.picture-viewer-bottom > li:nth-child(${i}) > img`);
       const html = await page.content();
       const $ = cheerio.load(html);
-      images.push($('#prodImgDefault > img').attr('src'));
+      images.push($('.picture-viewer-picture > div > img').attr('src'));
     } catch (error) {
+      console.log('Click prodThumbImgs Error', number);
       fail[number] = error;
     }
   }
   images = [...new Set(images)]; // Remove duplicated image
   const updateAt = getTodayDate();
-  const category = productCategory;
-  const type = productType;
-  const chineseType = types[category][0][type] ? types[category][0][type][0] : '';
-  const chineseList = types[category][0][type] ? types[category][0][type][1] : '';
-  await browser.close();
+  const type = types[category][0][productType] ? types[category][0][productType] : '';
   return {
-    category, chinese_list: chineseList, type, chinese_type: chineseType, name, number, price, about, texture, mainImage, images, update_at: updateAt,
+    category, chinese_list: productList, type, chinese_type: productType, name, number, price, about, texture, mainImage, images, update_at: updateAt,
   };
 }
 
 // Get only price for old products (Use Puppeteer)
 // ex: { date: '20200701', price: '290' }
-async function getProductPrice(productUrl) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    ignoreDefaultArgs: ['--enable-automation'],
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-    ],
-  });
-  const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(300000);
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
-  await page.goto(productUrl);
+async function getProductPrice(productUrl, page) {
+  await page.goto(productUrl, { waitUntil: 'networkidle0' });
   const html = await page.content();
   const $ = cheerio.load(html, { decodeEntities: false });
-  const price = $('#price').text().substr(3);
+  const price = $('.gu-detail-list-price > div > span').text().substr(3);
   const date = getTodayDate();
-  await browser.close();
   return {
     date, price,
   };
@@ -204,11 +193,11 @@ async function createProduct(data) {
     images: JSON.stringify(data.images),
     update_at: data.update_at,
   };
-  const duplicated = await mysql.query('SELECT * FROM product WHERE number = ?', [data.number]);
+  const duplicated = await query('SELECT * FROM product WHERE number = ?', [data.number]);
   if (duplicated.length != 0) {
     return;
   }
-  const result = await mysql.query('INSERT INTO product SET ?', newData);
+  const result = await query('INSERT INTO product SET ?', newData);
   await createDatePrice(data.update_at, result.insertId, parseInt(data.price.replace(',', '')));
 }
 
@@ -218,112 +207,150 @@ async function createDatePrice(date, productId, price) {
     price,
     product_id: productId,
   };
-  const duplicated = await mysql.query('SELECT * FROM date_price WHERE date = ? AND product_id = ?', [date, productId]);
+  const duplicated = await query('SELECT * FROM date_price WHERE date = ? AND product_id = ?', [date, productId]);
   if (duplicated.length != 0) {
     return;
   }
-  await mysql.query('INSERT INTO date_price SET ?', newData);
+  await query('INSERT INTO date_price SET ?', newData);
 }
 
 async function main(category) {
-  let typeUrls = await getTypeUrls(category);
-  typeUrls = typeUrls.flatMap((url) => Object.values(url));
+  const browser = await puppeteer.launch({
+    headless: false,
+    ignoreDefaultArgs: ['--enable-automation'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ],
+  });
+  const page = await browser.newPage();
+  await page.setDefaultNavigationTimeout(300000);
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299');
+
+  console.log(`Start ${category} data at ${new Date()}`);
+  const typeUrls = await getTypeUrls(category, page);
   for (let i = 0; i < typeUrls.length; i += 1) {
-    const productUrlsResult = await getProductUrls(typeUrls[i]);
-    const productUrls = productUrlsResult.result.flatMap((url) => Object.values(url));
-    for (let j = 0; j < productUrls.length; j += 1) {
-      let number = productUrls[j].split('/');
-      number = number[number.length - 1];
-      try {
-        if (allProductsHashMap[number]) {
-          // Product already exists, insert date_price table & Update update_at column at product table
-          const productDetails = await getProductPrice(productUrls[j]);
-          await mysql.query('UPDATE product SET update_at = ? WHERE id = ?', [productDetails.date, allProductsHashMap[number]]);
-          await createDatePrice(productDetails.date, allProductsHashMap[number], parseInt(productDetails.price.replace(',', '')));
-        } else {
-          const productDetails = await getProductDetails(productUrls[j], productUrlsResult.productCategory, productUrlsResult.productType);
-          await createProduct(productDetails);
+    try {
+      const productUrlsResult = await getProductUrls(typeUrls[i], page);
+      const productUrls = productUrlsResult.result;
+      for (let j = 0; j < productUrls.length; j += 1) {
+        let key = Object.keys(productUrls[j]);
+        let value = Object.values(productUrls[j]);
+        key = key[0]; // ex: (男女適穿)Chef shirt主廚襯衫(5分袖)_332633
+        value = value[0]; // ex: https://www.gu-global.com/tw/zh_TW/product-detail.html?productCode=u0000000000032
+
+        key = key.split('_');
+        const number = key[1];
+
+        try {
+          if (allProductsHashMap[number]) {
+            // Product already exists, insert date_price table & Update update_at column at product table
+            const productDetails = await getProductPrice(value, page);
+            await query('UPDATE product SET update_at = ? WHERE id = ?', [productDetails.date, allProductsHashMap[number]]);
+            await createDatePrice(productDetails.date, allProductsHashMap[number], parseInt(productDetails.price.replace(',', '')));
+          } else {
+            const productDetails = await getProductDetails(value, category, productUrlsResult.productList, productUrlsResult.productType, page);
+            await createProduct(productDetails);
+          }
+        } catch (error) {
+          console.log(error);
+          fail[value] = error;
+          console.log('Other Error', productUrls[j]);
         }
-      } catch (error) {
-        fail[productUrls[j]] = error;
       }
+    } catch (error) {
+      console.log(error);
+      fail[typeUrls[i]] = error;
+      console.log('typeUrls Error', typeUrls[i]);
     }
   }
+  await browser.close();
+  console.log(`Finished ${category} data at ${new Date()}`);
 }
 
 // Send e-mail to users who track the product (Use Nodemailer)
-async function sendTrack() {
+async function getTrack() {
+  console.log(`Start sending track mail at ${new Date()}`);
   const queryStr = `
-              SELECT t.id, t.email, p.name, p.number, p.main_image AS mainImage, t.price AS trackPrice, d.price AS currentPrice FROM product AS p
-              INNER JOIN track AS t ON p.number = t.number
-              INNER JOIN date_price AS d ON p.id = d.product_id
-              WHERE d.date = ? AND t.confirmed = 0
-              `;
-  const result = await mysql.query(queryStr, getTodayDate());
+               SELECT t.id, t.email, p.name, p.number, p.main_image AS mainImage, t.price AS trackPrice, d.price AS currentPrice FROM product AS p
+               INNER JOIN track AS t ON p.number = t.number
+               INNER JOIN date_price AS d ON p.id = d.product_id
+               WHERE d.date = ? AND t.confirmed = 0
+               `;
+  const result = await query(queryStr, getTodayDate());
   for (let i = 0; i < result.length; i += 1) {
     if (result[i].currentPrice <= result[i].trackPrice) {
       try {
-        await trackEmail(result[i].name, result[i].number, result[i].mainImage, result[i].currentPrice, result[i].email);
+        await sendTrackEmail(result[i].name, result[i].number, result[i].mainImage, result[i].currentPrice, result[i].email);
         await updateTrackStatus(result[i].id);
       } catch (error) {
-        fail.trackError = error;
+        console.log(result[i]);
+        console.log(error);
       }
     }
   }
+  console.log(`Finished sending track mail at ${new Date()}`);
 }
 
-const trackEmail = async (name, number, mainImage, currentPrice, email) => {
+const sendTrackEmail = async (name, number, mainImage, currentPrice, email) => {
   const mail = {
     from: 'GU-Price <gu.price.search@gmail.com>',
     subject: `GU-Price 降價通知- ${name}`,
     to: email,
     html: `
-            <p>Hi! ${email.split('@')[0]}</p>
-            <h2>您在 GU-Price 追蹤的「${name}」商品有降價優惠，請<a href="https://gu-price.com/products/${number}">點此</a>查看詳情。</h2>
-            <h3>目前售價： ${currentPrice} 元</h3>
-            <img src="${mainImage}" height="150">
-          `,
+             <p>Hi! ${email.split('@')[0]}</p>
+             <h2>您在 GU-Price 追蹤的「${name}」商品有降價優惠，請<a href="https://gu-price.jtjin.xyz/products/${number}">點此</a>查看詳情。</h2>
+             <h3>目前售價： ${currentPrice} 元</h3>
+             <img src="${mainImage}" height="150">
+           `,
   };
   await send(mail);
 };
 
 const updateTrackStatus = async (id) => {
   try {
+    await query('START TRANSACTION');
     const queryStr = 'UPDATE track SET confirmed = ? WHERE id = ?';
-    await mysql.query(queryStr, [true, id]);
+    await query(queryStr, [true, id]);
+    await query('COMMIT');
     return;
   } catch (error) {
+    await query('ROLLBACK');
     return { error };
   }
 };
 
 const sendCrawlerReport = async () => {
+  console.log(`Start sending crawler report mail at ${new Date()}`);
   const mail = {
     from: 'GU-Price <gu.price.search@gmail.com>',
     subject: 'Crawler Report',
     to: 'wade4515x@gmail.com',
     html: `
-            <h2>錯誤</h2>
-            <p>${JSON.stringify(fail)}</p>
-          `,
+             <h2>錯誤</h2>
+             <p>${JSON.stringify(fail)}</p>
+           `,
   };
   await send(mail);
+  console.log(`Finished sending crawler report mail at ${new Date()}`);
 };
 
 const allProductsHashMap = {};
 
 async function start() {
+  fail = {};
   // Create Products HashMap
   // ex: { 317122: '1', 319559: '2', ...}
-  const allProducts = await mysql.query('SELECT id, number FROM product;');
+  const allProducts = await query('SELECT id, number FROM product;');
   for (let i = 0; i < allProducts.length; i += 1) {
     allProductsHashMap[allProducts[i].number] = allProducts[i].id;
   }
-  await main('men');
-  await main('women');
-  await main('kids');
-  await sendTrack();
-  if (Object.keys(fail).length) await sendCrawlerReport();
+  await Promise.all([main('men'), main('women'), main('kids')]);
+  await getTrack();
+  if (fail.length != 0) {
+    await sendCrawlerReport();
+  }
+  console.log('Everything has done!');
 }
 
 // Running at 11 a.m. everyday
