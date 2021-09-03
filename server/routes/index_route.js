@@ -43,7 +43,7 @@ router.route('/:category')
 router.route('/:category/:type')
   .get(asyncHandler(getProducts));
 
-router.route('/imageSearch')
-  .post(uploadImageSearch, asyncHandler(imageSearch));
+// router.route('/imageSearch')
+//   .post(uploadImageSearch, asyncHandler(imageSearch));
 
 module.exports = router;

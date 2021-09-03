@@ -22,12 +22,12 @@ block content
             option 商品編號
         .search_main_div
           input#search_main.search_input_main(type='text' placeholder=' 輸入商品關鍵字或編號...')
-          img#image_search_icon(src='/static/imgs/photo.png')
-          form(action="/imageSearch", method="post", enctype="multipart/form-data")
-            input#image_search_file(type='file' name="imageSearch" accept='image/*')
-            input#image_search_submit(type='submit')
-      .image_search_text
-          img#image_search_text(src='/static/imgs/image_search.png')
+      //-     img#image_search_icon(src='/static/imgs/photo.png')
+      //-     form(action="/imageSearch", method="post", enctype="multipart/form-data")
+      //-       input#image_search_file(type='file' name="imageSearch" accept='image/*')
+      //-       input#image_search_submit(type='submit')
+      //- .image_search_text
+      //-     img#image_search_text(src='/static/imgs/image_search.png')
       button(onclick='mainSearchBtn()')
         |查看商品
     #container
