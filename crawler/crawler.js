@@ -216,7 +216,7 @@ async function createDatePrice(date, productId, price) {
 
 async function main(category) {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     ignoreDefaultArgs: ['--enable-automation'],
     args: [
       '--no-sandbox',
