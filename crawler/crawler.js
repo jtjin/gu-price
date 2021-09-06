@@ -15,6 +15,12 @@ function getTodayDate() {
   return today;
 }
 
+function isNumeric(str) {
+  if (typeof str != "string") return false // we only process strings!  
+  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
 // Get type links in different category (Use Puppeteer)
 // (ex: [ {'正裝系列_男士正裝系列': "https://..."}, {"運動系列_GA運動系列": "https://..."}, ... ])
 async function getTypeUrls(category, page) {
@@ -125,7 +131,7 @@ async function getProductDetails(productUrl, category, productList, productType,
   const title = $('.gu-product-detail-list-title').text();
   const name = title.substring(0, title.lastIndexOf(' '));
   const number = title.substring(title.lastIndexOf(' ') + 1);
-  const price = $('.gu-detail-list-price > div > span').text().substr(3);
+  let price = $('.gu-detail-list-price > div > span').text().substr(3);
   let about = $('.product-desc').html();
   about = reviseAbout(about);
   const texture = $('.desc-content').text();
@@ -138,9 +144,11 @@ async function getProductDetails(productUrl, category, productList, productType,
       await page.click(`.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li:nth-child(${i}) > img`);
       const html = await page.content();
       const $ = cheerio.load(html);
+      if (!isNumeric(price)) {
+        price = $('.gu-detail-list-price > div > span').text().substr(3);
+      }
       images.push($('.picture-viewer-picture > div > img').attr('src'));
     } catch (error) {
-      console.log('Click listChipColor Error', number);
       fail[number] = error;
     }
   }
@@ -152,7 +160,6 @@ async function getProductDetails(productUrl, category, productList, productType,
       const $ = cheerio.load(html);
       images.push($('.picture-viewer-picture > div > img').attr('src'));
     } catch (error) {
-      console.log('Click prodThumbImgs Error', number);
       fail[number] = error;
     }
   }
@@ -170,7 +177,22 @@ async function getProductPrice(productUrl, page) {
   await page.goto(productUrl, { waitUntil: 'networkidle0' });
   const html = await page.content();
   const $ = cheerio.load(html, { decodeEntities: false });
-  const price = $('.gu-detail-list-price > div > span').text().substr(3);
+  let price = $('.gu-detail-list-price > div > span').text().substr(3);
+  if (!isNumeric(price)) {
+    const colors = $('.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li');
+    for (let i = 1; i <= colors.length; i += 1) {
+      try {
+        await page.click(`.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li:nth-child(${i}) > img`);
+        const html = await page.content();
+        const $ = cheerio.load(html);
+        if (!isNumeric(price)) {
+          price = $('.gu-detail-list-price > div > span').text().substr(3);
+        }
+      } catch (error) {
+        fail[number] = error;
+      }
+    }
+  }
   const date = getTodayDate();
   return {
     date, price,
@@ -253,13 +275,11 @@ async function main(category) {
             await createProduct(productDetails);
           }
         } catch (error) {
-          console.log(error);
           fail[value] = error;
           console.log('Other Error', productUrls[j]);
         }
       }
     } catch (error) {
-      console.log(error);
       fail[typeUrls[i]] = error;
       console.log('typeUrls Error', typeUrls[i]);
     }
@@ -327,7 +347,7 @@ const sendCrawlerReport = async () => {
     subject: 'Crawler Report',
     to: 'wade4515x@gmail.com',
     html: `
-             <h2>錯誤</h2>
+             <h2>錯誤 (${Object.keys(fail).length})</h2>
              <p>${JSON.stringify(fail)}</p>
            `,
   };
