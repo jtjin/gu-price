@@ -19,7 +19,7 @@ function createProduct(result) {
   drawDatePrice(result.data);
   document.getElementById('about').innerHTML = result.data.about;
   document.getElementById('texture').innerHTML = result.data.texture;
-  document.getElementById('website').setAttribute('href', `https://www.gu-global.com/tw/store/goods/${result.data.number}`);
+  document.getElementById('website').setAttribute('href', result.data.url);
   for (let i = 0; i < result.data.images.length; i += 1) {
     const img = document.createElement('img');
     img.setAttribute('class', 'images');

@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const cron = require('node-cron');
-const { query }  = require('../util/mysqlcon');
+const { query } = require('../util/mysqlcon');
 const { send } = require('../util/util.js');
 const types = require('./types.json');
 
@@ -16,9 +16,9 @@ function getTodayDate() {
 }
 
 function isNumeric(str) {
-  if (typeof str != "string") return false // we only process strings!  
-  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+  if (typeof str != 'string') return false; // we only process strings!
+  return !isNaN(str) // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+         && !isNaN(parseFloat(str)); // ...and ensure strings of whitespace fail
 }
 
 // Get type links in different category (Use Puppeteer)
@@ -173,7 +173,7 @@ async function getProductDetails(productUrl, category, productList, productType,
 
 // Get only price for old products (Use Puppeteer)
 // ex: { date: '20200701', price: '290' }
-async function getProductPrice(productUrl, page) {
+async function getProductPrice(productUrl, page, number) {
   await page.goto(productUrl, { waitUntil: 'networkidle0' });
   const html = await page.content();
   const $ = cheerio.load(html, { decodeEntities: false });
@@ -199,9 +199,49 @@ async function getProductPrice(productUrl, page) {
   };
 }
 
+// Get mainImage, images for old products (Use Puppeteer)
+// ex: { mainImage: '.....', images: '....' }
+async function getImages(productUrl, page, number) {
+  await page.goto(productUrl, { waitUntil: 'networkidle0' });
+  const html = await page.content();
+  const $ = cheerio.load(html, { decodeEntities: false });
+  const mainImage = $('.picture-viewer-picture > div > img').attr('src');
+  let images = [];
+
+  const colors = $('.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li');
+  for (let i = 1; i <= colors.length; i += 1) {
+    try {
+      await page.click(`.gu-sku-select-box > div.sku-select.gu-sku-select > ul.h-clearfix.sku-select-colors > li:nth-child(${i}) > img`);
+      const html = await page.content();
+      const $ = cheerio.load(html);
+      if (!isNumeric(price)) {
+        price = $('.gu-detail-list-price > div > span').text().substr(3);
+      }
+      images.push($('.picture-viewer-picture > div > img').attr('src'));
+    } catch (error) {
+      fail[number] = error;
+    }
+  }
+  const list_images = $('.picture-viewer-bottom').find('li');
+  for (let i = 1; i <= list_images.length; i += 1) {
+    try {
+      await page.click(`.picture-viewer-bottom > li:nth-child(${i}) > img`);
+      const html = await page.content();
+      const $ = cheerio.load(html);
+      images.push($('.picture-viewer-picture > div > img').attr('src'));
+    } catch (error) {
+      fail[number] = error;
+    }
+  }
+  images = [...new Set(images)]; // Remove duplicated image
+  return {
+    mainImage, images,
+  };
+}
+
 // Insert product into mysql
 // New product, insert both product & date_price tables
-async function createProduct(data) {
+async function createProduct(data, url) {
   const newData = {
     category: data.category,
     chinese_list: data.chinese_list,
@@ -214,6 +254,7 @@ async function createProduct(data) {
     main_image: data.mainImage,
     images: JSON.stringify(data.images),
     update_at: data.update_at,
+    url,
   };
   const duplicated = await query('SELECT * FROM product WHERE number = ?', [data.number]);
   if (duplicated.length != 0) {
@@ -267,12 +308,16 @@ async function main(category) {
         try {
           if (allProductsHashMap[number]) {
             // Product already exists, insert date_price table & Update update_at column at product table
-            const productDetails = await getProductPrice(value, page);
-            await query('UPDATE product SET update_at = ? WHERE id = ?', [productDetails.date, allProductsHashMap[number]]);
+            const productDetails = await getProductPrice(value, page, number);
+
+            const productImage = await getImages(value, page, number);
+            await query('UPDATE product SET main_image = ?, images = ? WHERE id = ?', [productImage.mainImage, JSON.stringify(productImage.images), allProductsHashMap[number]]);
+
+            await query('UPDATE product SET update_at = ?, url = ? WHERE id = ?', [productDetails.date, value, allProductsHashMap[number]]);
             await createDatePrice(productDetails.date, allProductsHashMap[number], parseInt(productDetails.price.replace(',', '')));
           } else {
             const productDetails = await getProductDetails(value, category, productUrlsResult.productList, productUrlsResult.productType, page);
-            await createProduct(productDetails);
+            await createProduct(productDetails, value);
           }
         } catch (error) {
           fail[value] = error;
