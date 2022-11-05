@@ -5,7 +5,7 @@
 - Receive notifications through subscriptions when specials are available
 - Search for similar products by image
 
-Website URL: https://www.gu-price.com
+~Website URL: https://www.gu-price.com~ (deprecated)
 
 ## Table of Contents
 
